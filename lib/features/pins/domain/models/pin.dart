@@ -1,4 +1,5 @@
 import 'package:pingo/core/domain/models/content_visibility.dart';
+import 'package:pingo/core/domain/models/pin_type.dart';
 
 class Pin {
   final int id;
@@ -9,6 +10,7 @@ class Pin {
   final DateTime createdAt;
   final bool isSynced;
   final ContentVisibility visibility;
+  final PinType type;
 
   const Pin({
     required this.id,
@@ -19,5 +21,6 @@ class Pin {
     required this.createdAt,
     this.isSynced = false,
     this.visibility = ContentVisibility.private,
+    this.type = PinType.memory,
   });
 }

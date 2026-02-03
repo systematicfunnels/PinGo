@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pingo/core/domain/models/pin_type.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/features/pins/presentation/controllers/pins_controller.dart';
 import 'package:pingo/features/pins/presentation/widgets/pin_editor_sheet.dart';
@@ -81,9 +82,13 @@ class MapScreen extends ConsumerWidget {
                                   _showPinDetails(
                                       context, pin.title, pin.description);
                                 },
-                                child: const Icon(
-                                  Icons.location_on,
-                                  color: AppColors.secondary,
+                                child: Icon(
+                                  pin.type == PinType.safety
+                                      ? Icons.warning_rounded
+                                      : Icons.location_on,
+                                  color: pin.type == PinType.safety
+                                      ? AppColors.danger
+                                      : AppColors.secondary,
                                   size: 40,
                                 ),
                               ),
@@ -118,6 +123,7 @@ class MapScreen extends ConsumerWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'mapFab',
         onPressed: () => ref.refresh(mapControllerProvider),
         backgroundColor: AppColors.surface,
         foregroundColor: AppColors.primary,

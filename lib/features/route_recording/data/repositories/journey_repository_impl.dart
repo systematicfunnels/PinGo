@@ -16,13 +16,19 @@ JourneyRepository journeyRepository(Ref ref) {
   return JourneyRepositoryImpl(database);
 }
 
+@riverpod
+Future<Journey?> singleJourney(Ref ref, String id) {
+  final repository = ref.watch(journeyRepositoryProvider);
+  return repository.getJourneyById(int.parse(id));
+}
+
 class JourneyRepositoryImpl implements JourneyRepository {
   final db.AppDatabase _db;
 
   JourneyRepositoryImpl(this._db);
 
   @override
-  Future<void> saveJourney(Journey journey) async {
+  Future<int> saveJourney(Journey journey) async {
     final entry = db.JourneysCompanion(
       name: Value(journey.name),
       startTime: Value(journey.startTime),
@@ -32,7 +38,7 @@ class JourneyRepositoryImpl implements JourneyRepository {
       durationSeconds: Value(journey.durationSeconds),
       visibility: Value(journey.visibility.index),
     );
-    await _db.into(_db.journeys).insert(entry);
+    return await _db.into(_db.journeys).insert(entry);
   }
 
   @override
@@ -61,6 +67,13 @@ class JourneyRepositoryImpl implements JourneyRepository {
   Future<List<Journey>> getAllJourneys() async {
     final rows = await _db.select(_db.journeys).get();
     return rows.map((row) => _mapToDomain(row)).toList();
+  }
+
+  @override
+  Future<Journey?> getJourneyById(int id) async {
+    final row = await (_db.select(_db.journeys)..where((t) => t.id.equals(id))).getSingleOrNull();
+    if (row == null) return null;
+    return _mapToDomain(row);
   }
 
   @override

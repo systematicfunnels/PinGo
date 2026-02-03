@@ -66,6 +66,13 @@ class $PinsTable extends Pins with TableInfo<$PinsTable, Pin> {
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultValue: const Constant(0));
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumn<int> type = GeneratedColumn<int>(
+      'type', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -75,7 +82,8 @@ class $PinsTable extends Pins with TableInfo<$PinsTable, Pin> {
         longitude,
         createdAt,
         isSynced,
-        visibility
+        visibility,
+        type
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -126,6 +134,10 @@ class $PinsTable extends Pins with TableInfo<$PinsTable, Pin> {
           visibility.isAcceptableOrUnknown(
               data['visibility']!, _visibilityMeta));
     }
+    if (data.containsKey('type')) {
+      context.handle(
+          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
+    }
     return context;
   }
 
@@ -151,6 +163,8 @@ class $PinsTable extends Pins with TableInfo<$PinsTable, Pin> {
           .read(DriftSqlType.bool, data['${effectivePrefix}is_synced'])!,
       visibility: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}visibility'])!,
+      type: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}type'])!,
     );
   }
 
@@ -169,6 +183,7 @@ class Pin extends DataClass implements Insertable<Pin> {
   final DateTime createdAt;
   final bool isSynced;
   final int visibility;
+  final int type;
   const Pin(
       {required this.id,
       this.title,
@@ -177,7 +192,8 @@ class Pin extends DataClass implements Insertable<Pin> {
       required this.longitude,
       required this.createdAt,
       required this.isSynced,
-      required this.visibility});
+      required this.visibility,
+      required this.type});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -193,6 +209,7 @@ class Pin extends DataClass implements Insertable<Pin> {
     map['created_at'] = Variable<DateTime>(createdAt);
     map['is_synced'] = Variable<bool>(isSynced);
     map['visibility'] = Variable<int>(visibility);
+    map['type'] = Variable<int>(type);
     return map;
   }
 
@@ -209,6 +226,7 @@ class Pin extends DataClass implements Insertable<Pin> {
       createdAt: Value(createdAt),
       isSynced: Value(isSynced),
       visibility: Value(visibility),
+      type: Value(type),
     );
   }
 
@@ -224,6 +242,7 @@ class Pin extends DataClass implements Insertable<Pin> {
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       isSynced: serializer.fromJson<bool>(json['isSynced']),
       visibility: serializer.fromJson<int>(json['visibility']),
+      type: serializer.fromJson<int>(json['type']),
     );
   }
   @override
@@ -238,6 +257,7 @@ class Pin extends DataClass implements Insertable<Pin> {
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'isSynced': serializer.toJson<bool>(isSynced),
       'visibility': serializer.toJson<int>(visibility),
+      'type': serializer.toJson<int>(type),
     };
   }
 
@@ -249,7 +269,8 @@ class Pin extends DataClass implements Insertable<Pin> {
           double? longitude,
           DateTime? createdAt,
           bool? isSynced,
-          int? visibility}) =>
+          int? visibility,
+          int? type}) =>
       Pin(
         id: id ?? this.id,
         title: title.present ? title.value : this.title,
@@ -259,6 +280,7 @@ class Pin extends DataClass implements Insertable<Pin> {
         createdAt: createdAt ?? this.createdAt,
         isSynced: isSynced ?? this.isSynced,
         visibility: visibility ?? this.visibility,
+        type: type ?? this.type,
       );
   Pin copyWithCompanion(PinsCompanion data) {
     return Pin(
@@ -272,6 +294,7 @@ class Pin extends DataClass implements Insertable<Pin> {
       isSynced: data.isSynced.present ? data.isSynced.value : this.isSynced,
       visibility:
           data.visibility.present ? data.visibility.value : this.visibility,
+      type: data.type.present ? data.type.value : this.type,
     );
   }
 
@@ -285,14 +308,15 @@ class Pin extends DataClass implements Insertable<Pin> {
           ..write('longitude: $longitude, ')
           ..write('createdAt: $createdAt, ')
           ..write('isSynced: $isSynced, ')
-          ..write('visibility: $visibility')
+          ..write('visibility: $visibility, ')
+          ..write('type: $type')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(id, title, description, latitude, longitude,
-      createdAt, isSynced, visibility);
+      createdAt, isSynced, visibility, type);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -304,7 +328,8 @@ class Pin extends DataClass implements Insertable<Pin> {
           other.longitude == this.longitude &&
           other.createdAt == this.createdAt &&
           other.isSynced == this.isSynced &&
-          other.visibility == this.visibility);
+          other.visibility == this.visibility &&
+          other.type == this.type);
 }
 
 class PinsCompanion extends UpdateCompanion<Pin> {
@@ -316,6 +341,7 @@ class PinsCompanion extends UpdateCompanion<Pin> {
   final Value<DateTime> createdAt;
   final Value<bool> isSynced;
   final Value<int> visibility;
+  final Value<int> type;
   const PinsCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
@@ -325,6 +351,7 @@ class PinsCompanion extends UpdateCompanion<Pin> {
     this.createdAt = const Value.absent(),
     this.isSynced = const Value.absent(),
     this.visibility = const Value.absent(),
+    this.type = const Value.absent(),
   });
   PinsCompanion.insert({
     this.id = const Value.absent(),
@@ -335,6 +362,7 @@ class PinsCompanion extends UpdateCompanion<Pin> {
     this.createdAt = const Value.absent(),
     this.isSynced = const Value.absent(),
     this.visibility = const Value.absent(),
+    this.type = const Value.absent(),
   })  : latitude = Value(latitude),
         longitude = Value(longitude);
   static Insertable<Pin> custom({
@@ -346,6 +374,7 @@ class PinsCompanion extends UpdateCompanion<Pin> {
     Expression<DateTime>? createdAt,
     Expression<bool>? isSynced,
     Expression<int>? visibility,
+    Expression<int>? type,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -356,6 +385,7 @@ class PinsCompanion extends UpdateCompanion<Pin> {
       if (createdAt != null) 'created_at': createdAt,
       if (isSynced != null) 'is_synced': isSynced,
       if (visibility != null) 'visibility': visibility,
+      if (type != null) 'type': type,
     });
   }
 
@@ -367,7 +397,8 @@ class PinsCompanion extends UpdateCompanion<Pin> {
       Value<double>? longitude,
       Value<DateTime>? createdAt,
       Value<bool>? isSynced,
-      Value<int>? visibility}) {
+      Value<int>? visibility,
+      Value<int>? type}) {
     return PinsCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
@@ -377,6 +408,7 @@ class PinsCompanion extends UpdateCompanion<Pin> {
       createdAt: createdAt ?? this.createdAt,
       isSynced: isSynced ?? this.isSynced,
       visibility: visibility ?? this.visibility,
+      type: type ?? this.type,
     );
   }
 
@@ -407,6 +439,9 @@ class PinsCompanion extends UpdateCompanion<Pin> {
     if (visibility.present) {
       map['visibility'] = Variable<int>(visibility.value);
     }
+    if (type.present) {
+      map['type'] = Variable<int>(type.value);
+    }
     return map;
   }
 
@@ -420,7 +455,8 @@ class PinsCompanion extends UpdateCompanion<Pin> {
           ..write('longitude: $longitude, ')
           ..write('createdAt: $createdAt, ')
           ..write('isSynced: $isSynced, ')
-          ..write('visibility: $visibility')
+          ..write('visibility: $visibility, ')
+          ..write('type: $type')
           ..write(')'))
         .toString();
   }
@@ -912,6 +948,7 @@ typedef $$PinsTableCreateCompanionBuilder = PinsCompanion Function({
   Value<DateTime> createdAt,
   Value<bool> isSynced,
   Value<int> visibility,
+  Value<int> type,
 });
 typedef $$PinsTableUpdateCompanionBuilder = PinsCompanion Function({
   Value<int> id,
@@ -922,6 +959,7 @@ typedef $$PinsTableUpdateCompanionBuilder = PinsCompanion Function({
   Value<DateTime> createdAt,
   Value<bool> isSynced,
   Value<int> visibility,
+  Value<int> type,
 });
 
 class $$PinsTableFilterComposer extends Composer<_$AppDatabase, $PinsTable> {
@@ -955,6 +993,9 @@ class $$PinsTableFilterComposer extends Composer<_$AppDatabase, $PinsTable> {
 
   ColumnFilters<int> get visibility => $composableBuilder(
       column: $table.visibility, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get type => $composableBuilder(
+      column: $table.type, builder: (column) => ColumnFilters(column));
 }
 
 class $$PinsTableOrderingComposer extends Composer<_$AppDatabase, $PinsTable> {
@@ -988,6 +1029,9 @@ class $$PinsTableOrderingComposer extends Composer<_$AppDatabase, $PinsTable> {
 
   ColumnOrderings<int> get visibility => $composableBuilder(
       column: $table.visibility, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get type => $composableBuilder(
+      column: $table.type, builder: (column) => ColumnOrderings(column));
 }
 
 class $$PinsTableAnnotationComposer
@@ -1022,6 +1066,9 @@ class $$PinsTableAnnotationComposer
 
   GeneratedColumn<int> get visibility => $composableBuilder(
       column: $table.visibility, builder: (column) => column);
+
+  GeneratedColumn<int> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
 }
 
 class $$PinsTableTableManager extends RootTableManager<
@@ -1055,6 +1102,7 @@ class $$PinsTableTableManager extends RootTableManager<
             Value<DateTime> createdAt = const Value.absent(),
             Value<bool> isSynced = const Value.absent(),
             Value<int> visibility = const Value.absent(),
+            Value<int> type = const Value.absent(),
           }) =>
               PinsCompanion(
             id: id,
@@ -1065,6 +1113,7 @@ class $$PinsTableTableManager extends RootTableManager<
             createdAt: createdAt,
             isSynced: isSynced,
             visibility: visibility,
+            type: type,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
@@ -1075,6 +1124,7 @@ class $$PinsTableTableManager extends RootTableManager<
             Value<DateTime> createdAt = const Value.absent(),
             Value<bool> isSynced = const Value.absent(),
             Value<int> visibility = const Value.absent(),
+            Value<int> type = const Value.absent(),
           }) =>
               PinsCompanion.insert(
             id: id,
@@ -1085,6 +1135,7 @@ class $$PinsTableTableManager extends RootTableManager<
             createdAt: createdAt,
             isSynced: isSynced,
             visibility: visibility,
+            type: type,
           ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))

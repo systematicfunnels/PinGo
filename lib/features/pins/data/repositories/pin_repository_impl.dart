@@ -1,4 +1,5 @@
 import 'package:pingo/core/domain/models/content_visibility.dart';
+import 'package:pingo/core/domain/models/pin_type.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -41,6 +42,7 @@ class PinRepositoryImpl implements PinRepository {
             createdAt: Value(pin.createdAt),
             isSynced: Value(pin.isSynced),
             visibility: Value(pin.visibility.index),
+            type: Value(pin.type.index),
           ),
         );
   }
@@ -55,6 +57,7 @@ class PinRepositoryImpl implements PinRepository {
         longitude: Value(pin.longitude),
         isSynced: Value(pin.isSynced),
         visibility: Value(pin.visibility.index),
+        type: Value(pin.type.index),
       ),
     );
   }
@@ -74,6 +77,7 @@ class PinRepositoryImpl implements PinRepository {
       createdAt: row.createdAt,
       isSynced: row.isSynced,
       visibility: ContentVisibility.values[row.visibility],
+      type: PinType.values[row.type],
     );
   }
 }

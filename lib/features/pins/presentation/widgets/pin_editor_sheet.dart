@@ -1,4 +1,5 @@
 import 'package:pingo/core/domain/models/content_visibility.dart';
+import 'package:pingo/core/domain/models/pin_type.dart';
 import 'package:pingo/core/presentation/widgets/visibility_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,6 +28,7 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   ContentVisibility _visibility = ContentVisibility.private;
+  PinType _type = PinType.memory;
 
   @override
   void dispose() {
@@ -59,6 +61,7 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
             lat,
             lng,
             visibility: _visibility,
+            type: _type,
           );
 
       if (mounted) {
@@ -91,10 +94,11 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
         padding: const EdgeInsets.all(24.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -141,8 +145,8 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
                 controller: _descController,
                 textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
-                  labelText: 'Description',
-                  hintText: 'Why is it special?',
+                  labelText: _type == PinType.safety ? 'Hazard Description' : 'Description',
+                  hintText: _type == PinType.safety ? 'Describe the danger...' : 'Why is it special?',
                   filled: true,
                   fillColor: AppColors.surfaceVariant,
                   border: OutlineInputBorder(
@@ -161,6 +165,50 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
                 ),
                 maxLines: 3,
               ),
+              const SizedBox(height: 16),
+              Text(
+                'Type',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 8,
+                children: PinType.values.map((type) {
+                  return ChoiceChip(
+                    label: Text(type.name.toUpperCase()),
+                    selected: _type == type,
+                    onSelected: (selected) {
+                      if (selected) setState(() => _type = type);
+                    },
+                  );
+                }).toList(),
+              ),
+              if (_type == PinType.safety) ...[
+                const SizedBox(height: 16),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppColors.danger.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                    border:
+                        Border.all(color: AppColors.danger.withOpacity(0.5)),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.warning_amber_rounded,
+                          color: AppColors.danger),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          'Marking this as a hazard will alert other users nearby.',
+                          style: TextStyle(
+                              color: AppColors.danger.withOpacity(0.8)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
               const SizedBox(height: 16),
               VisibilitySelector(
                 selected: _visibility,
@@ -184,8 +232,8 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
                       : const Text('Save Memory'),
                 ),
               ),
-              const SizedBox(height: 16),
-            ],
+              const SizedBox(height: 16),],
+            ),
           ),
         ),
       ),

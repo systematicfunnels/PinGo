@@ -13,6 +13,10 @@ import 'package:pingo/features/route_recording/presentation/record_screen.dart';
 import 'package:pingo/features/route_recording/presentation/journey_detail_screen.dart';
 import 'package:pingo/features/profile/presentation/profile_screen.dart';
 
+import 'package:pingo/features/route_recording/presentation/journey_summary_screen.dart';
+import 'package:pingo/features/route_recording/presentation/memory_replay_screen.dart';
+import 'package:pingo/features/notifications/presentation/notifications_screen.dart';
+
 part 'app_router.g.dart';
 
 // Private navigators for each tab
@@ -42,6 +46,24 @@ GoRouter goRouter(Ref ref) {
       GoRoute(
         path: RoutePaths.persona,
         builder: (context, state) => const PersonaSelectionScreen(),
+      ),
+      GoRoute(
+        path: RoutePaths.journeySummary,
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return JourneySummaryScreen(journeyId: id);
+        },
+      ),
+      GoRoute(
+        path: RoutePaths.memoryReplay,
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return MemoryReplayScreen(journeyId: id);
+        },
+      ),
+      GoRoute(
+        path: RoutePaths.notifications,
+        builder: (context, state) => const NotificationsScreen(),
       ),
 
       // Stateful Nested Navigation (The App Shell)

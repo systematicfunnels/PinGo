@@ -32,6 +32,7 @@ class PinsScreen extends ConsumerWidget {
           ),
         ),
         floatingActionButton: FloatingActionButton.extended(
+          heroTag: 'pinsFab',
           onPressed: () {
             showModalBottomSheet(
               context: context,

@@ -20,4 +20,26 @@ class Journey {
     required this.durationSeconds,
     this.visibility = ContentVisibility.private,
   });
+
+  Journey copyWith({
+    int? id,
+    String? name,
+    DateTime? startTime,
+    DateTime? endTime,
+    List<List<double>>? routePoints,
+    double? totalDistance,
+    int? durationSeconds,
+    ContentVisibility? visibility,
+  }) {
+    return Journey(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      startTime: startTime ?? this.startTime,
+      endTime: endTime ?? this.endTime,
+      routePoints: routePoints ?? this.routePoints,
+      totalDistance: totalDistance ?? this.totalDistance,
+      durationSeconds: durationSeconds ?? this.durationSeconds,
+      visibility: visibility ?? this.visibility,
+    );
+  }
 }

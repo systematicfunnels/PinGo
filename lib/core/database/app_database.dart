@@ -14,6 +14,8 @@ class Pins extends Table {
   BoolColumn get isSynced => boolean().withDefault(const Constant(false))();
   // 0: Private, 1: Trusted, 2: Public
   IntColumn get visibility => integer().withDefault(const Constant(0))();
+  // 0: Memory, 1: Safety, 2: Landmark, etc.
+  IntColumn get type => integer().withDefault(const Constant(0))();
 }
 
 class Journeys extends Table {
@@ -37,7 +39,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -48,6 +50,9 @@ class AppDatabase extends _$AppDatabase {
           if (from < 2) {
             await m.addColumn(pins, pins.visibility);
             await m.addColumn(journeys, journeys.visibility);
+          }
+          if (from < 3) {
+            await m.addColumn(pins, pins.type);
           }
         },
       );

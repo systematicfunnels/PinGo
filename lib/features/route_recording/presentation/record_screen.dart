@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:pingo/core/routing/route_paths.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/features/map/presentation/map_controller.dart';
 import 'controllers/record_controller.dart';
@@ -110,16 +112,16 @@ class RecordScreen extends ConsumerWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     if (!recordState.isRecording) ...[
-                      // Start State
+                      // Start State - Screen 6: Start Journey
                       const Text(
-                        'Ready to explore?',
+                        'Where are you heading?',
                         style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                           color: AppColors.textPrimary,
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 24),
                       SizedBox(
                         width: double.infinity,
                         height: 56,
@@ -129,13 +131,51 @@ class RecordScreen extends ConsumerWidget {
                                 .read(recordControllerProvider.notifier)
                                 .startRecording();
                           },
-                          icon: const Icon(Icons.play_arrow_rounded),
-                          label: const Text('Start Journey'),
+                          icon: const Icon(Icons.circle, size: 12),
+                          label: const Text('Record route'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primary,
                             foregroundColor: AppColors.onPrimary,
+                            elevation: 0,
                           ),
                         ),
+                      ),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 56,
+                        child: OutlinedButton.icon(
+                          onPressed: () {
+                            // Switch to Map Tab (index 0) to "Create map manually"
+                            // Using GoRouter to navigate to the map branch
+                            context.go(RoutePaths.map);
+                          },
+                          icon: const Icon(Icons.map_outlined, size: 20),
+                          label: const Text('Create map manually'),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: AppColors.textPrimary,
+                            side: const BorderSide(color: AppColors.border),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.offline_pin_outlined,
+                            size: 16,
+                            color: AppColors.textTertiary,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Offline ready',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.copyWith(color: AppColors.textTertiary),
+                          ),
+                        ],
                       ),
                     ] else ...[
                       // Recording State
@@ -224,10 +264,14 @@ class RecordScreen extends ConsumerWidget {
                           const SizedBox(width: 16),
                           Expanded(
                             child: ElevatedButton.icon(
-                              onPressed: () {
-                                ref
+                              onPressed: () async {
+                                final journeyId = await ref
                                     .read(recordControllerProvider.notifier)
                                     .stopRecording();
+                                if (context.mounted && journeyId != null) {
+                                  context.push(RoutePaths.journeySummary
+                                      .replaceFirst(':id', journeyId.toString()));
+                                }
                               },
                               icon: const Icon(Icons.stop_rounded),
                               label: const Text('Finish'),

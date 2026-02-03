@@ -47,6 +47,15 @@ class JourneyDetailScreen extends ConsumerWidget {
                 expandedHeight: 300,
                 pinned: true,
                 backgroundColor: AppColors.background,
+                actions: [
+                  IconButton(
+                    icon: const Icon(Icons.play_circle_outline,
+                        color: AppColors.textPrimary),
+                    onPressed: () => context.push(
+                      RoutePaths.memoryReplay.replaceFirst(':id', journeyId),
+                    ),
+                  ),
+                ],
                 leading: Container(
                   margin: const EdgeInsets.all(8),
                   decoration: const BoxDecoration(

@@ -80,15 +80,17 @@ class RecordController extends _$RecordController {
     _startLocationUpdates();
   }
 
-  void stopRecording() async {
+  Future<int?> stopRecording() async {
     _positionStream?.cancel();
     _timer?.cancel();
 
+    int? journeyId;
     if (state.currentPath.isNotEmpty) {
-      await _saveJourney();
+      journeyId = await _saveJourney();
     }
 
     state = const RecorderState(); // Reset
+    return journeyId;
   }
 
   void pauseRecording() {
@@ -141,7 +143,7 @@ class RecordController extends _$RecordController {
     });
   }
 
-  Future<void> _saveJourney() async {
+  Future<int> _saveJourney() async {
     final repository = ref.read(journeyRepositoryProvider);
     final journey = Journey(
       id: 0, // Auto-increment
@@ -151,6 +153,6 @@ class RecordController extends _$RecordController {
       totalDistance: state.distance,
       durationSeconds: state.duration.inSeconds,
     );
-    await repository.saveJourney(journey);
+    return await repository.saveJourney(journey);
   }
 }

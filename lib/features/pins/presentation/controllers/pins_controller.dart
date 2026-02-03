@@ -1,4 +1,5 @@
 import 'package:pingo/core/domain/models/content_visibility.dart';
+import 'package:pingo/core/domain/models/pin_type.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../domain/models/pin.dart';
 import '../../data/repositories/pin_repository_impl.dart';
@@ -14,7 +15,8 @@ class PinsController extends _$PinsController {
   }
 
   Future<void> addPin(String title, String description, double lat, double lng,
-      {ContentVisibility visibility = ContentVisibility.private}) async {
+      {ContentVisibility visibility = ContentVisibility.private,
+      PinType type = PinType.memory}) async {
     final repository = ref.read(pinRepositoryProvider);
     final pin = Pin(
       id: 0, // ID is auto-incremented by DB
@@ -24,6 +26,7 @@ class PinsController extends _$PinsController {
       longitude: lng,
       createdAt: DateTime.now(),
       visibility: visibility,
+      type: type,
     );
     await repository.createPin(pin);
   }

@@ -6,7 +6,7 @@ part of 'pins_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$pinsControllerHash() => r'1703265eb53f9339b24bee9c8562400b054232fc';
+String _$pinsControllerHash() => r'92944db272c03f1bd5e9540211c678ce10bc1ab4';
 
 /// See also [PinsController].
 @ProviderFor(PinsController)
