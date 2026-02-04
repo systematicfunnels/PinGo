@@ -9,5 +9,7 @@ class RoutePaths {
   static const String journeySummary = '/journey_summary/:id';
   static const String memoryReplay = '/memory_replay/:id';
   static const String notifications = '/notifications';
+  static const String savedMaps = '/saved_maps';
+  static const String regionSelection = '/saved_maps/select';
   static const String profile = '/profile';
 }

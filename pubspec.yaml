@@ -28,6 +28,7 @@ dependencies:
   latlong2: ^0.9.1
   geolocator: ^14.0.2
   intl: ^0.20.2
+  flutter_map_tile_caching: ^10.1.1
   # Maps (Placeholder for now)
   # flutter_map: ^6.0.0 # Using open source alternative for now to avoid key setup initially
 

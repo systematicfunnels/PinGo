@@ -5,10 +5,12 @@ import 'package:latlong2/latlong.dart';
 import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/features/route_recording/data/repositories/journey_repository_impl.dart';
 import 'package:pingo/core/domain/models/content_visibility.dart';
 import 'package:pingo/core/presentation/widgets/visibility_selector.dart';
 import 'package:pingo/features/route_recording/domain/models/journey.dart';
+import 'package:pingo/core/routing/route_paths.dart';
 
 class JourneyDetailScreen extends ConsumerWidget {
   final String journeyId;
@@ -28,6 +30,15 @@ class JourneyDetailScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.background,
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => context.push(
+          RoutePaths.memoryReplay.replaceFirst(':id', journeyId),
+        ),
+        icon: const Icon(Icons.play_circle_outline),
+        label: const Text('Replay Journey'),
+        backgroundColor: AppColors.primary,
+        foregroundColor: AppColors.onPrimary,
+      ),
       body: journeyAsync.when(
         data: (journey) {
           if (journey == null) {
@@ -47,17 +58,9 @@ class JourneyDetailScreen extends ConsumerWidget {
                 expandedHeight: 300,
                 pinned: true,
                 backgroundColor: AppColors.background,
-                actions: [
-                  IconButton(
-                    icon: const Icon(Icons.play_circle_outline,
-                        color: AppColors.textPrimary),
-                    onPressed: () => context.push(
-                      RoutePaths.memoryReplay.replaceFirst(':id', journeyId),
-                    ),
-                  ),
-                ],
+                actions: const [],
                 leading: Container(
-                  margin: const EdgeInsets.all(8),
+                  margin: AppSpacing.allSm,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     shape: BoxShape.circle,
@@ -74,7 +77,7 @@ class JourneyDetailScreen extends ConsumerWidget {
                           options: MapOptions(
                             initialCameraFit: CameraFit.bounds(
                               bounds: bounds,
-                              padding: const EdgeInsets.all(50),
+                              padding: AppSpacing.allXxl,
                             ),
                             interactionOptions: const InteractionOptions(
                               flags:
@@ -100,8 +103,8 @@ class JourneyDetailScreen extends ConsumerWidget {
                               markers: [
                                 Marker(
                                   point: points.first,
-                                  width: 20,
-                                  height: 20,
+                                  width: AppSpacing.xl,
+                                  height: AppSpacing.xl,
                                   child: Container(
                                     decoration: BoxDecoration(
                                       color: Colors.green,
@@ -113,8 +116,8 @@ class JourneyDetailScreen extends ConsumerWidget {
                                 ),
                                 Marker(
                                   point: points.last,
-                                  width: 20,
-                                  height: 20,
+                                  width: AppSpacing.xl,
+                                  height: AppSpacing.xl,
                                   child: Container(
                                     decoration: BoxDecoration(
                                       color: Colors.red,
@@ -133,7 +136,7 @@ class JourneyDetailScreen extends ConsumerWidget {
               ),
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.all(24.0),
+                  padding: AppSpacing.allXl,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -149,7 +152,7 @@ class JourneyDetailScreen extends ConsumerWidget {
                                   style:
                                       Theme.of(context).textTheme.headlineSmall,
                                 ),
-                                const SizedBox(height: 4),
+                                const SizedBox(height: AppSpacing.xs),
                                 Text(
                                   DateFormat.yMMMd()
                                       .add_jm()
@@ -180,14 +183,14 @@ class JourneyDetailScreen extends ConsumerWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppSpacing.xl),
 
                       // Stats Row
                       Container(
-                        padding: const EdgeInsets.all(20),
+                        padding: AppSpacing.allLg,
                         decoration: BoxDecoration(
                           color: AppColors.surface,
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(AppSpacing.lg),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -228,6 +231,49 @@ class JourneyDetailScreen extends ConsumerWidget {
                           ),
                         ),
                       ),
+                      const SizedBox(height: AppSpacing.xxl),
+                      Center(
+                        child: TextButton.icon(
+                          onPressed: () async {
+                            final confirm = await showDialog<bool>(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Delete Journey'),
+                                content: const Text(
+                                    'Are you sure you want to delete this journey? This action cannot be undone.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => context.pop(false),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () => context.pop(true),
+                                    child: const Text('Delete',
+                                        style:
+                                            TextStyle(color: AppColors.danger)),
+                                  ),
+                                ],
+                              ),
+                            );
+
+                            if (confirm == true) {
+                              await ref
+                                  .read(journeyRepositoryProvider)
+                                  .deleteJourney(journey.id);
+                              if (context.mounted) {
+                                context.pop();
+                              }
+                            }
+                          },
+                          icon: const Icon(Icons.delete_outline,
+                              color: AppColors.danger),
+                          label: const Text(
+                            'Delete Journey',
+                            style: TextStyle(color: AppColors.danger),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 80), // Space for FAB
                     ],
                   ),
                 ),
@@ -263,60 +309,81 @@ class _ShareSheetState extends ConsumerState<_ShareSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: const BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            'Share Journey',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          const SizedBox(height: 24),
-          VisibilitySelector(
-            selected: _visibility,
-            onChanged: (v) async {
-              setState(() => _visibility = v);
-              // Update journey visibility
-              final updatedJourney = Journey(
-                id: widget.journey.id,
-                name: widget.journey.name,
-                startTime: widget.journey.startTime,
-                endTime: widget.journey.endTime,
-                routePoints: widget.journey.routePoints,
-                totalDistance: widget.journey.totalDistance,
-                durationSeconds: widget.journey.durationSeconds,
-                visibility: v,
-              );
-              await ref
-                  .read(journeyRepositoryProvider)
-                  .updateJourney(updatedJourney);
-            },
-          ),
-          const SizedBox(height: 24),
-          FilledButton.icon(
-            onPressed: () {
-              // TODO: Implement actual share (generate link/image)
-              context.pop();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Link copied to clipboard!')),
-              );
-            },
-            icon: const Icon(Icons.copy),
-            label: const Text('Copy Link'),
-            style: FilledButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              padding: const EdgeInsets.all(16),
-            ),
-          ),
-          const SizedBox(height: 16),
-        ],
-      ),
-    );
+        decoration: const BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        child: SafeArea(
+            top: false,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Center(
+                  child: Container(
+                    width: 32,
+                    height: 4,
+                    margin: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+                    decoration: BoxDecoration(
+                      color: AppColors.border,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        'Share Journey',
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      const SizedBox(height: 24),
+                      VisibilitySelector(
+                        selected: _visibility,
+                        onChanged: (v) async {
+                          setState(() => _visibility = v);
+                          // Update journey visibility
+                          final updatedJourney = Journey(
+                            id: widget.journey.id,
+                            name: widget.journey.name,
+                            startTime: widget.journey.startTime,
+                            endTime: widget.journey.endTime,
+                            routePoints: widget.journey.routePoints,
+                            totalDistance: widget.journey.totalDistance,
+                            durationSeconds: widget.journey.durationSeconds,
+                            visibility: v,
+                          );
+                          await ref
+                              .read(journeyRepositoryProvider)
+                              .updateJourney(updatedJourney);
+                        },
+                      ),
+                      const SizedBox(height: 24),
+                      FilledButton.icon(
+                        onPressed: () {
+                          // TODO: Implement actual share (generate link/image)
+                          context.pop();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text(
+                                    'Link copied to clipboard! விண்ணப்பி')),
+                          );
+                        },
+                        icon: const Icon(Icons.copy),
+                        label: const Text('Copy Link'),
+                        style: FilledButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          padding: const EdgeInsets.all(16),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  ),
+                ),
+              ],
+            )));
   }
 }
 

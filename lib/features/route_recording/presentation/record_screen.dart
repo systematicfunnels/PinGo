@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:pingo/core/routing/route_paths.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/features/map/presentation/map_controller.dart';
 import 'controllers/record_controller.dart';
 
@@ -74,8 +75,8 @@ class RecordScreen extends ConsumerWidget {
                           ? recordState.currentPath.last
                           : LatLng(locationAsync.value!.latitude,
                               locationAsync.value!.longitude),
-                      width: 20,
-                      height: 20,
+                      width: AppSpacing.xl,
+                      height: AppSpacing.xl,
                       child: Container(
                         decoration: BoxDecoration(
                           color: AppColors.secondary,
@@ -97,17 +98,17 @@ class RecordScreen extends ConsumerWidget {
 
           // Controls Overlay
           Positioned(
-            left: 16,
-            right: 16,
-            bottom: 32,
+            left: AppSpacing.lg,
+            right: AppSpacing.lg,
+            bottom: AppSpacing.xxl + MediaQuery.of(context).padding.bottom,
             child: Card(
               elevation: 4,
               shadowColor: Colors.black12,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(AppSpacing.xl),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(24.0),
+                padding: AppSpacing.allXl,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -121,7 +122,7 @@ class RecordScreen extends ConsumerWidget {
                           color: AppColors.textPrimary,
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppSpacing.xl),
                       SizedBox(
                         width: double.infinity,
                         height: 56,
@@ -140,7 +141,7 @@ class RecordScreen extends ConsumerWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: AppSpacing.md),
                       SizedBox(
                         width: double.infinity,
                         height: 56,
@@ -162,7 +163,7 @@ class RecordScreen extends ConsumerWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.offline_pin_outlined,
                             size: 16,
                             color: AppColors.textTertiary,
@@ -191,7 +192,7 @@ class RecordScreen extends ConsumerWidget {
                                     .labelSmall
                                     ?.copyWith(color: AppColors.textTertiary),
                               ),
-                              const SizedBox(height: 4),
+                              const SizedBox(height: AppSpacing.xs),
                               Text(
                                 _formatDuration(recordState.duration),
                                 style: Theme.of(context)
@@ -218,7 +219,7 @@ class RecordScreen extends ConsumerWidget {
                                     .labelSmall
                                     ?.copyWith(color: AppColors.textTertiary),
                               ),
-                              const SizedBox(height: 4),
+                              const SizedBox(height: AppSpacing.xs),
                               Text(
                                 _formatDistance(recordState.distance),
                                 style: Theme.of(context)
@@ -233,7 +234,7 @@ class RecordScreen extends ConsumerWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppSpacing.xl),
                       Row(
                         children: [
                           Expanded(
@@ -255,32 +256,44 @@ class RecordScreen extends ConsumerWidget {
                               label: Text(
                                   recordState.isPaused ? 'Resume' : 'Pause'),
                               style: OutlinedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(vertical: 16),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: AppSpacing.lg),
                                 side: const BorderSide(color: AppColors.border),
                                 foregroundColor: AppColors.textPrimary,
                               ),
                             ),
                           ),
-                          const SizedBox(width: 16),
+                          const SizedBox(width: AppSpacing.lg),
                           Expanded(
-                            child: ElevatedButton.icon(
-                              onPressed: () async {
+                            child: GestureDetector(
+                              onLongPress: () async {
                                 final journeyId = await ref
                                     .read(recordControllerProvider.notifier)
                                     .stopRecording();
                                 if (context.mounted && journeyId != null) {
                                   context.push(RoutePaths.journeySummary
-                                      .replaceFirst(':id', journeyId.toString()));
+                                      .replaceFirst(
+                                          ':id', journeyId.toString()));
                                 }
                               },
-                              icon: const Icon(Icons.stop_rounded),
-                              label: const Text('Finish'),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.danger,
-                                foregroundColor: Colors.white,
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 16),
-                                elevation: 0,
+                              child: ElevatedButton.icon(
+                                onPressed: () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Hold to finish journey'),
+                                      duration: Duration(seconds: 1),
+                                    ),
+                                  );
+                                },
+                                icon: const Icon(Icons.stop_rounded),
+                                label: const Text('Hold to Finish'),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.danger,
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: AppSpacing.lg),
+                                  elevation: 0,
+                                ),
                               ),
                             ),
                           ),

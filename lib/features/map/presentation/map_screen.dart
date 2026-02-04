@@ -4,16 +4,24 @@ import 'package:latlong2/latlong.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pingo/core/domain/models/pin_type.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/features/pins/presentation/controllers/pins_controller.dart';
 import 'package:pingo/features/pins/presentation/widgets/pin_editor_sheet.dart';
-import 'map_controller.dart';
+import 'map_controller.dart' as app_map;
 
-class MapScreen extends ConsumerWidget {
+class MapScreen extends ConsumerStatefulWidget {
   const MapScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final locationAsync = ref.watch(mapControllerProvider);
+  ConsumerState<MapScreen> createState() => _MapScreenState();
+}
+
+class _MapScreenState extends ConsumerState<MapScreen> {
+  final MapController _mapController = MapController();
+
+  @override
+  Widget build(BuildContext context) {
+    final locationAsync = ref.watch(app_map.mapControllerProvider);
     final pinsAsync = ref.watch(pinsControllerProvider);
 
     return Scaffold(
@@ -25,6 +33,7 @@ class MapScreen extends ConsumerWidget {
               : const LatLng(51.509364, -0.128928);
 
           return FlutterMap(
+            mapController: _mapController,
             options: MapOptions(
               initialCenter: center,
               initialZoom: 15.0,
@@ -32,15 +41,7 @@ class MapScreen extends ConsumerWidget {
                 flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
               ),
               onLongPress: (tapPosition, point) {
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  backgroundColor: Colors.transparent,
-                  builder: (context) => PinEditorSheet(
-                    initialLat: point.latitude,
-                    initialLng: point.longitude,
-                  ),
-                );
+                _showPinEditor(point);
               },
             ),
             children: [
@@ -82,14 +83,19 @@ class MapScreen extends ConsumerWidget {
                                   _showPinDetails(
                                       context, pin.title, pin.description);
                                 },
-                                child: Icon(
-                                  pin.type == PinType.safety
-                                      ? Icons.warning_rounded
-                                      : Icons.location_on,
-                                  color: pin.type == PinType.safety
-                                      ? AppColors.danger
-                                      : AppColors.secondary,
-                                  size: 40,
+                                behavior: HitTestBehavior.opaque,
+                                child: SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: Icon(
+                                    pin.type == PinType.safety
+                                        ? Icons.warning_rounded
+                                        : Icons.location_on,
+                                    color: pin.type == PinType.safety
+                                        ? AppColors.danger
+                                        : AppColors.secondary,
+                                    size: 40,
+                                  ),
                                 ),
                               ),
                             ))
@@ -108,26 +114,54 @@ class MapScreen extends ConsumerWidget {
             children: [
               const Icon(Icons.error_outline,
                   size: 48, color: AppColors.danger),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               Text(
                 'Could not load map.\nPlease check location permissions.',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               TextButton(
-                onPressed: () => ref.refresh(mapControllerProvider),
+                onPressed: () => ref.refresh(app_map.mapControllerProvider),
                 child: const Text('Retry'),
               ),
             ],
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        heroTag: 'mapFab',
-        onPressed: () => ref.refresh(mapControllerProvider),
-        backgroundColor: AppColors.surface,
-        foregroundColor: AppColors.primary,
-        child: const Icon(Icons.my_location),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton(
+            heroTag: 'dropPinFab',
+            onPressed: () {
+              // Drop pin at center of map
+              _showPinEditor(_mapController.camera.center);
+            },
+            backgroundColor: AppColors.secondary,
+            foregroundColor: Colors.white,
+            child: const Icon(Icons.add_location_alt_outlined),
+          ),
+          const SizedBox(height: AppSpacing.md),
+          FloatingActionButton(
+            heroTag: 'myLocationFab',
+            onPressed: () => ref.refresh(app_map.mapControllerProvider),
+            backgroundColor: AppColors.surface,
+            foregroundColor: AppColors.primary,
+            child: const Icon(Icons.my_location),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showPinEditor(LatLng point) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => PinEditorSheet(
+        initialLat: point.latitude,
+        initialLng: point.longitude,
       ),
     );
   }
@@ -138,30 +172,53 @@ class MapScreen extends ConsumerWidget {
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
         decoration: const BoxDecoration(
           color: AppColors.surface,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          borderRadius:
+              BorderRadius.vertical(top: Radius.circular(AppSpacing.xl)),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title ?? 'Untitled Pin',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            if (description != null && description.isNotEmpty) ...[
-              const SizedBox(height: 8),
-              Text(
-                description,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textSecondary,
+        child: SafeArea(
+          top: false,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Drag Handle
+              Center(
+                child: Container(
+                  width: 32,
+                  height: 4,
+                  margin: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+                  decoration: BoxDecoration(
+                    color: AppColors.border,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title ?? 'Untitled Pin',
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
+                    if (description != null && description.isNotEmpty) ...[
+                      const SizedBox(height: AppSpacing.sm),
+                      Text(
+                        description,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: AppColors.textSecondary,
+                            ),
+                      ),
+                    ],
+                    const SizedBox(height: AppSpacing.xl),
+                  ],
+                ),
               ),
             ],
-            const SizedBox(height: 24),
-          ],
+          ),
         ),
       ),
     );

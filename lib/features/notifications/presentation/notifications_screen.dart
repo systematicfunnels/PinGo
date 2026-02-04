@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/spacing.dart';
 
 class NotificationsScreen extends StatelessWidget {
   const NotificationsScreen({super.key});
@@ -16,7 +17,7 @@ class NotificationsScreen extends StatelessWidget {
         ),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: AppSpacing.allLg,
         children: const [
           Text(
             'Today',
@@ -25,14 +26,14 @@ class NotificationsScreen extends StatelessWidget {
               color: AppColors.textSecondary,
             ),
           ),
-          SizedBox(height: 8),
+          SizedBox(height: AppSpacing.sm),
           NotificationTile(
             title: 'Welcome to PinGo!',
             subtitle: 'Start your first journey today.',
             time: '2h ago',
             isUnread: true,
           ),
-          SizedBox(height: 24),
+          SizedBox(height: AppSpacing.xl),
           Text(
             'Yesterday',
             style: TextStyle(
@@ -40,14 +41,14 @@ class NotificationsScreen extends StatelessWidget {
               color: AppColors.textSecondary,
             ),
           ),
-           SizedBox(height: 8),
-           NotificationTile(
+          SizedBox(height: AppSpacing.sm),
+          NotificationTile(
             title: 'Safety Alert',
             subtitle: 'Heavy rain reported in your area.',
             time: '1d ago',
             isUnread: false,
-             icon: Icons.warning_amber_rounded,
-             iconColor: AppColors.danger,
+            icon: Icons.warning_amber_rounded,
+            iconColor: AppColors.danger,
           ),
         ],
       ),
@@ -77,14 +78,16 @@ class NotificationTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
-      color: isUnread ? AppColors.primary.withValues(alpha: 0.05) : Colors.transparent,
+      color: isUnread
+          ? AppColors.primary.withValues(alpha: 0.05)
+          : Colors.transparent,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSpacing.md),
         side: BorderSide(color: AppColors.border.withValues(alpha: 0.5)),
       ),
       child: ListTile(
         leading: Container(
-          padding: const EdgeInsets.all(8),
+          padding: AppSpacing.allSm,
           decoration: BoxDecoration(
             color: iconColor.withValues(alpha: 0.1),
             shape: BoxShape.circle,

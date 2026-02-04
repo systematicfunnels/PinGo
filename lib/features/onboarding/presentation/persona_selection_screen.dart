@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/core/routing/route_paths.dart';
 
 class PersonaSelectionScreen extends StatelessWidget {
@@ -12,7 +13,7 @@ class PersonaSelectionScreen extends StatelessWidget {
       backgroundColor: AppColors.background,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: AppSpacing.allXl,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -24,7 +25,7 @@ class PersonaSelectionScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: AppSpacing.xxl),
 
               // Persona Cards
               _PersonaCard(
@@ -33,14 +34,14 @@ class PersonaSelectionScreen extends StatelessWidget {
                 description: 'Finding new paths in new places.',
                 onTap: () => context.go(RoutePaths.map),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               _PersonaCard(
                 icon: Icons.landscape_outlined,
                 label: 'Explorer',
                 description: 'Going where maps are empty.',
                 onTap: () => context.go(RoutePaths.map),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               _PersonaCard(
                 icon: Icons.camera_alt_outlined,
                 label: 'Observer',
@@ -85,12 +86,12 @@ class _PersonaCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(AppSpacing.lg),
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: AppSpacing.allXl,
         decoration: BoxDecoration(
           color: AppColors.surface,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppSpacing.lg),
           border: Border.all(
             color: AppColors.primary.withValues(alpha: 0.1),
           ),
@@ -98,14 +99,14 @@ class _PersonaCard extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: AppSpacing.allMd,
               decoration: BoxDecoration(
                 color: AppColors.primary.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(icon, color: AppColors.primary),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppSpacing.lg),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,7 +117,7 @@ class _PersonaCard extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppSpacing.xs),
                   Text(
                     description,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -127,7 +128,7 @@ class _PersonaCard extends StatelessWidget {
               ),
             ),
             const Icon(Icons.arrow_forward_ios,
-                size: 16, color: AppColors.textTertiary),
+                size: AppSpacing.lg, color: AppColors.textTertiary),
           ],
         ),
       ),

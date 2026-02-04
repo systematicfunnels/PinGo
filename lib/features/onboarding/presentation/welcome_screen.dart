@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/core/routing/route_paths.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -12,7 +13,7 @@ class WelcomeScreen extends StatelessWidget {
       backgroundColor: AppColors.background,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: AppSpacing.allXl,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -23,7 +24,7 @@ class WelcomeScreen extends StatelessWidget {
                 style: Theme.of(context).textTheme.displayMedium,
               ),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
 
               Text(
                 'How would you like to begin?',
@@ -46,7 +47,7 @@ class WelcomeScreen extends StatelessWidget {
                 },
               ),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
 
               // Explore Quietly Card
               _buildChoiceCard(
@@ -72,7 +73,7 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
             ],
           ),
         ),
@@ -91,24 +92,24 @@ class WelcomeScreen extends StatelessWidget {
     return Card(
       color: isSecondary ? AppColors.surface : AppColors.primary,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppSpacing.lg),
         side: isSecondary
             ? const BorderSide(color: AppColors.border)
             : BorderSide.none,
       ),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppSpacing.lg),
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: AppSpacing.allXl,
           child: Row(
             children: [
               Icon(
                 icon,
                 color: isSecondary ? AppColors.primary : AppColors.onPrimary,
-                size: 28,
+                size: AppSpacing.xxl,
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppSpacing.lg),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,7 +123,7 @@ class WelcomeScreen extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppSpacing.xs),
                     Text(
                       description,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -139,7 +140,7 @@ class WelcomeScreen extends StatelessWidget {
                 color: isSecondary
                     ? AppColors.textTertiary
                     : AppColors.onPrimary.withValues(alpha: 0.5),
-                size: 16,
+                size: AppSpacing.lg,
               ),
             ],
           ),

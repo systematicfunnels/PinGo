@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:pingo/core/domain/models/content_visibility.dart';
 import 'package:pingo/core/routing/route_paths.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/spacing.dart';
+import 'package:pingo/core/presentation/widgets/visibility_selector.dart';
 import 'package:pingo/core/presentation/widgets/share_confirmation_dialog.dart';
 import 'package:pingo/features/route_recording/domain/models/journey.dart';
 import 'package:pingo/features/route_recording/data/repositories/journey_repository_impl.dart';
@@ -14,7 +16,8 @@ class JourneySummaryScreen extends ConsumerStatefulWidget {
   const JourneySummaryScreen({super.key, required this.journeyId});
 
   @override
-  ConsumerState<JourneySummaryScreen> createState() => _JourneySummaryScreenState();
+  ConsumerState<JourneySummaryScreen> createState() =>
+      _JourneySummaryScreenState();
 }
 
 class _JourneySummaryScreenState extends ConsumerState<JourneySummaryScreen> {
@@ -35,7 +38,7 @@ class _JourneySummaryScreenState extends ConsumerState<JourneySummaryScreen> {
   Future<void> _loadJourney() async {
     final repository = ref.read(journeyRepositoryProvider);
     final journey = await repository.getJourneyById(widget.journeyId);
-    
+
     if (mounted) {
       setState(() {
         _journey = journey;
@@ -52,9 +55,11 @@ class _JourneySummaryScreenState extends ConsumerState<JourneySummaryScreen> {
     if (_journey == null) return;
 
     final updatedJourney = _journey!.copyWith(
-      name: _nameController.text.trim().isEmpty ? 'My Journey' : _nameController.text.trim(),
+      name: _nameController.text.trim().isEmpty
+          ? 'My Journey'
+          : _nameController.text.trim(),
       visibility: _visibility,
-      // Description is not in Journey model yet? Let's check. 
+      // Description is not in Journey model yet? Let's check.
       // If not, we'll skip it or add it.
       // Based on previous reads, Journey model only has name, startTime, endTime, routePoints, totalDistance, durationSeconds, visibility.
       // So we skip description for now or add it to model later.
@@ -90,7 +95,8 @@ class _JourneySummaryScreenState extends ConsumerState<JourneySummaryScreen> {
   }
 
   void _openReplay() {
-    context.push(RoutePaths.memoryReplay.replaceFirst(':id', widget.journeyId.toString()));
+    context.push(RoutePaths.memoryReplay
+        .replaceFirst(':id', widget.journeyId.toString()));
   }
 
   @override
@@ -121,14 +127,14 @@ class _JourneySummaryScreenState extends ConsumerState<JourneySummaryScreen> {
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () {
-             // If closed without saving, we assume it's kept as is (draft).
-             // Or we could ask to discard.
-             context.go(RoutePaths.library);
+            // If closed without saving, we assume it's kept as is (draft).
+            // Or we could ask to discard.
+            context.go(RoutePaths.library);
           },
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: AppSpacing.allLg,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -137,14 +143,14 @@ class _JourneySummaryScreenState extends ConsumerState<JourneySummaryScreen> {
               height: 200,
               decoration: BoxDecoration(
                 color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppSpacing.md),
               ),
               child: const Center(
                 child: Icon(Icons.map, size: 48, color: Colors.grey),
               ),
             ),
-            const SizedBox(height: 16),
-            
+            const SizedBox(height: AppSpacing.lg),
+
             // Action Buttons
             Row(
               children: [
@@ -155,7 +161,7 @@ class _JourneySummaryScreenState extends ConsumerState<JourneySummaryScreen> {
                     label: const Text('Replay'),
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppSpacing.lg),
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: _showShareDialog,
@@ -166,14 +172,17 @@ class _JourneySummaryScreenState extends ConsumerState<JourneySummaryScreen> {
               ],
             ),
 
-            const SizedBox(height: 24),
-            
+            const SizedBox(height: AppSpacing.xl),
+
             Text(
               'Journey Details',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 16),
-            
+            const SizedBox(height: AppSpacing.lg),
+
             TextField(
               controller: _nameController,
               decoration: const InputDecoration(
@@ -181,8 +190,8 @@ class _JourneySummaryScreenState extends ConsumerState<JourneySummaryScreen> {
                 border: OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 16),
-            
+            const SizedBox(height: AppSpacing.lg),
+
             // Description (Visual only for now if not in model)
             TextField(
               controller: _descriptionController,
@@ -192,58 +201,31 @@ class _JourneySummaryScreenState extends ConsumerState<JourneySummaryScreen> {
               ),
               maxLines: 3,
             ),
-            const SizedBox(height: 24),
-            
-            Text(
-              'Privacy',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+            const SizedBox(height: AppSpacing.xl),
+
+            VisibilitySelector(
+              selected: _visibility,
+              onChanged: (value) => setState(() => _visibility = value),
             ),
-            const SizedBox(height: 8),
-            
-            Row(
-              children: [
-                Expanded(
-                  child: RadioListTile<ContentVisibility>(
-                    title: const Text('Private'),
-                    value: ContentVisibility.private,
-                    groupValue: _visibility,
-                    onChanged: (value) {
-                      setState(() {
-                        _visibility = value!;
-                      });
-                    },
-                  ),
-                ),
-                Expanded(
-                  child: RadioListTile<ContentVisibility>(
-                    title: const Text('Public'),
-                    value: ContentVisibility.public,
-                    groupValue: _visibility,
-                    onChanged: (value) {
-                      setState(() {
-                        _visibility = value!;
-                      });
-                    },
-                  ),
-                ),
-              ],
-            ),
-            
-            const SizedBox(height: 32),
-            
-            SizedBox(
-              width: double.infinity,
-              height: 56,
-              child: ElevatedButton(
-                onPressed: _saveJourney,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  foregroundColor: Colors.white,
-                ),
-                child: const Text('Save Journey'),
-              ),
-            ),
+            const SizedBox(height: AppSpacing.xxl),
           ],
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: AppSpacing.allLg,
+          child: SizedBox(
+            width: double.infinity,
+            height: 56,
+            child: ElevatedButton(
+              onPressed: _saveJourney,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: Colors.white,
+              ),
+              child: const Text('Save Journey'),
+            ),
+          ),
         ),
       ),
     );

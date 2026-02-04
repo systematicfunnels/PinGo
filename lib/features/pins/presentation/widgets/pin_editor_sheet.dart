@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/spacing.dart';
 import '../controllers/pins_controller.dart';
 
 class PinEditorSheet extends ConsumerStatefulWidget {
@@ -88,18 +89,31 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
       ),
       decoration: const BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius:
+            BorderRadius.vertical(top: Radius.circular(AppSpacing.xl)),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-              Row(
+      child: SafeArea(
+        top: false,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Drag Handle
+            Center(
+              child: Container(
+                width: 32,
+                height: 4,
+                margin: const EdgeInsets.only(top: AppSpacing.sm),
+                decoration: BoxDecoration(
+                  color: AppColors.border,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+            // Header
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.xl, AppSpacing.sm, AppSpacing.xl, 0),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
@@ -113,110 +127,137 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
-              TextFormField(
-                controller: _titleController,
-                textCapitalization: TextCapitalization.sentences,
-                decoration: InputDecoration(
-                  labelText: 'Title',
-                  hintText: 'What is this place?',
-                  filled: true,
-                  fillColor: AppColors.surfaceVariant,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide:
-                        const BorderSide(color: AppColors.primary, width: 1.5),
-                  ),
-                ),
-                validator: (value) => value == null || value.isEmpty
-                    ? 'Please enter a title'
-                    : null,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _descController,
-                textCapitalization: TextCapitalization.sentences,
-                decoration: InputDecoration(
-                  labelText: _type == PinType.safety ? 'Hazard Description' : 'Description',
-                  hintText: _type == PinType.safety ? 'Describe the danger...' : 'Why is it special?',
-                  filled: true,
-                  fillColor: AppColors.surfaceVariant,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide:
-                        const BorderSide(color: AppColors.primary, width: 1.5),
-                  ),
-                ),
-                maxLines: 3,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Type',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SizedBox(height: 8),
-              Wrap(
-                spacing: 8,
-                children: PinType.values.map((type) {
-                  return ChoiceChip(
-                    label: Text(type.name.toUpperCase()),
-                    selected: _type == type,
-                    onSelected: (selected) {
-                      if (selected) setState(() => _type = type);
-                    },
-                  );
-                }).toList(),
-              ),
-              if (_type == PinType.safety) ...[
-                const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: AppColors.danger.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                    border:
-                        Border.all(color: AppColors.danger.withOpacity(0.5)),
-                  ),
-                  child: Row(
+            ),
+
+            // Scrollable Content
+            Flexible(
+              child: SingleChildScrollView(
+                padding: AppSpacing.allXl,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const Icon(Icons.warning_amber_rounded,
-                          color: AppColors.danger),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          'Marking this as a hazard will alert other users nearby.',
-                          style: TextStyle(
-                              color: AppColors.danger.withOpacity(0.8)),
+                      TextFormField(
+                        controller: _titleController,
+                        textCapitalization: TextCapitalization.sentences,
+                        decoration: InputDecoration(
+                          labelText: 'Title',
+                          hintText: 'What is this place?',
+                          filled: true,
+                          fillColor: AppColors.surfaceVariant,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppSpacing.md),
+                            borderSide: BorderSide.none,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppSpacing.md),
+                            borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppSpacing.md),
+                            borderSide: const BorderSide(
+                                color: AppColors.primary, width: 1.5),
+                          ),
                         ),
+                        validator: (value) => value == null || value.isEmpty
+                            ? 'Please enter a title'
+                            : null,
                       ),
+                      const SizedBox(height: AppSpacing.md),
+                      TextFormField(
+                        controller: _descController,
+                        textCapitalization: TextCapitalization.sentences,
+                        decoration: InputDecoration(
+                          labelText: _type == PinType.safety
+                              ? 'Hazard Description'
+                              : 'Description',
+                          hintText: _type == PinType.safety
+                              ? 'Describe the danger...'
+                              : 'Why is it special?',
+                          filled: true,
+                          fillColor: AppColors.surfaceVariant,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppSpacing.md),
+                            borderSide: BorderSide.none,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppSpacing.md),
+                            borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(AppSpacing.md),
+                            borderSide: const BorderSide(
+                                color: AppColors.primary, width: 1.5),
+                          ),
+                        ),
+                        maxLines: 3,
+                      ),
+                      const SizedBox(height: AppSpacing.md),
+                      Text(
+                        'Type',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: AppSpacing.sm),
+                      Wrap(
+                        spacing: AppSpacing.sm,
+                        children: PinType.values.map((type) {
+                          return ChoiceChip(
+                            label: Text(type.name.toUpperCase()),
+                            selected: _type == type,
+                            onSelected: (selected) {
+                              if (selected) setState(() => _type = type);
+                            },
+                          );
+                        }).toList(),
+                      ),
+                      if (_type == PinType.safety) ...[
+                        const SizedBox(height: AppSpacing.md),
+                        Container(
+                          padding: AppSpacing.allMd,
+                          decoration: BoxDecoration(
+                            color: AppColors.danger.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(AppSpacing.sm),
+                            border: Border.all(
+                                color: AppColors.danger.withValues(alpha: 0.5)),
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.warning_amber_rounded,
+                                  color: AppColors.danger),
+                              const SizedBox(width: AppSpacing.md),
+                              Expanded(
+                                child: Text(
+                                  'Marking this as a hazard will alert other users nearby.',
+                                  style: TextStyle(
+                                      color: AppColors.danger
+                                          .withValues(alpha: 0.8)),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                      const SizedBox(height: AppSpacing.md),
+                      VisibilitySelector(
+                        selected: _visibility,
+                        onChanged: (v) => setState(() => _visibility = v),
+                      ),
+                      const SizedBox(
+                          height: AppSpacing.sm), // Bottom spacer for scroll
                     ],
                   ),
                 ),
-              ],
-              const SizedBox(height: 16),
-              VisibilitySelector(
-                selected: _visibility,
-                onChanged: (v) => setState(() => _visibility = v),
               ),
-              const SizedBox(height: 24),
-              SizedBox(
+            ),
+
+            // Sticky Footer
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.xl, 0, AppSpacing.xl, AppSpacing.lg),
+              child: SizedBox(
                 height: 56,
+                width: double.infinity,
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _savePin,
                   style: ElevatedButton.styleFrom(
@@ -224,7 +265,7 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
                     foregroundColor: AppColors.onPrimary,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(AppSpacing.lg),
                     ),
                   ),
                   child: _isLoading
@@ -232,9 +273,8 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
                       : const Text('Save Memory'),
                 ),
               ),
-              const SizedBox(height: 16),],
             ),
-          ),
+          ],
         ),
       ),
     );

@@ -16,11 +16,13 @@ import 'package:pingo/features/profile/presentation/profile_screen.dart';
 import 'package:pingo/features/route_recording/presentation/journey_summary_screen.dart';
 import 'package:pingo/features/route_recording/presentation/memory_replay_screen.dart';
 import 'package:pingo/features/notifications/presentation/notifications_screen.dart';
+import 'package:pingo/features/map/presentation/saved_maps_screen.dart';
+import 'package:pingo/features/map/presentation/region_selection_screen.dart';
 
 part 'app_router.g.dart';
 
 // Private navigators for each tab
-final _rootNavigatorKey = GlobalKey<NavigatorState>();
+final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'rootNav');
 final _mapNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'mapNav');
 final _recordNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'recordNav');
 final _libraryNavigatorKey =
@@ -64,6 +66,16 @@ GoRouter goRouter(Ref ref) {
       GoRoute(
         path: RoutePaths.notifications,
         builder: (context, state) => const NotificationsScreen(),
+      ),
+      GoRoute(
+        path: RoutePaths.savedMaps,
+        builder: (context, state) => const SavedMapsScreen(),
+        routes: [
+          GoRoute(
+            path: 'select',
+            builder: (context, state) => const RegionSelectionScreen(),
+          ),
+        ],
       ),
 
       // Stateful Nested Navigation (The App Shell)
