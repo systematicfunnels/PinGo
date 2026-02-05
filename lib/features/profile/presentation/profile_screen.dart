@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pingo/core/presentation/widgets/pingo_button.dart';
 import 'package:pingo/core/routing/route_paths.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/spacing.dart';
+import 'package:pingo/core/utils/geo_utils.dart';
+import '../domain/profile_state.dart';
 import 'controllers/profile_controller.dart';
+import 'widgets/profile_header.dart';
+import 'widgets/profile_section.dart';
 import 'widgets/stat_card.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -12,220 +17,191 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final statsAsync = ref.watch(profileControllerProvider);
+    final profileAsync = ref.watch(profileControllerProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.neutral.s50,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: AppSpacing.allXl,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: AppSpacing.xl),
-              // Header
-              Row(
-                children: [
-                  Container(
-                    width: 64,
-                    height: 64,
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 2),
-                    ),
-                    child:
-                        const Icon(Icons.person, color: Colors.white, size: 32),
-                  ),
-                  const SizedBox(width: AppSpacing.lg),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Explorer',
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      Text(
-                        'Offline Mode',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+        child: profileAsync.when(
+          data: (state) {
+            final user = state.user;
+            if (user == null) {
+              return const Center(child: Text('User not found'));
+            }
 
-              const SizedBox(height: AppSpacing.xxl),
-
-              // Stats Grid
-              Text(
-                'Overview',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppColors.textSecondary,
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-              const SizedBox(height: AppSpacing.lg),
-
-              statsAsync.when(
-                data: (stats) => Column(
-                  children: [
-                    StatCard(
-                      label: 'Pins Dropped',
-                      value: stats.totalPins.toString(),
-                      icon: Icons.location_on_outlined,
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                    StatCard(
-                      label: 'Journeys',
-                      value: stats.totalJourneys.toString(),
-                      icon: Icons.directions_walk,
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                    StatCard(
-                      label: 'Km Walked',
-                      value: stats.totalDistanceKm.toStringAsFixed(1),
-                      icon: Icons.straighten,
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                    StatCard(
-                      label: 'Hours',
-                      value: stats.totalDurationHours.toString(),
-                      icon: Icons.timer_outlined,
-                    ),
-                  ],
-                ),
-                loading: () => const Center(child: CircularProgressIndicator()),
-                error: (err, stack) => Text('Error loading stats: $err'),
-              ),
-
-              const SizedBox(height: AppSpacing.xxl),
-
-              // Settings List
-              Text(
-                'Settings',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppColors.textSecondary,
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-              const SizedBox(height: AppSpacing.lg),
-
-              Container(
-                decoration: BoxDecoration(
-                  color: AppColors.surface,
-                  borderRadius: BorderRadius.circular(AppSpacing.lg),
-                ),
+            return RefreshIndicator(
+              onRefresh: () =>
+                  ref.read(profileControllerProvider.notifier).refresh(),
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: AppSpacing.allXl,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ListTile(
-                      leading: const Icon(Icons.notifications_outlined),
-                      title: const Text('Notifications'),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: () => context.push(RoutePaths.notifications),
+                    // 1. Overview
+                    ProfileHeader(
+                      username: user.username,
+                      role: user.role,
+                      bio: user.bio,
+                      mapCount: state.stats.totalJourneys,
                     ),
-                    const Divider(height: 1),
-                    ListTile(
-                      leading: const Icon(Icons.cloud_off_outlined),
-                      title: const Text('Sync Status'),
-                      subtitle: const Text('Local only (Private)'),
-                      trailing: Switch(
-                        value: false,
-                        onChanged: (val) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Cloud sync is coming soon!'),
-                              duration: Duration(seconds: 2),
-                            ),
-                          );
-                        },
-                      ),
+                    const SizedBox(height: AppSpacing.xxl),
+
+                    // 2. Stats
+                    _StatsRow(stats: state.stats),
+                    const SizedBox(height: AppSpacing.xxl),
+
+                    // 3. Public View
+                    ProfileSection(
+                      title: 'Public View',
+                      children: [
+                        ProfileMenuTile(
+                          icon: Icons.map_outlined,
+                          title: 'Public Maps',
+                          subtitle:
+                              '${state.stats.totalJourneys} visible to everyone',
+                          onTap: () {},
+                        ),
+                        const Divider(height: 1, indent: 56),
+                        ProfileMenuTile(
+                          icon: Icons.history_edu,
+                          title: 'Shared Stories',
+                          subtitle:
+                              '${state.stats.totalPins} stories published',
+                          onTap: () {},
+                        ),
+                      ],
                     ),
-                    const Divider(height: 1),
-                    ListTile(
-                      leading: const Icon(Icons.map_outlined),
-                      title: const Text('Offline Maps'),
-                      subtitle: const Text('Manage downloaded regions'),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: () => context.push(RoutePaths.savedMaps),
+                    const SizedBox(height: AppSpacing.xl),
+
+                    // 4. Trusted Circle
+                    ProfileSection(
+                      title: 'Trusted Circle',
+                      children: [
+                        ProfileMenuTile(
+                          icon: Icons.verified_user_outlined,
+                          title: 'Trusted Users',
+                          subtitle: 'Manage who can see your private pins',
+                          onTap: () {},
+                        ),
+                        const Divider(height: 1, indent: 56),
+                        ProfileMenuTile(
+                          icon: Icons.person_add_outlined,
+                          title: 'Invite / Remove',
+                          onTap: () {},
+                        ),
+                      ],
                     ),
-                    const Divider(height: 1),
-                    ListTile(
-                      leading: const Icon(Icons.info_outline),
-                      title: const Text('About PinGo'),
-                      subtitle: const Text('v1.0.0'),
-                      onTap: () {
-                        showAboutDialog(
-                          context: context,
-                          applicationName: 'PinGo',
-                          applicationVersion: '1.0.0',
-                          applicationLegalese: '© 2024 PinGo Explorer',
-                          children: [
-                            const SizedBox(height: 16),
-                            const Text(
-                                'PinGo is a local-first exploration app designed for off-grid adventures.'),
-                          ],
-                        );
-                      },
+                    const SizedBox(height: AppSpacing.xl),
+
+                    // 5. Settings
+                    ProfileSection(
+                      title: 'Settings',
+                      children: [
+                        ProfileMenuTile(
+                          icon: Icons.security,
+                          title: 'Privacy & Permissions',
+                          onTap: () {},
+                        ),
+                        const Divider(height: 1, indent: 56),
+                        ProfileMenuTile(
+                          icon: Icons.offline_pin_outlined,
+                          title: 'Offline & Storage',
+                          onTap: () {},
+                        ),
+                        const Divider(height: 1, indent: 56),
+                        ProfileMenuTile(
+                          icon: Icons.notifications_outlined,
+                          title: 'Notifications',
+                          onTap: () => context.push(RoutePaths.notifications),
+                        ),
+                        const Divider(height: 1, indent: 56),
+                        ProfileMenuTile(
+                          icon: Icons.manage_accounts_outlined,
+                          title: 'Account',
+                          onTap: () {},
+                        ),
+                      ],
                     ),
+                    const SizedBox(height: AppSpacing.xl),
+
+                    // 6. Help & Safety
+                    ProfileSection(
+                      title: 'Help & Safety',
+                      children: [
+                        ProfileMenuTile(
+                          icon: Icons.menu_book_outlined,
+                          title: 'Guidelines',
+                          onTap: () {},
+                        ),
+                        const Divider(height: 1, indent: 56),
+                        ProfileMenuTile(
+                          icon: Icons.report_problem_outlined,
+                          title: 'Report Issue',
+                          onTap: () {},
+                        ),
+                        const Divider(height: 1, indent: 56),
+                        ProfileMenuTile(
+                          icon: Icons.local_hospital_outlined,
+                          title: 'Emergency Info',
+                          iconColor: AppColors.error.s500,
+                          onTap: () {},
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: AppSpacing.xxl),
                   ],
                 ),
               ),
-
-              const SizedBox(height: AppSpacing.xxl),
-
-              // Danger Zone
-              Text(
-                'Danger Zone',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppColors.danger,
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton.icon(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text('Reset App Data?'),
-                        content: const Text(
-                            'This will delete all your pins, journeys, and settings. This action cannot be undone.'),
-                        actions: [
-                          TextButton(
-                            onPressed: () => context.pop(),
-                            child: const Text('Cancel'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              context.pop();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Reset feature coming soon')),
-                              );
-                            },
-                            child: const Text('Reset Everything',
-                                style: TextStyle(color: AppColors.danger)),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                  icon: const Icon(Icons.delete_forever, color: AppColors.danger),
-                  label: const Text('Reset App Data',
-                      style: TextStyle(color: AppColors.danger)),
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: AppColors.danger),
-                    padding: const EdgeInsets.all(AppSpacing.lg),
-                  ),
+            );
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stack) => Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Error: $error'),
+                const SizedBox(height: AppSpacing.md),
+                PingoButton(
+                  onPressed: () =>
+                      ref.read(profileControllerProvider.notifier).refresh(),
+                  label: 'Retry',
+                  isFullWidth: false,
                 ),
-              ),
-              const SizedBox(height: AppSpacing.xxl),
-            ],
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class _StatsRow extends StatelessWidget {
+  final ProfileStats stats;
+
+  const _StatsRow({required this.stats});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: StatCard(
+            label: 'Pins',
+            value: stats.totalPins.toString(),
+            icon: Icons.push_pin_outlined,
+          ),
+        ),
+        const SizedBox(width: AppSpacing.md),
+        Expanded(
+          child: StatCard(
+            label: 'Distance',
+            value: GeoUtils.formatDistance(stats.totalDistanceMeters),
+            icon: Icons.directions_walk_outlined,
+          ),
+        ),
+      ],
     );
   }
 }

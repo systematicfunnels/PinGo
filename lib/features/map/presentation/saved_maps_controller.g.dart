@@ -6,22 +6,49 @@ part of 'saved_maps_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(SavedMapsController)
+final savedMapsControllerProvider = SavedMapsControllerProvider._();
+
+final class SavedMapsControllerProvider
+    extends $AsyncNotifierProvider<SavedMapsController, List<SavedMapRegion>> {
+  SavedMapsControllerProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'savedMapsControllerProvider',
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$savedMapsControllerHash();
+
+  @$internal
+  @override
+  SavedMapsController create() => SavedMapsController();
+}
+
 String _$savedMapsControllerHash() =>
     r'7cf1380f420729ad534e29cb66943312d7079bb0';
 
-/// See also [SavedMapsController].
-@ProviderFor(SavedMapsController)
-final savedMapsControllerProvider = AutoDisposeAsyncNotifierProvider<
-    SavedMapsController, List<SavedMapRegion>>.internal(
-  SavedMapsController.new,
-  name: r'savedMapsControllerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$savedMapsControllerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$SavedMapsController = AutoDisposeAsyncNotifier<List<SavedMapRegion>>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$SavedMapsController
+    extends $AsyncNotifier<List<SavedMapRegion>> {
+  FutureOr<List<SavedMapRegion>> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref = this.ref
+        as $Ref<AsyncValue<List<SavedMapRegion>>, List<SavedMapRegion>>;
+    final element = ref.element as $ClassProviderElement<
+        AnyNotifier<AsyncValue<List<SavedMapRegion>>, List<SavedMapRegion>>,
+        AsyncValue<List<SavedMapRegion>>,
+        Object?,
+        Object?>;
+    element.handleCreate(ref, build);
+  }
+}

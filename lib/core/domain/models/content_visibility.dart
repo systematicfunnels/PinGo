@@ -15,4 +15,9 @@ extension ContentVisibilityExtension on ContentVisibility {
         return 'Everyone';
     }
   }
+
+  bool get isPrivate => this == ContentVisibility.private;
+  bool get isTrusted => this == ContentVisibility.trusted;
+  bool get isPublic => this == ContentVisibility.public;
+  bool get isShared => this != ContentVisibility.private;
 }

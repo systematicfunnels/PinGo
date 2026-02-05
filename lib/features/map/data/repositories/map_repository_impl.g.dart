@@ -6,22 +6,46 @@ part of 'map_repository_impl.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mapRepositoryHash() => r'642ffb3c50bcec226a5a877467bba15df48a248e';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [mapRepository].
 @ProviderFor(mapRepository)
-final mapRepositoryProvider = AutoDisposeProvider<MapRepository>.internal(
-  mapRepository,
-  name: r'mapRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$mapRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final mapRepositoryProvider = MapRepositoryProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef MapRepositoryRef = AutoDisposeProviderRef<MapRepository>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class MapRepositoryProvider
+    extends $FunctionalProvider<MapRepository, MapRepository, MapRepository>
+    with $Provider<MapRepository> {
+  MapRepositoryProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'mapRepositoryProvider',
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$mapRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<MapRepository> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  MapRepository create(Ref ref) {
+    return mapRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(MapRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<MapRepository>(value),
+    );
+  }
+}
+
+String _$mapRepositoryHash() => r'819cab32b8db0bf41d856645a60af3ee3153562c';

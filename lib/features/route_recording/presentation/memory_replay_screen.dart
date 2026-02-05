@@ -157,13 +157,13 @@ class _MemoryReplayScreenState extends ConsumerState<MemoryReplayScreen> {
                 polylines: [
                   Polyline(
                     points: routePoints,
-                    color: AppColors.primary.withValues(alpha: 0.5),
+                    color: AppColors.primary.s500.withOpacity(0.5),
                     strokeWidth: 4.0,
                   ),
                   // Progress line
                   Polyline(
                     points: routePoints.take(_currentIndex + 1).toList(),
-                    color: AppColors.primary,
+                    color: AppColors.primary.s500,
                     strokeWidth: 4.0,
                   ),
                 ],
@@ -176,12 +176,12 @@ class _MemoryReplayScreenState extends ConsumerState<MemoryReplayScreen> {
                     height: AppSpacing.xxl,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: AppColors.secondary,
+                        color: AppColors.secondary.s500,
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.white, width: 2),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.2),
+                            color: Colors.black.withOpacity(0.2),
                             blurRadius: 4,
                           ),
                         ],
@@ -209,7 +209,7 @@ class _MemoryReplayScreenState extends ConsumerState<MemoryReplayScreen> {
                       icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
                       onPressed: _togglePlay,
                       iconSize: 32,
-                      color: AppColors.primary,
+                      color: AppColors.primary.s500,
                     ),
                     Expanded(
                       child: Slider(

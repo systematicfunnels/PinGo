@@ -10,10 +10,12 @@ import 'package:pingo/features/route_recording/data/repositories/journey_reposit
 import 'package:pingo/core/domain/models/content_visibility.dart';
 import 'package:pingo/core/presentation/widgets/visibility_selector.dart';
 import 'package:pingo/features/route_recording/domain/models/journey.dart';
-import 'package:pingo/core/routing/route_paths.dart';
+import 'package:pingo/features/route_recording/presentation/widgets/replay_journey_fab.dart';
+import 'package:pingo/features/sharing/presentation/share_controller.dart';
+import 'package:pingo/core/presentation/widgets/pingo_button.dart';
 
 class JourneyDetailScreen extends ConsumerWidget {
-  final String journeyId;
+  final int journeyId;
 
   const JourneyDetailScreen({
     super.key,
@@ -29,16 +31,8 @@ class JourneyDetailScreen extends ConsumerWidget {
     final journeyAsync = ref.watch(singleJourneyProvider(journeyId));
 
     return Scaffold(
-      backgroundColor: AppColors.background,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.push(
-          RoutePaths.memoryReplay.replaceFirst(':id', journeyId),
-        ),
-        icon: const Icon(Icons.play_circle_outline),
-        label: const Text('Replay Journey'),
-        backgroundColor: AppColors.primary,
-        foregroundColor: AppColors.onPrimary,
-      ),
+      backgroundColor: AppColors.neutral.s50,
+      floatingActionButton: ReplayJourneyFab(journeyId: journeyId),
       body: journeyAsync.when(
         data: (journey) {
           if (journey == null) {
@@ -57,7 +51,7 @@ class JourneyDetailScreen extends ConsumerWidget {
               SliverAppBar(
                 expandedHeight: 300,
                 pinned: true,
-                backgroundColor: AppColors.background,
+                backgroundColor: AppColors.neutral.s50,
                 actions: const [],
                 leading: Container(
                   margin: AppSpacing.allSm,
@@ -66,8 +60,7 @@ class JourneyDetailScreen extends ConsumerWidget {
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(
-                    icon: const Icon(Icons.arrow_back,
-                        color: AppColors.textPrimary),
+                    icon: Icon(Icons.arrow_back, color: AppColors.neutral.s900),
                     onPressed: () => context.pop(),
                   ),
                 ),
@@ -94,7 +87,7 @@ class JourneyDetailScreen extends ConsumerWidget {
                               polylines: [
                                 Polyline(
                                   points: points,
-                                  color: AppColors.primary,
+                                  color: AppColors.primary.s500,
                                   strokeWidth: 4.0,
                                 ),
                               ],
@@ -161,7 +154,7 @@ class JourneyDetailScreen extends ConsumerWidget {
                                       .textTheme
                                       .bodyMedium
                                       ?.copyWith(
-                                        color: AppColors.textSecondary,
+                                        color: AppColors.neutral.s700,
                                       ),
                                 ),
                               ],
@@ -178,7 +171,7 @@ class JourneyDetailScreen extends ConsumerWidget {
                             },
                             icon: const Icon(Icons.share_outlined),
                             style: IconButton.styleFrom(
-                              backgroundColor: AppColors.surface,
+                              backgroundColor: AppColors.neutral.s100,
                             ),
                           ),
                         ],
@@ -189,7 +182,7 @@ class JourneyDetailScreen extends ConsumerWidget {
                       Container(
                         padding: AppSpacing.allLg,
                         decoration: BoxDecoration(
-                          color: AppColors.surface,
+                          color: AppColors.neutral.s100,
                           borderRadius: BorderRadius.circular(AppSpacing.lg),
                         ),
                         child: Row(
@@ -204,7 +197,7 @@ class JourneyDetailScreen extends ConsumerWidget {
                             Container(
                                 width: 1,
                                 height: 40,
-                                color: Colors.grey.withValues(alpha: 0.2)),
+                                color: AppColors.neutral.s500.withOpacity(0.2)),
                             _StatItem(
                               label: 'Duration',
                               value:
@@ -222,12 +215,12 @@ class JourneyDetailScreen extends ConsumerWidget {
                       ),
                       const SizedBox(height: 16),
                       // Placeholder for pins/notes along the route
-                      const Center(
+                      Center(
                         child: Padding(
-                          padding: EdgeInsets.all(32.0),
+                          padding: const EdgeInsets.all(32.0),
                           child: Text(
                             'No pins added to this journey yet.',
-                            style: TextStyle(color: AppColors.textTertiary),
+                            style: TextStyle(color: AppColors.neutral.s500),
                           ),
                         ),
                       ),
@@ -248,9 +241,9 @@ class JourneyDetailScreen extends ConsumerWidget {
                                   ),
                                   TextButton(
                                     onPressed: () => context.pop(true),
-                                    child: const Text('Delete',
-                                        style:
-                                            TextStyle(color: AppColors.danger)),
+                                    child: Text('Delete',
+                                        style: TextStyle(
+                                            color: AppColors.error.s500)),
                                   ),
                                 ],
                               ),
@@ -265,11 +258,11 @@ class JourneyDetailScreen extends ConsumerWidget {
                               }
                             }
                           },
-                          icon: const Icon(Icons.delete_outline,
-                              color: AppColors.danger),
-                          label: const Text(
+                          icon: Icon(Icons.delete_outline,
+                              color: AppColors.error.s500),
+                          label: Text(
                             'Delete Journey',
-                            style: TextStyle(color: AppColors.danger),
+                            style: TextStyle(color: AppColors.error.s500),
                           ),
                         ),
                       ),
@@ -309,9 +302,9 @@ class _ShareSheetState extends ConsumerState<_ShareSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: const BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        decoration: BoxDecoration(
+          color: AppColors.neutral.s100,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: SafeArea(
             top: false,
@@ -325,7 +318,7 @@ class _ShareSheetState extends ConsumerState<_ShareSheet> {
                     height: 4,
                     margin: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
                     decoration: BoxDecoration(
-                      color: AppColors.border,
+                      color: AppColors.neutral.s300,
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -361,22 +354,15 @@ class _ShareSheetState extends ConsumerState<_ShareSheet> {
                         },
                       ),
                       const SizedBox(height: 24),
-                      FilledButton.icon(
+                      PingoButton(
                         onPressed: () {
-                          // TODO: Implement actual share (generate link/image)
+                          ref
+                              .read(shareControllerProvider.notifier)
+                              .shareJourney(widget.journey);
                           context.pop();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text(
-                                    'Link copied to clipboard! விண்ணப்பி')),
-                          );
                         },
-                        icon: const Icon(Icons.copy),
-                        label: const Text('Copy Link'),
-                        style: FilledButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          padding: const EdgeInsets.all(16),
-                        ),
+                        icon: Icons.share,
+                        label: 'Share Journey',
                       ),
                       const SizedBox(height: 16),
                     ],
@@ -402,7 +388,7 @@ class _StatItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Icon(icon, color: AppColors.primary, size: 24),
+        Icon(icon, color: AppColors.primary.s500, size: 24),
         const SizedBox(height: 8),
         Text(
           value,
@@ -413,7 +399,7 @@ class _StatItem extends StatelessWidget {
         Text(
           label,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textSecondary,
+                color: AppColors.neutral.s700,
               ),
         ),
       ],
@@ -421,14 +407,4 @@ class _StatItem extends StatelessWidget {
   }
 }
 
-// Simple provider to fetch a single journey by ID
-final singleJourneyProvider =
-    FutureProvider.family.autoDispose((ref, String id) async {
-  final repo = ref.watch(journeyRepositoryProvider);
-  final all = await repo.getAllJourneys();
-  try {
-    return all.firstWhere((j) => j.id == int.parse(id));
-  } catch (_) {
-    return null;
-  }
-});
+// Provider removed in favor of repository implementation

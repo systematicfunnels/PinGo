@@ -6,22 +6,46 @@ part of 'map_local_source.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mapLocalSourceHash() => r'415c22b4c6be27bae82d18548cdcb79bea737979';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [mapLocalSource].
 @ProviderFor(mapLocalSource)
-final mapLocalSourceProvider = AutoDisposeProvider<MapLocalSource>.internal(
-  mapLocalSource,
-  name: r'mapLocalSourceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$mapLocalSourceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final mapLocalSourceProvider = MapLocalSourceProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef MapLocalSourceRef = AutoDisposeProviderRef<MapLocalSource>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class MapLocalSourceProvider
+    extends $FunctionalProvider<MapLocalSource, MapLocalSource, MapLocalSource>
+    with $Provider<MapLocalSource> {
+  MapLocalSourceProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'mapLocalSourceProvider',
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$mapLocalSourceHash();
+
+  @$internal
+  @override
+  $ProviderElement<MapLocalSource> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  MapLocalSource create(Ref ref) {
+    return mapLocalSource(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(MapLocalSource value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<MapLocalSource>(value),
+    );
+  }
+}
+
+String _$mapLocalSourceHash() => r'415c22b4c6be27bae82d18548cdcb79bea737979';

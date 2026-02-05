@@ -19,19 +19,19 @@ class StatCard extends StatelessWidget {
     return Container(
       padding: AppSpacing.allLg,
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.neutral.s100,
         borderRadius: BorderRadius.circular(AppSpacing.lg),
-        border: Border.all(color: AppColors.border.withValues(alpha: 0.5)),
+        border: Border.all(color: AppColors.neutral.s300.withOpacity(0.5)),
       ),
       child: Row(
         children: [
           Container(
             padding: AppSpacing.allMd,
             decoration: BoxDecoration(
-              color: AppColors.secondary.withValues(alpha: 0.1),
+              color: AppColors.primary.s500.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, color: AppColors.secondary, size: 24),
+            child: Icon(icon, color: AppColors.primary.s500, size: 24),
           ),
           const SizedBox(width: AppSpacing.lg),
           Column(
@@ -40,7 +40,7 @@ class StatCard extends StatelessWidget {
               Text(
                 label,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textSecondary,
+                      color: AppColors.neutral.s700,
                     ),
               ),
               const SizedBox(height: AppSpacing.xs),

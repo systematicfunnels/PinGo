@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pingo/core/domain/models/content_visibility.dart';
+import 'package:pingo/core/presentation/widgets/pingo_button.dart';
+import 'package:pingo/core/presentation/utils/snackbar_utils.dart';
 import 'package:pingo/core/routing/route_paths.dart';
-import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/core/presentation/widgets/visibility_selector.dart';
 import 'package:pingo/core/presentation/widgets/share_confirmation_dialog.dart';
@@ -44,6 +45,7 @@ class _JourneySummaryScreenState extends ConsumerState<JourneySummaryScreen> {
         _journey = journey;
         if (journey != null) {
           _nameController.text = journey.name ?? '';
+          _descriptionController.text = journey.description ?? '';
           _visibility = journey.visibility;
         }
         _isLoading = false;
@@ -54,24 +56,36 @@ class _JourneySummaryScreenState extends ConsumerState<JourneySummaryScreen> {
   Future<void> _saveJourney() async {
     if (_journey == null) return;
 
-    final updatedJourney = _journey!.copyWith(
-      name: _nameController.text.trim().isEmpty
-          ? 'My Journey'
-          : _nameController.text.trim(),
-      visibility: _visibility,
-      // Description is not in Journey model yet? Let's check.
-      // If not, we'll skip it or add it.
-      // Based on previous reads, Journey model only has name, startTime, endTime, routePoints, totalDistance, durationSeconds, visibility.
-      // So we skip description for now or add it to model later.
-    );
-
-    final repository = ref.read(journeyRepositoryProvider);
-    await repository.updateJourney(updatedJourney);
-
+    // OPTIMISTIC UI
     if (mounted) {
-      // Navigate to Library or Home
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Journey saved'),
+          duration: Duration(seconds: 2),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
       context.go(RoutePaths.library);
     }
+
+    // Background Save
+    Future(() async {
+      try {
+        final updatedJourney = _journey!.copyWith(
+          name: _nameController.text.trim().isEmpty
+              ? 'My Journey'
+              : _nameController.text.trim(),
+          description: _descriptionController.text.trim(),
+          visibility: _visibility,
+        );
+
+        final repository = ref.read(journeyRepositoryProvider);
+        await repository.updateJourney(updatedJourney);
+      } catch (e) {
+        debugPrint('Background journey save failed: $e');
+        SnackbarUtils.showError(e);
+      }
+    });
   }
 
   void _showShareDialog() {
@@ -217,13 +231,10 @@ class _JourneySummaryScreenState extends ConsumerState<JourneySummaryScreen> {
           child: SizedBox(
             width: double.infinity,
             height: 56,
-            child: ElevatedButton(
+            child: PingoButton(
               onPressed: _saveJourney,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: Colors.white,
-              ),
-              child: const Text('Save Journey'),
+              isLoading: false,
+              label: 'Save Journey',
             ),
           ),
         ),

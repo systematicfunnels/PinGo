@@ -14,9 +14,14 @@ class PinsController extends _$PinsController {
     return repository.watchAllPins();
   }
 
-  Future<void> addPin(String title, String description, double lat, double lng,
+  Future<int> addPin(String title, String description, double lat, double lng,
       {ContentVisibility visibility = ContentVisibility.private,
-      PinType type = PinType.memory}) async {
+      PinType type = PinType.memory,
+      List<String> mediaPaths = const [],
+      int? mapId,
+      int? troupeId,
+      int? journeyId,
+      bool isDraft = false}) async {
     final repository = ref.read(pinRepositoryProvider);
     final pin = Pin(
       id: 0, // ID is auto-incremented by DB
@@ -27,8 +32,18 @@ class PinsController extends _$PinsController {
       createdAt: DateTime.now(),
       visibility: visibility,
       type: type,
+      mediaPaths: mediaPaths,
+      mapId: mapId,
+      troupeId: troupeId,
+      journeyId: journeyId,
+      isDraft: isDraft,
     );
-    await repository.createPin(pin);
+    return await repository.createPin(pin);
+  }
+
+  Future<void> updatePin(Pin pin) async {
+    final repository = ref.read(pinRepositoryProvider);
+    await repository.updatePin(pin);
   }
 
   Future<void> deletePin(int id) async {

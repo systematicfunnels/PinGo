@@ -1,16 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:pingo/core/presentation/widgets/pingo_button.dart';
 import 'package:pingo/core/routing/route_paths.dart';
+import 'package:pingo/core/presentation/utils/snackbar_utils.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/features/map/presentation/map_controller.dart';
 import 'controllers/record_controller.dart';
 
-class RecordScreen extends ConsumerWidget {
+class RecordScreen extends ConsumerStatefulWidget {
   const RecordScreen({super.key});
+
+  @override
+  ConsumerState<RecordScreen> createState() => _RecordScreenState();
+}
+
+class _RecordScreenState extends ConsumerState<RecordScreen> {
+  bool _isStarting = false;
+  bool _isStopping = false;
 
   String _formatDuration(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
@@ -27,8 +38,31 @@ class RecordScreen extends ConsumerWidget {
     return '${(meters / 1000).toStringAsFixed(2)} km';
   }
 
+  Future<void> _handleStartRecording() async {
+    setState(() => _isStarting = true);
+    try {
+      final permission =
+          await ref.read(recordControllerProvider.notifier).startRecording();
+
+      if (mounted &&
+          (permission == LocationPermission.denied ||
+              permission == LocationPermission.deniedForever)) {
+        SnackbarUtils.show(
+          "We need location to map your journey.",
+          isError: true,
+          actionLabel: 'Settings',
+          onAction: Geolocator.openAppSettings,
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isStarting = false);
+      }
+    }
+  }
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final recordState = ref.watch(recordControllerProvider);
     final locationAsync = ref.watch(mapControllerProvider);
 
@@ -61,7 +95,7 @@ class RecordScreen extends ConsumerWidget {
                   polylines: [
                     Polyline(
                       points: recordState.currentPath,
-                      color: AppColors.primary,
+                      color: AppColors.primary.s500,
                       strokeWidth: 4.0,
                     ),
                   ],
@@ -79,21 +113,34 @@ class RecordScreen extends ConsumerWidget {
                       height: AppSpacing.xl,
                       child: Container(
                         decoration: BoxDecoration(
-                          color: AppColors.secondary,
+                          color: AppColors.primary.s300,
                           shape: BoxShape.circle,
                           border: Border.all(color: Colors.white, width: 2),
                           boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.2),
-                              blurRadius: 4,
-                            ),
-                          ],
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    blurRadius: 4,
+                  ),
+                ],
                         ),
                       ),
                     ),
                   ],
                 ),
             ],
+          ),
+
+          // Back Button
+          Positioned(
+            top: MediaQuery.of(context).padding.top + AppSpacing.md,
+            left: AppSpacing.md,
+            child: FloatingActionButton.small(
+              heroTag: 'recordBack',
+              onPressed: () => context.pop(),
+              backgroundColor: AppColors.neutral.s100,
+              foregroundColor: AppColors.neutral.s900,
+              child: const Icon(Icons.arrow_back),
+            ),
           ),
 
           // Controls Overlay
@@ -119,26 +166,17 @@ class RecordScreen extends ConsumerWidget {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.textPrimary,
+                          color: AppColors.neutral.s900,
                         ),
                       ),
                       const SizedBox(height: AppSpacing.xl),
                       SizedBox(
                         width: double.infinity,
-                        height: 56,
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                            ref
-                                .read(recordControllerProvider.notifier)
-                                .startRecording();
-                          },
-                          icon: const Icon(Icons.circle, size: 12),
-                          label: const Text('Record route'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primary,
-                            foregroundColor: AppColors.onPrimary,
-                            elevation: 0,
-                          ),
+                        child: PingoButton(
+                          onPressed: _handleStartRecording,
+                          isLoading: _isStarting,
+                          label: 'Record route',
+                          icon: Icons.circle,
                         ),
                       ),
                       const SizedBox(height: AppSpacing.md),
@@ -147,15 +185,14 @@ class RecordScreen extends ConsumerWidget {
                         height: 56,
                         child: OutlinedButton.icon(
                           onPressed: () {
-                            // Switch to Map Tab (index 0) to "Create map manually"
-                            // Using GoRouter to navigate to the map branch
-                            context.go(RoutePaths.map);
+                            // Switch to Explore Tab (Map)
+                            context.go(RoutePaths.explore);
                           },
                           icon: const Icon(Icons.map_outlined, size: 20),
                           label: const Text('Create map manually'),
                           style: OutlinedButton.styleFrom(
-                            foregroundColor: AppColors.textPrimary,
-                            side: const BorderSide(color: AppColors.border),
+                            foregroundColor: AppColors.neutral.s900,
+                            side: BorderSide(color: AppColors.neutral.s300),
                           ),
                         ),
                       ),
@@ -163,10 +200,10 @@ class RecordScreen extends ConsumerWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.offline_pin_outlined,
                             size: 16,
-                            color: AppColors.textTertiary,
+                            color: AppColors.neutral.s500,
                           ),
                           const SizedBox(width: 8),
                           Text(
@@ -174,7 +211,7 @@ class RecordScreen extends ConsumerWidget {
                             style: Theme.of(context)
                                 .textTheme
                                 .bodySmall
-                                ?.copyWith(color: AppColors.textTertiary),
+                                ?.copyWith(color: AppColors.neutral.s500),
                           ),
                         ],
                       ),
@@ -190,7 +227,7 @@ class RecordScreen extends ConsumerWidget {
                                 style: Theme.of(context)
                                     .textTheme
                                     .labelSmall
-                                    ?.copyWith(color: AppColors.textTertiary),
+                                    ?.copyWith(color: AppColors.neutral.s500),
                               ),
                               const SizedBox(height: AppSpacing.xs),
                               Text(
@@ -208,7 +245,7 @@ class RecordScreen extends ConsumerWidget {
                           Container(
                             height: 40,
                             width: 1,
-                            color: AppColors.border,
+                            color: AppColors.neutral.s300,
                           ),
                           Column(
                             children: [
@@ -217,7 +254,7 @@ class RecordScreen extends ConsumerWidget {
                                 style: Theme.of(context)
                                     .textTheme
                                     .labelSmall
-                                    ?.copyWith(color: AppColors.textTertiary),
+                                    ?.copyWith(color: AppColors.neutral.s500),
                               ),
                               const SizedBox(height: AppSpacing.xs),
                               Text(
@@ -237,8 +274,9 @@ class RecordScreen extends ConsumerWidget {
                       const SizedBox(height: AppSpacing.xl),
                       Row(
                         children: [
+                          // Pause / Resume
                           Expanded(
-                            child: OutlinedButton.icon(
+                            child: OutlinedButton(
                               onPressed: () {
                                 if (recordState.isPaused) {
                                   ref
@@ -250,51 +288,58 @@ class RecordScreen extends ConsumerWidget {
                                       .pauseRecording();
                                 }
                               },
-                              icon: Icon(recordState.isPaused
-                                  ? Icons.play_arrow
-                                  : Icons.pause),
-                              label: Text(
-                                  recordState.isPaused ? 'Resume' : 'Pause'),
                               style: OutlinedButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(
-                                    vertical: AppSpacing.lg),
-                                side: const BorderSide(color: AppColors.border),
-                                foregroundColor: AppColors.textPrimary,
+                                    vertical: AppSpacing.md),
+                                side: BorderSide(color: AppColors.neutral.s300),
+                                foregroundColor: AppColors.neutral.s900,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(AppSpacing.lg),
+                                ),
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(recordState.isPaused
+                                      ? Icons.play_arrow
+                                      : Icons.pause),
+                                  const SizedBox(height: 4),
+                                  Text(recordState.isPaused
+                                      ? 'Resume'
+                                      : 'Pause'),
+                                ],
                               ),
                             ),
                           ),
-                          const SizedBox(width: AppSpacing.lg),
+                          const SizedBox(width: AppSpacing.md),
+                          // Stop
                           Expanded(
-                            child: GestureDetector(
-                              onLongPress: () async {
-                                final journeyId = await ref
-                                    .read(recordControllerProvider.notifier)
-                                    .stopRecording();
-                                if (context.mounted && journeyId != null) {
-                                  context.push(RoutePaths.journeySummary
-                                      .replaceFirst(
-                                          ':id', journeyId.toString()));
+                            child: PingoButton(
+                              onPressed: () async {
+                                setState(() => _isStopping = true);
+                                try {
+                                  await ref
+                                      .read(recordControllerProvider.notifier)
+                                      .stopRecording();
+                                  if (context.mounted) {
+                                    context.go(RoutePaths.journeySummary
+                                        .replaceFirst(
+                                            ':id',
+                                            recordState.journeyId?.toString() ??
+                                                '0'));
+                                  }
+                                } finally {
+                                  if (mounted) {
+                                    setState(() => _isStopping = false);
+                                  }
                                 }
                               },
-                              child: ElevatedButton.icon(
-                                onPressed: () {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Hold to finish journey'),
-                                      duration: Duration(seconds: 1),
-                                    ),
-                                  );
-                                },
-                                icon: const Icon(Icons.stop_rounded),
-                                label: const Text('Hold to Finish'),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.danger,
-                                  foregroundColor: Colors.white,
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: AppSpacing.lg),
-                                  elevation: 0,
-                                ),
-                              ),
+                              label: 'Finish',
+                              isLoading: _isStopping,
+                              icon: Icons.stop,
+                              backgroundColor: AppColors.error.s500,
+                              foregroundColor: Colors.white,
                             ),
                           ),
                         ],

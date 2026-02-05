@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/core/routing/route_paths.dart';
+import 'onboarding_controller.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends ConsumerWidget {
   const WelcomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.neutral.s50,
       body: SafeArea(
         child: Padding(
           padding: AppSpacing.allXl,
@@ -29,7 +31,7 @@ class WelcomeScreen extends StatelessWidget {
               Text(
                 'How would you like to begin?',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: AppColors.textSecondary,
+                      color: AppColors.neutral.s700,
                     ),
               ),
 
@@ -42,8 +44,12 @@ class WelcomeScreen extends StatelessWidget {
                 description:
                     'Record a path, drop pins, and capture moments as you go.',
                 icon: Icons.route_outlined,
-                onTap: () {
-                  context.push(RoutePaths.library);
+                onTap: () async {
+                  // Mark onboarding as complete since they are entering the app
+                  await ref
+                      .read(onboardingControllerProvider.notifier)
+                      .completeOnboarding();
+                  if (context.mounted) context.go(RoutePaths.create);
                 },
               ),
 
@@ -57,6 +63,7 @@ class WelcomeScreen extends StatelessWidget {
                 icon: Icons.map_outlined,
                 isSecondary: true,
                 onTap: () {
+                  // Navigate to Persona selection
                   context.push(RoutePaths.persona);
                 },
               ),
@@ -67,7 +74,7 @@ class WelcomeScreen extends StatelessWidget {
                 child: Text(
                   'No account needed to begin.',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textTertiary,
+                        color: AppColors.neutral.s500,
                         fontStyle: FontStyle.italic,
                       ),
                 ),
@@ -90,11 +97,11 @@ class WelcomeScreen extends StatelessWidget {
     bool isSecondary = false,
   }) {
     return Card(
-      color: isSecondary ? AppColors.surface : AppColors.primary,
+      color: isSecondary ? AppColors.neutral.s100 : AppColors.primary.s500,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppSpacing.lg),
         side: isSecondary
-            ? const BorderSide(color: AppColors.border)
+            ? BorderSide(color: AppColors.neutral.s300)
             : BorderSide.none,
       ),
       child: InkWell(
@@ -106,7 +113,9 @@ class WelcomeScreen extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: isSecondary ? AppColors.primary : AppColors.onPrimary,
+                color: isSecondary
+                    ? AppColors.primary.s500
+                    : AppColors.neutral.s100,
                 size: AppSpacing.xxl,
               ),
               const SizedBox(width: AppSpacing.lg),
@@ -118,8 +127,8 @@ class WelcomeScreen extends StatelessWidget {
                       title,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: isSecondary
-                                ? AppColors.textPrimary
-                                : AppColors.onPrimary,
+                                ? AppColors.neutral.s900
+                                : AppColors.neutral.s100,
                             fontWeight: FontWeight.bold,
                           ),
                     ),
@@ -128,8 +137,8 @@ class WelcomeScreen extends StatelessWidget {
                       description,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: isSecondary
-                                ? AppColors.textSecondary
-                                : AppColors.onPrimary.withValues(alpha: 0.8),
+                                ? AppColors.neutral.s700
+                                : AppColors.neutral.s100.withOpacity(0.8),
                           ),
                     ),
                   ],
@@ -138,8 +147,8 @@ class WelcomeScreen extends StatelessWidget {
               Icon(
                 Icons.arrow_forward_ios_rounded,
                 color: isSecondary
-                    ? AppColors.textTertiary
-                    : AppColors.onPrimary.withValues(alpha: 0.5),
+                    ? AppColors.neutral.s500
+                    : AppColors.neutral.s100.withOpacity(0.5),
                 size: AppSpacing.lg,
               ),
             ],

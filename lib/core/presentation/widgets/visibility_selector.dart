@@ -21,7 +21,7 @@ class VisibilitySelector extends StatelessWidget {
         Text(
           'Visibility',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textSecondary,
+                color: AppColors.neutral.s700,
                 fontWeight: FontWeight.bold,
               ),
         ),
@@ -36,41 +36,48 @@ class VisibilitySelector extends StatelessWidget {
                 child: InkWell(
                   onTap: () => onChanged(visibility),
                   borderRadius: BorderRadius.circular(AppSpacing.xl),
-                  child: Container(
-                    constraints: const BoxConstraints(minHeight: 44),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.lg, vertical: AppSpacing.md),
-                    decoration: BoxDecoration(
-                      color: isSelected ? AppColors.primary : AppColors.surface,
-                      borderRadius: BorderRadius.circular(AppSpacing.xl),
-                      border: Border.all(
+                  child: Semantics(
+                    selected: isSelected,
+                    label: visibility.label,
+                    button: true,
+                    child: Container(
+                      constraints: const BoxConstraints(minHeight: 44),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.lg, vertical: AppSpacing.md),
+                      decoration: BoxDecoration(
                         color: isSelected
-                            ? AppColors.primary
-                            : Colors.grey.withValues(alpha: 0.2),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          _getIcon(visibility),
-                          size: AppSpacing.lg,
+                            ? AppColors.primary.s500
+                            : AppColors.neutral.s100,
+                        borderRadius: BorderRadius.circular(AppSpacing.xl),
+                        border: Border.all(
                           color: isSelected
-                              ? Colors.white
-                              : AppColors.textSecondary,
+                              ? AppColors.primary.s500
+                              : Colors.grey.withOpacity(0.2),
                         ),
-                        const SizedBox(width: AppSpacing.sm),
-                        Text(
-                          visibility.label,
-                          style: TextStyle(
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            _getIcon(visibility),
+                            size: AppSpacing.lg,
                             color: isSelected
-                                ? Colors.white
-                                : AppColors.textPrimary,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
+                                ? AppColors.neutral.s100
+                                : AppColors.neutral.s700,
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: AppSpacing.sm),
+                          Text(
+                            visibility.label,
+                            style: TextStyle(
+                              color: isSelected
+                                  ? AppColors.neutral.s100
+                                  : AppColors.neutral.s900,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

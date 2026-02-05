@@ -1,9 +1,12 @@
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
+import 'package:pingo/features/map/domain/map_entity.dart';
 import 'package:pingo/features/map/domain/saved_map_model.dart';
 
 abstract class MapRepository {
   Future<List<SavedMapRegion>> getSavedRegions();
+
+  Future<MapPreview> getMapPreview(String id);
 
   Future<Stream<DownloadProgress>> downloadRegion({
     required String name,

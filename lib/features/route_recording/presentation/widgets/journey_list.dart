@@ -5,6 +5,7 @@ import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/core/domain/models/content_visibility.dart';
 import 'package:pingo/core/utils/date_utils.dart';
+import 'package:pingo/core/utils/geo_utils.dart';
 import 'package:pingo/features/route_recording/data/repositories/journey_repository_impl.dart';
 
 class JourneyList extends ConsumerWidget {
@@ -29,18 +30,18 @@ class JourneyList extends ConsumerWidget {
               elevation: 0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppSpacing.md),
-                side: BorderSide(color: Colors.grey.withValues(alpha: 0.2)),
+                side: BorderSide(color: AppColors.neutral.s300),
               ),
               child: ListTile(
                 contentPadding: AppSpacing.allLg,
                 leading: Container(
                   padding: AppSpacing.allMd,
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withValues(alpha: 0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(Icons.directions_walk,
-                      color: AppColors.primary),
+                color: AppColors.primary.s500.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+                  child: Icon(Icons.directions_walk,
+                      color: AppColors.primary.s500),
                 ),
                 title: Row(
                   children: [
@@ -53,7 +54,7 @@ class JourneyList extends ConsumerWidget {
                     Icon(
                       _getVisibilityIcon(journey.visibility),
                       size: 14,
-                      color: AppColors.textTertiary,
+                      color: AppColors.neutral.s500,
                     ),
                   ],
                 ),
@@ -65,22 +66,21 @@ class JourneyList extends ConsumerWidget {
                     const SizedBox(height: AppSpacing.xs),
                     Row(
                       children: [
-                        const Icon(Icons.straighten,
-                            size: 14, color: AppColors.textSecondary),
+                        Icon(Icons.straighten,
+                            size: 14, color: AppColors.neutral.s700),
                         const SizedBox(width: AppSpacing.xs),
                         Text(
-                          '${(journey.totalDistance / 1000).toStringAsFixed(2)} km',
-                          style:
-                              const TextStyle(color: AppColors.textSecondary),
+                          GeoUtils.formatDistance(journey.totalDistance),
+                          style: TextStyle(color: AppColors.neutral.s700),
                         ),
                         const SizedBox(width: AppSpacing.lg),
-                        const Icon(Icons.timer_outlined,
-                            size: 14, color: AppColors.textSecondary),
+                        Icon(Icons.timer_outlined,
+                            size: 14, color: AppColors.neutral.s700),
                         const SizedBox(width: AppSpacing.xs),
                         Text(
-                          '${(journey.durationSeconds / 60).toStringAsFixed(0)} min',
-                          style:
-                              const TextStyle(color: AppColors.textSecondary),
+                          AppDateUtils.formatDuration(
+                              Duration(seconds: journey.durationSeconds)),
+                          style: TextStyle(color: AppColors.neutral.s700),
                         ),
                       ],
                     ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/spacing.dart';
+import 'package:pingo/core/presentation/widgets/pingo_button.dart';
 
 class ShareConfirmationDialog extends StatelessWidget {
   final String title;
@@ -30,13 +31,13 @@ class ShareConfirmationDialog extends StatelessWidget {
             Container(
               padding: AppSpacing.allMd,
               decoration: BoxDecoration(
-                color: AppColors.secondary.withValues(alpha: 0.1),
+                color: AppColors.warning.s500.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(AppSpacing.sm),
-                border: Border.all(color: AppColors.secondary),
+                border: Border.all(color: AppColors.warning.s500),
               ),
               child: const Row(
                 children: [
-                  Icon(Icons.public, color: AppColors.secondary),
+                  Icon(Icons.public, color: AppColors.warning.s500),
                   SizedBox(width: AppSpacing.md),
                   Expanded(
                     child: Text(
@@ -55,15 +56,13 @@ class ShareConfirmationDialog extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
           child: const Text('Cancel'),
         ),
-        FilledButton(
+        PingoButton(
           onPressed: () {
             onConfirm();
             Navigator.of(context).pop();
           },
-          style: FilledButton.styleFrom(
-            backgroundColor: AppColors.primary,
-          ),
-          child: const Text('Confirm Share'),
+          label: 'Confirm Share',
+          isFullWidth: false,
         ),
       ],
     );

@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/core/routing/route_paths.dart';
+import '../domain/onboarding_state.dart';
+import 'onboarding_controller.dart';
 
-class PersonaSelectionScreen extends StatelessWidget {
+class PersonaSelectionScreen extends ConsumerWidget {
   const PersonaSelectionScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(onboardingControllerProvider);
+    final controller = ref.read(onboardingControllerProvider.notifier);
+
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.neutral.s50,
       body: SafeArea(
         child: Padding(
           padding: AppSpacing.allXl,
@@ -21,43 +27,59 @@ class PersonaSelectionScreen extends StatelessWidget {
               Text(
                 'How do you usually explore?',
                 style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                      color: AppColors.textPrimary,
+                      color: AppColors.neutral.s900,
                       fontWeight: FontWeight.bold,
                     ),
               ),
               const SizedBox(height: AppSpacing.xxl),
 
-              // Persona Cards
-              _PersonaCard(
-                icon: Icons.backpack_outlined,
-                label: 'Traveler',
-                description: 'Finding new paths in new places.',
-                onTap: () => context.go(RoutePaths.map),
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              _PersonaCard(
-                icon: Icons.landscape_outlined,
-                label: 'Explorer',
-                description: 'Going where maps are empty.',
-                onTap: () => context.go(RoutePaths.map),
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              _PersonaCard(
-                icon: Icons.camera_alt_outlined,
-                label: 'Observer',
-                description: 'Capturing moments quietly.',
-                onTap: () => context.go(RoutePaths.map),
-              ),
+              if (state.isLoading)
+                const Center(child: CircularProgressIndicator())
+              else ...[
+                // Persona Cards
+                _PersonaCard(
+                  icon: Icons.backpack_outlined,
+                  label: 'Traveler',
+                  description: 'Finding new paths in new places.',
+                  onTap: () async {
+                    await controller.selectPersona(Persona.traveler);
+                    if (context.mounted) context.go(RoutePaths.create);
+                  },
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                _PersonaCard(
+                  icon: Icons.landscape_outlined,
+                  label: 'Explorer',
+                  description: 'Going where maps are empty.',
+                  onTap: () async {
+                    await controller.selectPersona(Persona.explorer);
+                    if (context.mounted) context.go(RoutePaths.explore);
+                  },
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                _PersonaCard(
+                  icon: Icons.camera_alt_outlined,
+                  label: 'Observer',
+                  description: 'Capturing moments quietly.',
+                  onTap: () async {
+                    await controller.selectPersona(Persona.observer);
+                    if (context.mounted) context.go(RoutePaths.home);
+                  },
+                ),
+              ],
 
               const Spacer(),
 
               // Skip
               TextButton(
-                onPressed: () => context.go(RoutePaths.map),
+                onPressed: () async {
+                  await controller.skipOnboarding();
+                  if (context.mounted) context.go(RoutePaths.home);
+                },
                 child: Text(
                   'Skip for now',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSecondary,
+                        color: AppColors.neutral.s700,
                       ),
                 ),
               ),
@@ -90,10 +112,10 @@ class _PersonaCard extends StatelessWidget {
       child: Container(
         padding: AppSpacing.allXl,
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: AppColors.neutral.s100,
           borderRadius: BorderRadius.circular(AppSpacing.lg),
           border: Border.all(
-            color: AppColors.primary.withValues(alpha: 0.1),
+            color: AppColors.primary.s500.withOpacity(0.1),
           ),
         ),
         child: Row(
@@ -101,10 +123,10 @@ class _PersonaCard extends StatelessWidget {
             Container(
               padding: AppSpacing.allMd,
               decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: 0.1),
+                color: AppColors.primary.s500.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
-              child: Icon(icon, color: AppColors.primary),
+              child: Icon(icon, color: AppColors.primary.s500),
             ),
             const SizedBox(width: AppSpacing.lg),
             Expanded(
@@ -121,14 +143,14 @@ class _PersonaCard extends StatelessWidget {
                   Text(
                     description,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.textSecondary,
+                          color: AppColors.neutral.s700,
                         ),
                   ),
                 ],
               ),
             ),
             const Icon(Icons.arrow_forward_ios,
-                size: AppSpacing.lg, color: AppColors.textTertiary),
+                size: AppSpacing.lg, color: AppColors.neutral.s500),
           ],
         ),
       ),

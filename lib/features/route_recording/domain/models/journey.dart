@@ -3,6 +3,7 @@ import 'package:pingo/core/domain/models/content_visibility.dart';
 class Journey {
   final int id;
   final String? name;
+  final String? description;
   final DateTime startTime;
   final DateTime? endTime;
   final List<List<double>> routePoints; // [[lat, lng], [lat, lng]]
@@ -13,6 +14,7 @@ class Journey {
   Journey({
     required this.id,
     this.name,
+    this.description,
     required this.startTime,
     this.endTime,
     required this.routePoints,
@@ -24,6 +26,7 @@ class Journey {
   Journey copyWith({
     int? id,
     String? name,
+    String? description,
     DateTime? startTime,
     DateTime? endTime,
     List<List<double>>? routePoints,
@@ -34,6 +37,7 @@ class Journey {
     return Journey(
       id: id ?? this.id,
       name: name ?? this.name,
+      description: description ?? this.description,
       startTime: startTime ?? this.startTime,
       endTime: endTime ?? this.endTime,
       routePoints: routePoints ?? this.routePoints,
