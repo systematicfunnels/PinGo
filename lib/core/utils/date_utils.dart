@@ -20,4 +20,11 @@ class AppDateUtils {
     final hours = d.inHours > 0 ? '${d.inHours}:' : '';
     return '$hours$minutes:$seconds';
   }
+
+  static String getGreeting(DateTime time) {
+    final hour = time.hour;
+    if (hour < 12) return 'Good morning';
+    if (hour < 17) return 'Good afternoon';
+    return 'Good evening';
+  }
 }

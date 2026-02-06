@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pingo/core/presentation/widgets/organisms/pingo_empty_state.dart';
 import 'package:pingo/core/theme/app_theme.dart';
-import 'package:pingo/core/theme/elevation.dart';
-import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/features/notifications/domain/notification_entity.dart';
 import 'package:pingo/features/notifications/presentation/notifications_controller.dart';
@@ -46,7 +45,11 @@ class NotificationsScreen extends ConsumerWidget {
         ],
       ),
       body: notifications.isEmpty
-          ? const _EmptyState()
+          ? const PingoEmptyState(
+              title: 'All quiet here',
+              subtitle: 'You are all caught up.',
+              icon: Icons.notifications_off_outlined,
+            )
           : ListView.builder(
               padding: AppSpacing.allLg,
               itemCount: notifications.length,
@@ -54,84 +57,10 @@ class NotificationsScreen extends ConsumerWidget {
                 final notification = notifications[index];
                 return Padding(
                   padding: const EdgeInsets.only(bottom: AppSpacing.md),
-                  child: Dismissible(
-                    key: Key(notification.id),
-                    direction: DismissDirection.endToStart,
-                    onDismissed: (_) {
-                      ref
-                          .read(notificationsControllerProvider.notifier)
-                          .removeNotification(notification.id);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: const Text('Notification dismissed'),
-                          action: SnackBarAction(
-                            label: 'Undo',
-                            onPressed: () {
-                              ref
-                                  .read(
-                                      notificationsControllerProvider.notifier)
-                                  .restoreMockData(); // Simplified undo for now
-                            },
-                          ),
-                        ),
-                      );
-                    },
-                    background: Container(
-                      alignment: Alignment.centerRight,
-                      padding: const EdgeInsets.only(right: AppSpacing.lg),
-                      decoration: BoxDecoration(
-                        color: AppColors.error.s500,
-                        borderRadius: AppRadius.all12,
-                      ),
-                      child:
-                          const Icon(Icons.delete_outline, color: Colors.white),
-                    ),
-                    child: NotificationTile(item: notification),
-                  ),
+                  child: NotificationTile(item: notification),
                 );
               },
             ),
-    );
-  }
-}
-
-class _EmptyState extends StatelessWidget {
-  const _EmptyState();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: AppSpacing.allMd,
-      decoration: BoxDecoration(
-        color: AppColors.neutral.s100,
-        borderRadius: AppRadius.all12,
-        boxShadow: AppElevation.card,
-        border: Border.all(color: AppColors.neutral.s300),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.notifications_off_outlined,
-            size: 64,
-            color: AppColors.neutral.s500.withValues(alpha: 0.5),
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          Text(
-            'All quiet here',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: AppColors.neutral.s700,
-                ),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            'You are all caught up.',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.neutral.s500,
-                ),
-          ),
-        ],
-      ),
     );
   }
 }

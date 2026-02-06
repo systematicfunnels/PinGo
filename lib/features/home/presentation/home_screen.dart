@@ -10,7 +10,7 @@ import 'package:pingo/core/utils/date_utils.dart';
 import 'package:pingo/core/utils/geo_utils.dart';
 import 'package:pingo/features/pins/presentation/controllers/pins_controller.dart';
 import 'package:pingo/features/pins/presentation/widgets/pin_details_sheet.dart';
-import 'package:pingo/shared/widgets/empty_state.dart';
+import 'package:pingo/core/presentation/widgets/organisms/pingo_empty_state.dart';
 import 'package:pingo/features/route_recording/presentation/controllers/record_controller.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -99,20 +99,13 @@ class HomeScreen extends ConsumerWidget {
 class _HomeHeader extends StatelessWidget {
   const _HomeHeader();
 
-  String _getGreeting() {
-    final hour = DateTime.now().hour;
-    if (hour < 12) return 'Good morning';
-    if (hour < 17) return 'Good afternoon';
-    return 'Good evening';
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          _getGreeting(),
+          AppDateUtils.getGreeting(DateTime.now()),
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: AppColors.neutral.s700,
               ),
@@ -258,8 +251,7 @@ class _FeedSection extends ConsumerWidget {
       data: (pins) {
         if (pins.isEmpty) {
           return SliverToBoxAdapter(
-            child: EmptyState(
-              icon: Icons.map_outlined,
+            child: PingoEmptyState.explore(
               title: 'Your feed is quiet',
               subtitle: 'Start a journey or explore maps to see activity here.',
               action: Row(

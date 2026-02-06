@@ -14,7 +14,7 @@ import 'package:pingo/core/presentation/widgets/visibility_selector.dart';
 import 'package:pingo/features/route_recording/domain/models/journey.dart';
 import 'package:pingo/features/route_recording/presentation/widgets/replay_journey_fab.dart';
 import 'package:pingo/features/sharing/presentation/share_controller.dart';
-import 'package:pingo/core/presentation/widgets/pingo_button.dart';
+import 'package:pingo/core/presentation/widgets/molecules/pingo_button.dart';
 
 class JourneyDetailScreen extends ConsumerWidget {
   final int journeyId;
@@ -358,14 +358,14 @@ class _ShareSheetState extends ConsumerState<_ShareSheet> {
                         },
                       ),
                       const SizedBox(height: 24),
-                      PingoButton(
+                      PingoButton.primary(
                         onPressed: () {
                           ref
                               .read(shareControllerProvider.notifier)
                               .shareJourney(widget.journey);
                           context.pop();
                         },
-                        icon: Icons.share,
+                        leadingIcon: Icons.share,
                         label: 'Share Journey',
                       ),
                       const SizedBox(height: 16),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pingo/core/presentation/widgets/pingo_button.dart';
+import 'package:pingo/core/presentation/widgets/molecules/pingo_button.dart';
 import 'package:pingo/core/routing/route_paths.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/spacing.dart';
@@ -162,11 +162,13 @@ class ProfileScreen extends ConsumerWidget {
               children: [
                 Text('Error: $error'),
                 const SizedBox(height: AppSpacing.md),
-                PingoButton(
-                  onPressed: () =>
-                      ref.read(profileControllerProvider.notifier).refresh(),
-                  label: 'Retry',
-                  isFullWidth: false,
+                SizedBox(
+                  width: 120,
+                  child: PingoButton.primary(
+                    onPressed: () =>
+                        ref.read(profileControllerProvider.notifier).refresh(),
+                    label: 'Retry',
+                  ),
                 ),
               ],
             ),

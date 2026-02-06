@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pingo/core/presentation/widgets/pingo_button.dart';
+import 'package:pingo/core/presentation/widgets/molecules/pingo_button.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/core/routing/route_paths.dart';
@@ -11,60 +11,60 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          backgroundColor: AppColors.neutral.s50,
-          body: Stack(
-            children: [
-              Positioned.fill(
-                child: Opacity(
-                  opacity: 0.05,
-                  child: CustomPaint(
-                    painter: TopographicPainter(),
-                  ),
-                ),
+      backgroundColor: AppColors.neutral.s50,
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Opacity(
+              opacity: 0.05,
+              child: CustomPaint(
+                painter: TopographicPainter(),
               ),
-              SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Spacer(),
-                      Icon(
-                        Icons.explore_off_outlined,
-                        size: 80,
-                        color: AppColors.primary.s500,
-                      ),
-                      const SizedBox(height: AppSpacing.xxl),
-                      Text(
-                        'The world is bigger than the map.',
-                        style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                              height: 1.2,
-                            ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: AppSpacing.lg),
-                      Text(
-                        'Create your own journeys. Save moments. Share only when ready.',
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: AppColors.neutral.s700,
-                            ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const Spacer(),
-                      PingoButton(
-                        onPressed: () {
-                          context.go(RoutePaths.welcome);
-                        },
-                        label: 'Start exploring',
-                      ),
-                      const SizedBox(height: AppSpacing.xxl),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        );
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Spacer(),
+                  Icon(
+                    Icons.explore_off_outlined,
+                    size: 80,
+                    color: AppColors.primary.s500,
+                  ),
+                  const SizedBox(height: AppSpacing.xxl),
+                  Text(
+                    'The world is bigger than the map.',
+                    style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                          height: 1.2,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+                  Text(
+                    'Create your own journeys. Save moments. Share only when ready.',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: AppColors.neutral.s700,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const Spacer(),
+                  PingoButton.primary(
+                    onPressed: () {
+                      context.go(RoutePaths.welcome);
+                    },
+                    label: 'Start exploring',
+                  ),
+                  const SizedBox(height: AppSpacing.xxl),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pingo/core/presentation/widgets/pingo_button.dart';
+import 'package:pingo/core/presentation/widgets/molecules/pingo_button.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/elevation.dart';
 import 'package:pingo/core/theme/spacing.dart';
@@ -24,7 +24,7 @@ class StickyActionBottomBar extends StatelessWidget {
         color: AppColors.neutral.s100,
         boxShadow: AppElevation.floating,
       ),
-      child: PingoButton(
+      child: PingoButton.primary(
         onPressed: onPressed,
         isLoading: isLoading,
         label: label,

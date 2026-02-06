@@ -5,7 +5,7 @@ import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/elevation.dart';
 import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
-import 'package:pingo/core/presentation/widgets/pingo_button.dart';
+import 'package:pingo/core/presentation/widgets/molecules/pingo_button.dart';
 import 'package:pingo/features/explore/presentation/controllers/explore_feed_controller.dart';
 import 'package:pingo/features/map/domain/map_entity.dart';
 
@@ -52,12 +52,12 @@ class DiscoverSheet extends ConsumerWidget {
             const Spacer(),
             SizedBox(
               width: double.infinity,
-              child: PingoButton(
+              child: PingoButton.primary(
                 onPressed: () {
                   Navigator.pop(context);
                   _showComingSoon(context, 'Add to Library');
                 },
-                icon: Icons.bookmark_border,
+                leadingIcon: Icons.bookmark_border,
                 label: 'Add to Library',
               ),
             ),

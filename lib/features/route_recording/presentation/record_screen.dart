@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:pingo/core/presentation/widgets/pingo_button.dart';
+import 'package:pingo/core/presentation/widgets/molecules/pingo_button.dart';
 import 'package:pingo/core/routing/route_paths.dart';
 import 'package:pingo/core/presentation/utils/snackbar_utils.dart';
 import 'package:pingo/core/theme/app_theme.dart';
@@ -169,11 +169,11 @@ class _RecordScreenState extends ConsumerState<RecordScreen> {
                       const SizedBox(height: AppSpacing.xl),
                       SizedBox(
                         width: double.infinity,
-                        child: PingoButton(
+                        child: PingoButton.primary(
                           onPressed: _handleStartRecording,
                           isLoading: _isStarting,
                           label: 'Record route',
-                          icon: Icons.circle,
+                          leadingIcon: Icons.circle,
                         ),
                       ),
                       const SizedBox(height: AppSpacing.md),
@@ -311,7 +311,7 @@ class _RecordScreenState extends ConsumerState<RecordScreen> {
                           const SizedBox(width: AppSpacing.md),
                           // Stop
                           Expanded(
-                            child: PingoButton(
+                            child: PingoButton.destructive(
                               onPressed: () async {
                                 setState(() => _isStopping = true);
                                 try {
@@ -333,9 +333,7 @@ class _RecordScreenState extends ConsumerState<RecordScreen> {
                               },
                               label: 'Finish',
                               isLoading: _isStopping,
-                              icon: Icons.stop,
-                              backgroundColor: AppColors.error.s500,
-                              foregroundColor: Colors.white,
+                              leadingIcon: Icons.stop,
                             ),
                           ),
                         ],

@@ -6,7 +6,7 @@ import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:pingo/core/presentation/widgets/pingo_button.dart';
+import 'package:pingo/core/presentation/widgets/molecules/pingo_button.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/elevation.dart';
 import 'package:pingo/core/theme/radius.dart';
@@ -133,15 +133,17 @@ class _RegionSelectionScreenState extends ConsumerState<RegionSelectionScreen> {
             onPressed: () => Navigator.pop(context),
             child: const Text('Cancel'),
           ),
-          PingoButton(
-            onPressed: () {
-              if (nameController.text.isNotEmpty) {
-                Navigator.pop(context); // Close input dialog
-                _startDownload(nameController.text, bounds);
-              }
-            },
-            label: 'Download',
-            isFullWidth: false,
+          SizedBox(
+            width: 120,
+            child: PingoButton.primary(
+              onPressed: () {
+                if (nameController.text.isNotEmpty) {
+                  Navigator.pop(context); // Close input dialog
+                  _startDownload(nameController.text, bounds);
+                }
+              },
+              label: 'Download',
+            ),
           ),
         ],
       ),

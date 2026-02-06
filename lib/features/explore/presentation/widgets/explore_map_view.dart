@@ -4,6 +4,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pingo/core/domain/models/pin_type.dart';
+import 'package:pingo/core/presentation/widgets/organisms/pingo_pin_marker.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/elevation.dart';
 import 'package:pingo/core/theme/spacing.dart';
@@ -23,6 +24,24 @@ class ExploreMapView extends ConsumerStatefulWidget {
 class _ExploreMapViewState extends ConsumerState<ExploreMapView> {
   final MapController _mapController = MapController();
   bool _hasMovedToUser = false;
+
+  PingoPinMarkerType _getPinType(PinType type) {
+    switch (type) {
+      case PinType.memory:
+        return PingoPinMarkerType.place; // Memory maps to Place
+      case PinType.safety:
+        return PingoPinMarkerType.safety;
+      case PinType.landmark:
+        return PingoPinMarkerType.place; // Landmark maps to Place
+      case PinType.restroom:
+        return PingoPinMarkerType.place; // Restroom maps to Place
+      case PinType.water:
+        return PingoPinMarkerType
+            .food; // Water maps to Food (or similar utility)
+      case PinType.scenic:
+        return PingoPinMarkerType.story; // Scenic maps to Story
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,53 +116,26 @@ class _ExploreMapViewState extends ConsumerState<ExploreMapView> {
                   data: (pins) => pins
                       .map((pin) => Marker(
                             point: LatLng(pin.latitude, pin.longitude),
-                            width: AppSpacing.xxxl,
-                            height: AppSpacing.xxxl,
-                            child: GestureDetector(
-                              onTap: () {
-                                HapticFeedback.lightImpact();
-                                if (pin.isDraft) {
-                                  _showPinEditor(
-                                      LatLng(pin.latitude, pin.longitude),
-                                      pinToEdit: pin);
-                                } else {
-                                  _showPinDetails(context, pin);
-                                }
-                              },
-                              behavior: HitTestBehavior.opaque,
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Icon(
-                                    pin.isDraft
-                                        ? Icons.edit_location
-                                        : (pin.type == PinType.safety
-                                            ? Icons.warning_rounded
-                                            : Icons.location_on),
-                                    color: pin.isDraft
-                                        ? Colors.grey
-                                        : (pin.type == PinType.safety
-                                            ? AppColors.map.danger
-                                            : AppColors.map.pin),
-                                    size: 40,
-                                  ),
-                                  if (!pin.isSynced && !pin.isDraft)
-                                    Positioned(
-                                      right: 0,
-                                      bottom: AppSpacing.sm,
-                                      child: Container(
-                                        padding:
-                                            const EdgeInsets.all(AppSpacing.xs),
-                                        decoration: const BoxDecoration(
-                                          color: Colors.white,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Icon(Icons.cloud_off,
-                                            size: AppSpacing.sm,
-                                            color: AppColors.neutral.s700),
-                                      ),
-                                    )
-                                ],
+                            width:
+                                64, // PingoPinMarker handles internal sizing, but Marker needs a container size
+                            height: 64,
+                            child: Center(
+                              child: PingoPinMarker(
+                                type: _getPinType(pin.type),
+                                isDraft: pin.isDraft,
+                                isSynced: pin.isSynced,
+                                isSensitive:
+                                    false, // Assuming default for now unless Pin has this prop
+                                onTap: () {
+                                  HapticFeedback.lightImpact();
+                                  if (pin.isDraft) {
+                                    _showPinEditor(
+                                        LatLng(pin.latitude, pin.longitude),
+                                        pinToEdit: pin);
+                                  } else {
+                                    _showPinDetails(context, pin);
+                                  }
+                                },
                               ),
                             ),
                           ))

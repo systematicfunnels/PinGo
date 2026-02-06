@@ -11,7 +11,7 @@ import 'package:pingo/core/utils/date_utils.dart';
 import 'package:pingo/features/map/presentation/user_maps_controller.dart';
 import 'package:pingo/features/map/presentation/widgets/share_map_sheet.dart';
 
-import 'package:pingo/shared/widgets/empty_state.dart';
+import 'package:pingo/core/presentation/widgets/organisms/pingo_empty_state.dart';
 
 class UserMapsList extends ConsumerWidget {
   const UserMapsList({super.key});
@@ -23,8 +23,7 @@ class UserMapsList extends ConsumerWidget {
     return mapsAsync.when(
       data: (maps) {
         if (maps.isEmpty) {
-          return const EmptyState(
-            icon: Icons.map_outlined,
+          return const PingoEmptyState.library(
             title: 'No created maps yet',
             subtitle: 'Start a journey or create a map to see it here',
           );

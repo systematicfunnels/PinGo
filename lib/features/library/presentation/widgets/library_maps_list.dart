@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pingo/core/presentation/widgets/pingo_button.dart';
+import 'package:pingo/core/presentation/widgets/molecules/pingo_button.dart';
+import 'package:pingo/core/presentation/widgets/organisms/pingo_empty_state.dart';
 import 'package:pingo/core/routing/route_paths.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/elevation.dart';
@@ -9,8 +10,6 @@ import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/core/utils/date_utils.dart';
 import 'package:pingo/features/map/presentation/saved_maps_controller.dart';
-
-import 'package:pingo/shared/widgets/empty_state.dart';
 
 class LibraryMapsList extends ConsumerWidget {
   const LibraryMapsList({super.key});
@@ -22,15 +21,14 @@ class LibraryMapsList extends ConsumerWidget {
     return mapsAsync.when(
       data: (maps) {
         if (maps.isEmpty) {
-          return EmptyState(
-            icon: Icons.map_outlined,
+          return PingoEmptyState.library(
             title: 'No saved maps yet',
             subtitle: 'Download regions for offline use',
-            action: PingoButton(
+            action: PingoButton.secondary(
               onPressed: () {
                 context.go(RoutePaths.regionSelection);
               },
-              icon: Icons.download,
+              leadingIcon: Icons.download,
               label: 'Download New Region',
               isFullWidth: false,
             ),

@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pingo/core/presentation/widgets/pingo_button.dart';
+import 'package:pingo/core/presentation/widgets/molecules/pingo_button.dart';
 import 'package:pingo/core/presentation/utils/snackbar_utils.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/radius.dart';
@@ -472,7 +472,7 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(
                       AppSpacing.xl, 0, AppSpacing.xl, AppSpacing.lg),
-                  child: PingoButton(
+                  child: PingoButton.primary(
                     onPressed: _savePin,
                     isLoading: false,
                     label: 'Save Memory',

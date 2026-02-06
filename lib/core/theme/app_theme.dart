@@ -7,6 +7,8 @@ import 'package:pingo/core/theme/spacing.dart';
 
 class AppColors {
   static const primary = _PrimaryColors();
+  static const secondary = _SecondaryColors();
+  static const accent = _AccentColors();
   static const neutral = _NeutralColors();
   static const success = _SuccessColors();
   static const warning = _WarningColors();
@@ -17,18 +19,33 @@ class AppColors {
 
 class _PrimaryColors {
   const _PrimaryColors();
+  final Color s700 = const Color(0xFF1B2E33); // Darker shade
   final Color s500 = const Color(0xFF2C4A52); // Main brand accent (Deep Forest)
   final Color s400 = const Color(0xFF40626C);
   final Color s300 = const Color(0xFF65838C);
   final Color s100 = const Color(0xFFE0E8E9); // Subtle background
 }
 
+class _SecondaryColors {
+  const _SecondaryColors();
+  final Color s500 = const Color(0xFFE09F3E); // Warm Honey (Food/Warmth)
+}
+
+class _AccentColors {
+  const _AccentColors();
+  final Color s500 = const Color(0xFF9D8189); // Muted Mauve (Stories)
+}
+
 class _NeutralColors {
   const _NeutralColors();
   final Color s900 = const Color(0xFF2D2D2D); // Primary text
+  final Color s800 = const Color(0xFF424242); // Darker grey
   final Color s700 = const Color(0xFF5C5C5C); // Secondary text
+  final Color s600 = const Color(0xFF757575); // Medium grey
   final Color s500 = const Color(0xFF8E8E8E); // Tertiary / hints
+  final Color s400 = const Color(0xFFBDBDBD); // Light grey
   final Color s300 = const Color(0xFFE0E0E0); // Dividers
+  final Color s200 = const Color(0xFFF0F0F0); // Very light grey
   final Color s100 = const Color(0xFFFFFFFF); // Surface
   final Color s50 = const Color(0xFFF5F5F0); // Background (Soft Sand)
 }
@@ -45,7 +62,10 @@ class _WarningColors {
 
 class _ErrorColors {
   const _ErrorColors();
+  final Color s700 = const Color(0xFF8A4A4A); // Darker error
   final Color s500 = const Color(0xFFC27E7E); // Failure, blocked (Muted Rust)
+  final Color s300 = const Color(0xFFE5B0B0); // Lighter error
+  final Color s100 = const Color(0xFFF9E6E6); // Background error
 }
 
 class _InfoColors {

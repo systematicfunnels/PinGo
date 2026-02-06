@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pingo/core/domain/models/content_visibility.dart';
-import 'package:pingo/core/presentation/widgets/pingo_button.dart';
+import 'package:pingo/core/presentation/widgets/molecules/pingo_button.dart';
 import 'package:pingo/core/presentation/utils/snackbar_utils.dart';
 import 'package:pingo/core/routing/route_paths.dart';
 import 'package:pingo/core/theme/radius.dart';
@@ -232,7 +232,7 @@ class _JourneySummaryScreenState extends ConsumerState<JourneySummaryScreen> {
           child: SizedBox(
             width: double.infinity,
             height: 56,
-            child: PingoButton(
+            child: PingoButton.primary(
               onPressed: _saveJourney,
               isLoading: false,
               label: 'Save Journey',

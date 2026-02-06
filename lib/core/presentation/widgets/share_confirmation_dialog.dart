@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
-import 'package:pingo/core/presentation/widgets/pingo_button.dart';
+import 'package:pingo/core/presentation/widgets/molecules/pingo_button.dart';
 
 class ShareConfirmationDialog extends StatelessWidget {
   final String title;
@@ -57,7 +57,7 @@ class ShareConfirmationDialog extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
           child: const Text('Cancel'),
         ),
-        PingoButton(
+        PingoButton.primary(
           onPressed: () {
             onConfirm();
             Navigator.of(context).pop();

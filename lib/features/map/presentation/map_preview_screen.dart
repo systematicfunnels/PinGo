@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pingo/core/domain/models/content_visibility.dart';
-import 'package:pingo/core/presentation/widgets/pingo_button.dart';
+import 'package:pingo/core/presentation/widgets/molecules/pingo_button.dart';
 import 'package:pingo/core/presentation/utils/snackbar_utils.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/elevation.dart';
@@ -220,7 +220,7 @@ class _MapPreviewScreenState extends ConsumerState<MapPreviewScreen> {
                                 const Spacer(),
                                 SizedBox(
                                   width: double.infinity,
-                                  child: PingoButton(
+                                  child: PingoButton.primary(
                                     onPressed: _saveMap,
                                     isLoading: false,
                                     label: 'Add to Library',
