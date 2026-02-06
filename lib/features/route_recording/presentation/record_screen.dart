@@ -117,11 +117,11 @@ class _RecordScreenState extends ConsumerState<RecordScreen> {
                           shape: BoxShape.circle,
                           border: Border.all(color: Colors.white, width: 2),
                           boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    blurRadius: 4,
-                  ),
-                ],
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.2),
+                              blurRadius: 4,
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -161,7 +161,7 @@ class _RecordScreenState extends ConsumerState<RecordScreen> {
                   children: [
                     if (!recordState.isRecording) ...[
                       // Start State - Screen 6: Start Journey
-                      const Text(
+                      Text(
                         'Where are you heading?',
                         style: TextStyle(
                           fontSize: 20,

@@ -23,8 +23,8 @@ class LibraryPinsList extends ConsumerWidget {
                 Icon(
                   Icons.place_outlined,
                   size: 64,
-                  color: AppColors.neutral.s500.withOpacity(0.5),
-                )
+                  color: AppColors.neutral.s500.withValues(alpha: 0.5),
+                ),
                 const SizedBox(height: AppSpacing.lg),
                 Text(
                   'No pins yet.\nStart your journey to add some memories.',
@@ -82,7 +82,8 @@ class LibraryPinsList extends ConsumerWidget {
               child: Card(
                 child: ListTile(
                   leading: CircleAvatar(
-                    backgroundColor: AppColors.primary.s300.withOpacity(0.2),
+                    backgroundColor:
+                        AppColors.primary.s300.withValues(alpha: 0.2),
                     child: Icon(Icons.place, color: AppColors.primary.s300),
                   ),
                   title: Row(

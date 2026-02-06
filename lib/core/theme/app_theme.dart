@@ -56,7 +56,8 @@ class _MapColors {
   const _MapColors();
   final Color route = const Color(0xFF40626C); // Softer than pin (Primary 400)
   final Color pin = const Color(0xFF2C4A52); // Primary 500
-  final Color pinSelected = const Color(0xFF1A1A1A); // Clearer, not brighter (Neutral 900 variant)
+  final Color pinSelected =
+      const Color(0xFF1A1A1A); // Clearer, not brighter (Neutral 900 variant)
   final Color water = const Color(0xFFB8D0D5); // Soft Blue
   final Color danger = const Color(0xFFC27E7E); // Error 500
 }
@@ -117,8 +118,6 @@ class AppTheme {
         onError: AppColors.neutral.s100,
         surface: AppColors.neutral.s100,
         onSurface: AppColors.neutral.s900,
-        background: AppColors.neutral.s50,
-        onBackground: AppColors.neutral.s900,
       ),
       scaffoldBackgroundColor: AppColors.neutral.s50,
       textTheme: AppTypography.textTheme,
@@ -146,7 +145,8 @@ class AppTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.neutral.s50, // Surface variant logic? Old was surfaceVariant. s50 is background.
+        fillColor: AppColors.neutral
+            .s50, // Surface variant logic? Old was surfaceVariant. s50 is background.
         // Old surfaceVariant was EBEBE6. s50 is F5F5F0. Close enough.
         // Actually, let's stick to s50 for inputs on s100 cards.
         contentPadding: const EdgeInsets.symmetric(

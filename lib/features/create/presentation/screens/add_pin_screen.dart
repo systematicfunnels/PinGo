@@ -193,14 +193,15 @@ class _AddPinScreenState extends ConsumerState<AddPinScreen> {
                                     color: AppColors.neutral.s50,
                                     borderRadius:
                                         BorderRadius.circular(AppSpacing.md),
-                                    border: Border.all(color: AppColors.neutral.s300),
+                                    border: Border.all(
+                                        color: AppColors.neutral.s300),
                                   ),
-                                  child: const Column(
+                                  child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Icon(Icons.add_a_photo_outlined,
                                           color: AppColors.neutral.s700),
-                                      SizedBox(height: 4),
+                                      const SizedBox(height: 4),
                                       Text('Add Photo',
                                           style: TextStyle(
                                               fontSize: 12,
@@ -289,16 +290,17 @@ class _AddPinScreenState extends ConsumerState<AddPinScreen> {
                           Container(
                             padding: AppSpacing.allMd,
                             decoration: BoxDecoration(
-                              color: AppColors.error.s500.withOpacity(0.1),
+                              color:
+                                  AppColors.error.s500.withValues(alpha: 0.1),
                               borderRadius:
                                   BorderRadius.circular(AppSpacing.sm),
                               border: Border.all(
-                                  color:
-                                      AppColors.error.s500.withOpacity(0.5)),
+                                  color: AppColors.error.s500
+                                      .withValues(alpha: 0.5)),
                             ),
                             child: Row(
                               children: [
-                                const Icon(Icons.warning_amber_rounded,
+                                Icon(Icons.warning_amber_rounded,
                                     color: AppColors.error.s500),
                                 const SizedBox(width: AppSpacing.md),
                                 Expanded(
@@ -306,7 +308,7 @@ class _AddPinScreenState extends ConsumerState<AddPinScreen> {
                                     'Marking this as a hazard will alert other users nearby.',
                                     style: TextStyle(
                                         color: AppColors.error.s500
-                                            .withOpacity(0.8)),
+                                            .withValues(alpha: 0.8)),
                                   ),
                                 ),
                               ],

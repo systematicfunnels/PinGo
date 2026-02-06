@@ -34,7 +34,7 @@ class DiscoverSheet extends ConsumerWidget {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: AppColors.neutral.s500.withOpacity(0.3),
+                  color: AppColors.neutral.s500.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -84,7 +84,7 @@ class DiscoverSheet extends ConsumerWidget {
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withValues(alpha: 0.1),
                 blurRadius: 10,
                 offset: const Offset(0, -2),
               ),
@@ -107,7 +107,7 @@ class DiscoverSheet extends ConsumerWidget {
                         margin:
                             const EdgeInsets.symmetric(vertical: AppSpacing.sm),
                         decoration: BoxDecoration(
-                          color: AppColors.neutral.s500.withOpacity(0.3),
+                          color: AppColors.neutral.s500.withValues(alpha: 0.3),
                           borderRadius: BorderRadius.circular(2),
                         ),
                       ),
@@ -192,15 +192,17 @@ class DiscoverSheet extends ConsumerWidget {
                           (context, index) {
                             if (index == maps.length) {
                               // Footer: "You're all caught up"
-                              return const Padding(
-                                padding: EdgeInsets.all(AppSpacing.xl),
+                              return Padding(
+                                padding: const EdgeInsets.all(AppSpacing.xl),
                                 child: Center(
                                   child: Text(
                                     "You're all caught up",
-                                    style: TextStyle(
-                                      color: AppColors.neutral.s500,
-                                      fontSize: 12,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                          color: AppColors.neutral.s500,
+                                        ),
                                   ),
                                 ),
                               );
@@ -282,7 +284,7 @@ class _CategoryCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Material(
-            color: AppColors.primary.s500.withOpacity(0.1),
+            color: AppColors.primary.s500.withValues(alpha: 0.1),
             shape: const CircleBorder(),
             child: InkWell(
               onTap: onTap,
@@ -344,11 +346,11 @@ class FeedMapCard extends StatelessWidget {
                 child: Container(
                   height: 150,
                   width: double.infinity,
-                  color: AppColors.primary.s300.withOpacity(0.1),
+                  color: AppColors.primary.s300.withValues(alpha: 0.1),
                   child: Center(
                     child: Icon(Icons.map,
                         size: 48,
-                        color: AppColors.primary.s300.withOpacity(0.5)),
+                        color: AppColors.primary.s300.withValues(alpha: 0.5)),
                   ),
                 ),
               ),
@@ -400,10 +402,10 @@ class FeedMapCard extends StatelessWidget {
                         CircleAvatar(
                           radius: 12,
                           backgroundColor:
-                              AppColors.primary.s500.withOpacity(0.2),
+                              AppColors.primary.s500.withValues(alpha: 0.2),
                           child: Text(
                             (map.authorName ?? 'U')[0].toUpperCase(),
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 10, color: AppColors.primary.s500),
                           ),
                         ),

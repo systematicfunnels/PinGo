@@ -157,7 +157,7 @@ class _MemoryReplayScreenState extends ConsumerState<MemoryReplayScreen> {
                 polylines: [
                   Polyline(
                     points: routePoints,
-                    color: AppColors.primary.s500.withOpacity(0.5),
+                    color: AppColors.primary.s500.withValues(alpha: 0.5),
                     strokeWidth: 4.0,
                   ),
                   // Progress line
@@ -176,12 +176,12 @@ class _MemoryReplayScreenState extends ConsumerState<MemoryReplayScreen> {
                     height: AppSpacing.xxl,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: AppColors.secondary.s500,
+                        color: AppColors.primary.s300,
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.white, width: 2),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
+                            color: Colors.black.withValues(alpha: 0.2),
                             blurRadius: 4,
                           ),
                         ],

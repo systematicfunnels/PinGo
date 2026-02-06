@@ -34,7 +34,7 @@ class ProfileSection extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppSpacing.lg),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),
@@ -73,7 +73,7 @@ class ProfileMenuTile extends StatelessWidget {
       leading: Container(
         padding: const EdgeInsets.all(AppSpacing.sm),
         decoration: BoxDecoration(
-          color: (iconColor ?? AppColors.neutral.s700).withOpacity(0.1),
+          color: (iconColor ?? AppColors.neutral.s700).withValues(alpha: 0.1),
           shape: BoxShape.circle,
         ),
         child: Icon(

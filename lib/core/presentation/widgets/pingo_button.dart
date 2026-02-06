@@ -114,8 +114,9 @@ class _PingoButtonState extends State<PingoButton> {
     // Visual State: Disabled
     // "Disabled button | ... | Muted color"
     final isVisuallyDisabled = widget.isDisabled || widget.isLoading;
-    final effectiveBgColor =
-        isVisuallyDisabled ? AppColors.neutral.s500.withOpacity(0.3) : bgColor;
+    final effectiveBgColor = isVisuallyDisabled
+        ? AppColors.neutral.s500.withValues(alpha: 0.3)
+        : bgColor;
     final effectiveFgColor =
         isVisuallyDisabled ? AppColors.neutral.s500 : fgColor;
 

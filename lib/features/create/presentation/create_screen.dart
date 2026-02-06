@@ -92,7 +92,7 @@ class _CreateOptionCard extends StatelessWidget {
       color: AppColors.neutral.s100,
       borderRadius: BorderRadius.circular(AppSpacing.lg),
       elevation: 2,
-      shadowColor: Colors.black.withOpacity(0.1),
+      shadowColor: Colors.black.withValues(alpha: 0.1),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppSpacing.lg),
@@ -103,7 +103,7 @@ class _CreateOptionCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(AppSpacing.lg),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(icon, color: color, size: 32),

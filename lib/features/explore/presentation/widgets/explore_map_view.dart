@@ -81,10 +81,10 @@ class _ExploreMapViewState extends ConsumerState<ExploreMapView> {
                     height: 60,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: AppColors.primary.s500.withOpacity(0.2),
+                        color: AppColors.primary.s500.withValues(alpha: 0.2),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.my_location,
                         color: AppColors.primary.s500,
                         size: 30,
@@ -165,7 +165,7 @@ class _ExploreMapViewState extends ConsumerState<ExploreMapView> {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: Colors.black.withValues(alpha: 0.1),
                       blurRadius: 8,
                     ),
                   ],

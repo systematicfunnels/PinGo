@@ -88,7 +88,7 @@ class LibraryMapsList extends ConsumerWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppSpacing.md),
                   side: BorderSide(
-                      color: AppColors.neutral.s500.withOpacity(0.1)),
+                      color: AppColors.neutral.s500.withValues(alpha: 0.1)),
                 ),
                 child: ListTile(
                   contentPadding: AppSpacing.allLg,
@@ -96,7 +96,7 @@ class LibraryMapsList extends ConsumerWidget {
                     width: 48,
                     height: 48,
                     decoration: BoxDecoration(
-                      color: AppColors.primary.s500.withOpacity(0.1),
+                      color: AppColors.primary.s500.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(AppSpacing.sm),
                     ),
                     child: Icon(Icons.map, color: AppColors.primary.s500),

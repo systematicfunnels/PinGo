@@ -31,11 +31,11 @@ class ShareConfirmationDialog extends StatelessWidget {
             Container(
               padding: AppSpacing.allMd,
               decoration: BoxDecoration(
-                color: AppColors.warning.s500.withOpacity(0.1),
+                color: AppColors.warning.s500.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(AppSpacing.sm),
                 border: Border.all(color: AppColors.warning.s500),
               ),
-              child: const Row(
+              child: Row(
                 children: [
                   Icon(Icons.public, color: AppColors.warning.s500),
                   SizedBox(width: AppSpacing.md),

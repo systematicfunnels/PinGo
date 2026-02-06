@@ -205,7 +205,7 @@ class PinDetailsSheet extends ConsumerWidget {
                               borderRadius:
                                   BorderRadius.circular(AppSpacing.md),
                             ),
-                            child: const Icon(Icons.image,
+                            child: Icon(Icons.image,
                                 color: AppColors.neutral.s500),
                           );
                         },

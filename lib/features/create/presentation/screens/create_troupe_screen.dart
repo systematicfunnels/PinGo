@@ -239,7 +239,7 @@ class _DateSelector extends StatelessWidget {
             ),
             child: Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.calendar_today,
                   size: 16,
                   color: AppColors.neutral.s700,

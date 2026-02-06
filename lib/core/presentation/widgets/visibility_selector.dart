@@ -52,7 +52,7 @@ class VisibilitySelector extends StatelessWidget {
                         border: Border.all(
                           color: isSelected
                               ? AppColors.primary.s500
-                              : Colors.grey.withOpacity(0.2),
+                              : Colors.grey.withValues(alpha: 0.2),
                         ),
                       ),
                       child: Row(

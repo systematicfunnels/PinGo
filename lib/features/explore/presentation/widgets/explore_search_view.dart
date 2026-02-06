@@ -72,7 +72,7 @@ class _ExploreSearchViewState extends ConsumerState<ExploreSearchView> {
                               .read(exploreSearchQueryProvider.notifier)
                               .setQuery(value);
                         },
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           hintText: 'Search places, routes...',
                           border: InputBorder.none,
                           contentPadding: EdgeInsets.symmetric(
@@ -113,7 +113,7 @@ class _ExploreSearchViewState extends ConsumerState<ExploreSearchView> {
                       return ListTile(
                         leading: CircleAvatar(
                           backgroundColor:
-                              AppColors.primary.s500.withOpacity(0.1),
+                              AppColors.primary.s500.withValues(alpha: 0.1),
                           child: Icon(
                             result is PinSearchResult
                                 ? Icons.location_on

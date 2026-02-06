@@ -47,7 +47,7 @@ class UserMapsList extends ConsumerWidget {
                 leading: Container(
                   padding: AppSpacing.allMd,
                   decoration: BoxDecoration(
-                    color: AppColors.primary.s500.withOpacity(0.1),
+                    color: AppColors.primary.s500.withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(Icons.map, color: AppColors.primary.s500),

@@ -115,7 +115,7 @@ class _PersonaCard extends StatelessWidget {
           color: AppColors.neutral.s100,
           borderRadius: BorderRadius.circular(AppSpacing.lg),
           border: Border.all(
-            color: AppColors.primary.s500.withOpacity(0.1),
+            color: AppColors.primary.s500.withValues(alpha: 0.1),
           ),
         ),
         child: Row(
@@ -123,7 +123,7 @@ class _PersonaCard extends StatelessWidget {
             Container(
               padding: AppSpacing.allMd,
               decoration: BoxDecoration(
-                color: AppColors.primary.s500.withOpacity(0.1),
+                color: AppColors.primary.s500.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(icon, color: AppColors.primary.s500),
@@ -149,7 +149,7 @@ class _PersonaCard extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(Icons.arrow_forward_ios,
+            Icon(Icons.arrow_forward_ios,
                 size: AppSpacing.lg, color: AppColors.neutral.s500),
           ],
         ),

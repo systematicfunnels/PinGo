@@ -142,10 +142,10 @@ class _ActiveJourneyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
-      color: AppColors.primary.s500.withOpacity(0.05),
+      color: AppColors.primary.s500.withValues(alpha: 0.05),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppSpacing.md),
-        side: BorderSide(color: AppColors.primary.s500.withOpacity(0.1)),
+        side: BorderSide(color: AppColors.primary.s500.withValues(alpha: 0.1)),
       ),
       child: InkWell(
         onTap: onTap,

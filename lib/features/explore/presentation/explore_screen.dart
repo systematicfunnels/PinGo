@@ -45,8 +45,8 @@ class ExploreScreen extends StatelessWidget {
                   ),
                 );
               },
-              backgroundColor: AppColors.primary,
-              foregroundColor: AppColors.onPrimary,
+              backgroundColor: AppColors.primary.s500,
+              foregroundColor: AppColors.neutral.s100,
               icon: const Icon(Icons.add_a_photo),
               label: const Text('Pin Moment'),
             ),

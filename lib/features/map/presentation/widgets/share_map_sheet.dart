@@ -177,11 +177,11 @@ class _ShareMapSheetState extends ConsumerState<ShareMapSheet> {
                 Container(
                   padding: AppSpacing.allMd,
                   decoration: BoxDecoration(
-                    color: AppColors.info.s500.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(AppSpacing.md),
-            border: Border.all(
-              color: AppColors.info.s500.withOpacity(0.2),
-            ),
+                    color: AppColors.info.s500.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(AppSpacing.md),
+                    border: Border.all(
+                      color: AppColors.info.s500.withValues(alpha: 0.2),
+                    ),
                   ),
                   child: Row(
                     children: [

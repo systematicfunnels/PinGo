@@ -167,11 +167,12 @@ class _ShareSheetState extends ConsumerState<ShareSheet> {
                       margin: const EdgeInsets.only(bottom: AppSpacing.lg),
                       padding: const EdgeInsets.all(AppSpacing.md),
                       decoration: BoxDecoration(
-                  color: AppColors.primary.s500.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(AppSpacing.md),
-                  border: Border.all(
-                      color: AppColors.primary.s500.withOpacity(0.3)),
-                ),
+                        color: AppColors.primary.s500.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(AppSpacing.md),
+                        border: Border.all(
+                            color:
+                                AppColors.primary.s500.withValues(alpha: 0.3)),
+                      ),
                       child: Row(
                         children: [
                           Icon(Icons.privacy_tip_outlined,
@@ -244,7 +245,7 @@ class _ShareSheetState extends ConsumerState<ShareSheet> {
                               color: Colors.white,
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(Icons.link,
+                            child: Icon(Icons.link,
                                 size: 20, color: AppColors.neutral.s900),
                           ),
                           const SizedBox(width: AppSpacing.md),
@@ -281,7 +282,7 @@ class _ShareSheetState extends ConsumerState<ShareSheet> {
                           if (_currentVisibility != ContentVisibility.private)
                             IconButton(
                               onPressed: _copyLink,
-                              icon: const Icon(Icons.copy,
+                              icon: Icon(Icons.copy,
                                   color: AppColors.primary.s500),
                               tooltip: 'Copy Link',
                             ),

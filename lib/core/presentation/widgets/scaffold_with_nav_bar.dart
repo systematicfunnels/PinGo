@@ -29,7 +29,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
         elevation: 2,
         shadowColor: Colors.black12,
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-        destinations: const [
+        destinations: [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
             selectedIcon: Icon(Icons.home, color: AppColors.primary.s500),

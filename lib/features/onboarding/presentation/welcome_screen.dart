@@ -138,7 +138,7 @@ class WelcomeScreen extends ConsumerWidget {
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: isSecondary
                                 ? AppColors.neutral.s700
-                                : AppColors.neutral.s100.withOpacity(0.8),
+                                : AppColors.neutral.s100.withValues(alpha: 0.8),
                           ),
                     ),
                   ],
@@ -148,7 +148,7 @@ class WelcomeScreen extends ConsumerWidget {
                 Icons.arrow_forward_ios_rounded,
                 color: isSecondary
                     ? AppColors.neutral.s500
-                    : AppColors.neutral.s100.withOpacity(0.5),
+                    : AppColors.neutral.s100.withValues(alpha: 0.5),
                 size: AppSpacing.lg,
               ),
             ],

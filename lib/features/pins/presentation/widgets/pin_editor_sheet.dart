@@ -426,12 +426,12 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
                               padding: AppSpacing.allMd,
                               decoration: BoxDecoration(
                                 color:
-                                    AppColors.error.s500.withOpacity(0.1),
+                                    AppColors.error.s500.withValues(alpha: 0.1),
                                 borderRadius:
                                     BorderRadius.circular(AppSpacing.sm),
                                 border: Border.all(
                                     color: AppColors.error.s500
-                                        .withOpacity(0.5)),
+                                        .withValues(alpha: 0.5)),
                               ),
                               child: Row(
                                 children: [
@@ -443,7 +443,7 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
                                       'Marking this as a hazard will alert other users nearby.',
                                       style: TextStyle(
                                           color: AppColors.error.s500
-                                              .withOpacity(0.8)),
+                                              .withValues(alpha: 0.8)),
                                     ),
                                   ),
                                 ],
@@ -495,7 +495,7 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
           decoration: InputDecoration(
             labelText: 'Add to Map',
             filled: true,
-            fillColor: AppColors.surfaceVariant,
+            fillColor: AppColors.neutral.s100,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppSpacing.md),
               borderSide: BorderSide.none,
@@ -527,7 +527,7 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
           decoration: InputDecoration(
             labelText: 'Add to Troupe',
             filled: true,
-            fillColor: AppColors.surfaceVariant,
+            fillColor: AppColors.neutral.s100,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppSpacing.md),
               borderSide: BorderSide.none,

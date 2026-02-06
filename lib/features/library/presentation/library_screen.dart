@@ -70,7 +70,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                   backgroundColor: WidgetStateProperty.resolveWith<Color>(
                     (Set<WidgetState> states) {
                       if (states.contains(WidgetState.selected)) {
-                        return AppColors.primary.s500.withOpacity(0.1);
+                        return AppColors.primary.s500.withValues(alpha: 0.1);
                       }
                       return Colors.transparent;
                     },
@@ -80,7 +80,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                       if (states.contains(WidgetState.selected)) {
                         return AppColors.primary.s500;
                       }
-                      return AppColors.textSecondary;
+                      return AppColors.neutral.s700;
                     },
                   ),
                 ),

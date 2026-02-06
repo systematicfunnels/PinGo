@@ -197,7 +197,8 @@ class JourneyDetailScreen extends ConsumerWidget {
                             Container(
                                 width: 1,
                                 height: 40,
-                                color: AppColors.neutral.s500.withOpacity(0.2)),
+                                color: AppColors.neutral.s500
+                                    .withValues(alpha: 0.2)),
                             _StatItem(
                               label: 'Duration',
                               value:

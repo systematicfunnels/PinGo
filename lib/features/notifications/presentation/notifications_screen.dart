@@ -105,7 +105,7 @@ class _EmptyState extends StatelessWidget {
           Icon(
             Icons.notifications_off_outlined,
             size: 64,
-            color: AppColors.neutral.s500.withOpacity(0.5),
+            color: AppColors.neutral.s500.withValues(alpha: 0.5),
           ),
           const SizedBox(height: AppSpacing.lg),
           Text(
@@ -151,7 +151,7 @@ class NotificationTile extends ConsumerWidget {
     final iconColor =
         isSystem ? AppColors.neutral.s700 : AppColors.primary.s500;
     final backgroundColor = item.isUnread
-        ? AppColors.primary.s500.withOpacity(0.05)
+        ? AppColors.primary.s500.withValues(alpha: 0.05)
         : Colors.transparent;
 
     return Card(
@@ -160,7 +160,7 @@ class NotificationTile extends ConsumerWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppSpacing.md),
         side: BorderSide(
-          color: AppColors.neutral.s300.withOpacity(0.5),
+          color: AppColors.neutral.s300.withValues(alpha: 0.5),
         ),
       ),
       child: ListTile(
@@ -171,7 +171,7 @@ class NotificationTile extends ConsumerWidget {
         leading: Container(
           padding: const EdgeInsets.all(AppSpacing.sm),
           decoration: BoxDecoration(
-            color: iconColor.withOpacity(0.1),
+            color: iconColor.withValues(alpha: 0.1),
             shape: BoxShape.circle,
           ),
           child: Icon(item.icon, color: iconColor, size: 24),
