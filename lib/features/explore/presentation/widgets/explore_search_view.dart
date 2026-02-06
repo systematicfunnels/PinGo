@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pingo/core/theme/app_theme.dart';
-import 'package:pingo/core/theme/radius.dart';
+import 'package:pingo/core/presentation/widgets/molecules/molecules.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/features/explore/presentation/controllers/explore_search_controller.dart';
 
@@ -59,31 +59,17 @@ class _ExploreSearchViewState extends ConsumerState<ExploreSearchView> {
                     },
                   ),
                   Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.neutral.s100,
-                        borderRadius: AppRadius.allFull,
-                        border: Border.all(color: AppColors.neutral.s300),
-                      ),
-                      child: TextField(
-                        controller: _controller,
-                        focusNode: _focusNode,
-                        onChanged: (value) {
-                          ref
-                              .read(exploreSearchQueryProvider.notifier)
-                              .setQuery(value);
-                        },
-                        decoration: InputDecoration(
-                          hintText: 'Search places, routes...',
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: AppSpacing.lg,
-                            vertical: AppSpacing.md,
-                          ),
-                          prefixIcon:
-                              Icon(Icons.search, color: AppColors.neutral.s700),
-                        ),
-                      ),
+                    child: PingoInputField(
+                      controller: _controller,
+                      focusNode: _focusNode,
+                      onChanged: (value) {
+                        ref
+                            .read(exploreSearchQueryProvider.notifier)
+                            .setQuery(value);
+                      },
+                      hintText: 'Search places, routes...',
+                      prefixIcon:
+                          Icon(Icons.search, color: AppColors.neutral.s700),
                     ),
                   ),
                 ],

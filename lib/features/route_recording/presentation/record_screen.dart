@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:pingo/core/presentation/widgets/molecules/pingo_button.dart';
 import 'package:pingo/core/routing/route_paths.dart';
+import 'package:pingo/core/config/constants.dart';
 import 'package:pingo/core/presentation/utils/snackbar_utils.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/elevation.dart';
@@ -87,8 +88,7 @@ class _RecordScreenState extends ConsumerState<RecordScreen> {
             ),
             children: [
               TileLayer(
-                urlTemplate:
-                    'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png',
+                urlTemplate: AppConstants.mapStyleUrl,
                 userAgentPackageName: 'com.example.pingo',
               ),
               // Recorded Path

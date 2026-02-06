@@ -6,7 +6,10 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pingo/core/domain/models/content_visibility.dart';
 import 'package:pingo/core/domain/models/pin_type.dart';
-import 'package:pingo/core/presentation/widgets/visibility_selector.dart';
+import 'package:pingo/core/presentation/widgets/molecules/molecules.dart';
+import 'package:pingo/core/presentation/widgets/atoms/pingo_text.dart';
+import 'package:pingo/core/presentation/utils/snackbar_utils.dart';
+import 'package:pingo/core/presentation/widgets/organisms/pingo_confirmation_dialog.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
@@ -55,9 +58,7 @@ class _AddPinScreenState extends ConsumerState<AddPinScreen> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to pick image: $e')),
-        );
+        SnackbarUtils.showError('Failed to pick image: $e');
       }
     }
   }
@@ -89,9 +90,7 @@ class _AddPinScreenState extends ConsumerState<AddPinScreen> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to save pin: $e')),
-        );
+        SnackbarUtils.showError('Failed to save pin: $e');
       }
     } finally {
       if (mounted) {
@@ -109,21 +108,14 @@ class _AddPinScreenState extends ConsumerState<AddPinScreen> {
 
     final shouldPop = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Discard Changes?'),
-        content: const Text(
-            'You have unsaved changes. Are you sure you want to discard them?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Keep Editing'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            style: TextButton.styleFrom(foregroundColor: AppColors.error.s500),
-            child: const Text('Discard'),
-          ),
-        ],
+      builder: (context) => PingoConfirmationDialog(
+        title: 'Discard Changes?',
+        content:
+            'You have unsaved changes. Are you sure you want to discard them?',
+        confirmLabel: 'Discard',
+        cancelLabel: 'Keep Editing',
+        isDestructive: true,
+        onConfirm: () => Navigator.of(context).pop(true),
       ),
     );
 
@@ -143,7 +135,7 @@ class _AddPinScreenState extends ConsumerState<AddPinScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Capture Moment'),
+          title: const PingoText.heading('Capture Moment'),
           leading: IconButton(
             icon: const Icon(Icons.close),
             onPressed: () async {
@@ -202,10 +194,11 @@ class _AddPinScreenState extends ConsumerState<AddPinScreen> {
                                       Icon(Icons.add_a_photo_outlined,
                                           color: AppColors.neutral.s700),
                                       const SizedBox(height: 4),
-                                      Text('Add Photo',
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              color: AppColors.neutral.s700)),
+                                      PingoText.body(
+                                        'Add Photo',
+                                        color: AppColors.neutral.s700,
+                                        size: PingoTextSize.small,
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -268,9 +261,9 @@ class _AddPinScreenState extends ConsumerState<AddPinScreen> {
                           maxLines: 3,
                         ),
                         const SizedBox(height: AppSpacing.md),
-                        Text(
+                        PingoText.heading(
                           'Type',
-                          style: Theme.of(context).textTheme.titleMedium,
+                          size: PingoTextSize.medium,
                         ),
                         const SizedBox(height: AppSpacing.sm),
                         Wrap(
@@ -316,7 +309,7 @@ class _AddPinScreenState extends ConsumerState<AddPinScreen> {
                           ),
                         ],
                         const SizedBox(height: AppSpacing.md),
-                        VisibilitySelector(
+                        PingoVisibilitySelector(
                           selected: _visibility,
                           onChanged: (v) => setState(() => _visibility = v),
                         ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/spacing.dart';
+import 'package:pingo/core/presentation/widgets/molecules/molecules.dart';
 import 'package:pingo/features/explore/presentation/widgets/discover_sheet.dart';
 import 'package:pingo/features/explore/presentation/widgets/explore_map_view.dart';
 import 'package:pingo/features/explore/presentation/widgets/explore_search_bar.dart';
@@ -33,8 +33,8 @@ class ExploreScreen extends StatelessWidget {
           // 4. Pin Moment FAB
           Positioned(
             right: AppSpacing.lg,
-            bottom: MediaQuery.of(context).size.height * 0.12 + AppSpacing.lg,
-            child: FloatingActionButton.extended(
+            bottom: AppSpacing.xxl + 80, // Explicit offset for bottom nav
+            child: PingoFab(
               onPressed: () {
                 showModalBottomSheet(
                   context: context,
@@ -45,10 +45,9 @@ class ExploreScreen extends StatelessWidget {
                   ),
                 );
               },
-              backgroundColor: AppColors.primary.s500,
-              foregroundColor: AppColors.neutral.s100,
-              icon: const Icon(Icons.add_a_photo),
-              label: const Text('Pin Moment'),
+              icon: Icons.add_a_photo,
+              label: 'Pin Moment',
+              isExtended: true,
             ),
           ),
         ],

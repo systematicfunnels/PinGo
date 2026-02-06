@@ -10,11 +10,10 @@ import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/features/route_recording/data/repositories/journey_repository_impl.dart';
 import 'package:pingo/core/domain/models/content_visibility.dart';
-import 'package:pingo/core/presentation/widgets/visibility_selector.dart';
+import 'package:pingo/core/presentation/widgets/molecules/molecules.dart';
 import 'package:pingo/features/route_recording/domain/models/journey.dart';
 import 'package:pingo/features/route_recording/presentation/widgets/replay_journey_fab.dart';
 import 'package:pingo/features/sharing/presentation/share_controller.dart';
-import 'package:pingo/core/presentation/widgets/molecules/pingo_button.dart';
 
 class JourneyDetailScreen extends ConsumerWidget {
   final int journeyId;
@@ -337,7 +336,7 @@ class _ShareSheetState extends ConsumerState<_ShareSheet> {
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       const SizedBox(height: 24),
-                      VisibilitySelector(
+                      PingoVisibilitySelector(
                         selected: _visibility,
                         onChanged: (v) async {
                           setState(() => _visibility = v);

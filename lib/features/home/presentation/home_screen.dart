@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pingo/core/presentation/widgets/atoms/atoms.dart';
 import 'package:pingo/core/routing/route_paths.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/elevation.dart';
@@ -104,18 +105,15 @@ class _HomeHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        PingoText.body(
           AppDateUtils.getGreeting(DateTime.now()),
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: AppColors.neutral.s700,
-              ),
+          color: AppColors.neutral.s700,
+          size: PingoTextSize.large,
         ),
         const SizedBox(height: AppSpacing.xs),
-        Text(
+        const PingoText.heading(
           'Ready to explore?',
-          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          size: PingoTextSize.medium,
         ),
       ],
     );
@@ -166,17 +164,15 @@ class _ActiveJourneyCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      PingoText.heading(
                         'Recording Journey',
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              color: AppColors.primary.s500,
-                              fontWeight: FontWeight.bold,
-                            ),
+                        size: PingoTextSize.small,
+                        color: AppColors.primary.s500,
                       ),
                       const SizedBox(height: 2),
-                      Text(
+                      PingoText.body(
                         '${GeoUtils.formatDistance(distance)} • ${AppDateUtils.formatDuration(duration)}',
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        size: PingoTextSize.small,
                       ),
                     ],
                   ),
@@ -225,11 +221,10 @@ class _SoftPromptCard extends StatelessWidget {
               children: [
                 Icon(icon, color: AppColors.neutral.s700, size: 24),
                 const SizedBox(height: AppSpacing.xs),
-                Text(
+                PingoText.body(
                   label,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.neutral.s700,
-                      ),
+                  color: AppColors.neutral.s700,
+                  size: PingoTextSize.small,
                 ),
               ],
             ),
@@ -282,8 +277,10 @@ class _FeedSection extends ConsumerWidget {
                 margin: const EdgeInsets.only(bottom: AppSpacing.md),
                 child: ListTile(
                   leading: const CircleAvatar(child: Icon(Icons.place)),
-                  title: Text(pin.title ?? 'Untitled Pin'),
-                  subtitle: Text(pin.description ?? ''),
+                  title: PingoText.body(pin.title ?? 'Untitled Pin',
+                      size: PingoTextSize.medium),
+                  subtitle: PingoText.body(pin.description ?? '',
+                      size: PingoTextSize.small, isMuted: true),
                   onTap: () {
                     showModalBottomSheet(
                       context: context,

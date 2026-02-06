@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pingo/core/presentation/widgets/molecules/molecules.dart';
 import 'package:pingo/core/routing/route_paths.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/spacing.dart';
@@ -97,14 +98,13 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
 
   Widget? _buildFab() {
     if (_selectedIndex == 3) {
-      return FloatingActionButton.extended(
+      return PingoFab(
         onPressed: () {
           context.go(RoutePaths.regionSelection);
         },
-        backgroundColor: AppColors.primary.s500,
-        foregroundColor: Colors.white,
-        icon: const Icon(Icons.download),
-        label: const Text('Download Region'),
+        icon: Icons.download,
+        label: 'Download Region',
+        isExtended: true,
       );
     }
     return null;

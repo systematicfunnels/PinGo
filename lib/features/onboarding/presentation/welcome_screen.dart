@@ -5,6 +5,7 @@ import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/elevation.dart';
 import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
+import 'package:pingo/core/presentation/widgets/atoms/atoms.dart';
 import 'package:pingo/core/routing/route_paths.dart';
 import 'onboarding_controller.dart';
 
@@ -23,18 +24,17 @@ class WelcomeScreen extends ConsumerWidget {
             children: [
               const Spacer(flex: 2),
 
-              Text(
+              const PingoText.display(
                 'Welcome to PinGo',
-                style: Theme.of(context).textTheme.displayMedium,
+                size: PingoTextSize.medium,
               ),
 
               const SizedBox(height: AppSpacing.lg),
 
-              Text(
+              PingoText.body(
                 'How would you like to begin?',
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: AppColors.neutral.s700,
-                    ),
+                color: AppColors.neutral.s700,
+                size: PingoTextSize.large,
               ),
 
               const Spacer(flex: 3),
@@ -72,13 +72,10 @@ class WelcomeScreen extends ConsumerWidget {
 
               const Spacer(flex: 2),
 
-              Center(
-                child: Text(
+              const Center(
+                child: PingoText.caption(
                   'No account needed to begin.',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.neutral.s500,
-                        fontStyle: FontStyle.italic,
-                      ),
+                  isMuted: true,
                 ),
               ),
 

@@ -8,6 +8,7 @@ import 'package:pingo/core/theme/elevation.dart';
 import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/features/pins/domain/models/pin.dart';
+import 'package:pingo/core/presentation/widgets/organisms/organisms.dart';
 import 'package:pingo/features/sharing/presentation/widgets/share_sheet.dart';
 import '../controllers/pins_controller.dart';
 import 'pin_editor_sheet.dart';
@@ -105,22 +106,13 @@ class PinDetailsSheet extends ConsumerWidget {
                           } else if (value == 'delete') {
                             final confirm = await showDialog<bool>(
                               context: context,
-                              builder: (context) => AlertDialog(
-                                title: const Text('Delete Pin?'),
-                                content:
-                                    const Text('This action cannot be undone.'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () => context.pop(false),
-                                    child: const Text('Cancel'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () => context.pop(true),
-                                    style: TextButton.styleFrom(
-                                        foregroundColor: AppColors.error.s500),
-                                    child: const Text('Delete'),
-                                  ),
-                                ],
+                              builder: (context) => PingoConfirmationDialog(
+                                title: 'Delete Pin?',
+                                content: 'This action cannot be undone.',
+                                confirmLabel: 'Delete',
+                                isDestructive: true,
+                                onConfirm: () =>
+                                    Navigator.of(context).pop(true),
                               ),
                             );
 
@@ -205,7 +197,8 @@ class PinDetailsSheet extends ConsumerWidget {
                             width: 100,
                             decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: FileImage(File(livePin.mediaPaths[index])),
+                                image:
+                                    FileImage(File(livePin.mediaPaths[index])),
                                 fit: BoxFit.cover,
                               ),
                               borderRadius: AppRadius.all12,

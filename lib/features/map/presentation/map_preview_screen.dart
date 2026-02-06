@@ -57,13 +57,7 @@ class _MapPreviewScreenState extends ConsumerState<MapPreviewScreen> {
 
     // OPTIMISTIC UI: Save immediately
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Map saved to Library'),
-          behavior: SnackBarBehavior.floating,
-          duration: Duration(seconds: 2),
-        ),
-      );
+      SnackbarUtils.show('Map saved to Library');
       context.go('/library');
     }
 

@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:pingo/core/domain/models/content_visibility.dart';
-import 'package:pingo/core/presentation/widgets/visibility_selector.dart';
+import 'package:pingo/core/presentation/utils/snackbar_utils.dart';
+import 'package:pingo/core/presentation/widgets/molecules/molecules.dart';
+import 'package:pingo/core/presentation/widgets/atoms/pingo_text.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
@@ -82,9 +84,7 @@ class _CreateTroupeScreenState extends ConsumerState<CreateTroupeScreen> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to create troupe: $e')),
-        );
+        SnackbarUtils.showError('Failed to create troupe: $e');
       }
     } finally {
       if (mounted) {
@@ -115,16 +115,14 @@ class _CreateTroupeScreenState extends ConsumerState<CreateTroupeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       // Header Info
-                      Text(
+                      const PingoText.heading(
                         'Plan a Trip',
-                        style: Theme.of(context).textTheme.headlineSmall,
+                        size: PingoTextSize.small,
                       ),
                       const SizedBox(height: AppSpacing.xs),
-                      Text(
+                      PingoText.body(
                         'Organize your pins and memories by day.',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: AppColors.neutral.s700,
-                            ),
+                        color: AppColors.neutral.s700,
                       ),
                       const SizedBox(height: AppSpacing.xl),
 
@@ -178,7 +176,7 @@ class _CreateTroupeScreenState extends ConsumerState<CreateTroupeScreen> {
                       const SizedBox(height: AppSpacing.md),
 
                       // Visibility
-                      VisibilitySelector(
+                      PingoVisibilitySelector(
                         selected: _visibility,
                         onChanged: (v) => setState(() => _visibility = v),
                       ),

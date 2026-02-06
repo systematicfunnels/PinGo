@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pingo/core/domain/models/content_visibility.dart';
-import 'package:pingo/core/presentation/widgets/molecules/pingo_button.dart';
+import 'package:pingo/core/presentation/widgets/molecules/molecules.dart';
 import 'package:pingo/core/presentation/utils/snackbar_utils.dart';
-import 'package:pingo/core/presentation/widgets/visibility_selector.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
@@ -135,7 +134,7 @@ class _ShareMapSheetState extends ConsumerState<ShareMapSheet> {
                     ),
               ),
               const SizedBox(height: AppSpacing.sm),
-              VisibilitySelector(
+              PingoVisibilitySelector(
                 selected: _visibility,
                 onChanged: (v) => setState(() => _visibility = v),
               ),

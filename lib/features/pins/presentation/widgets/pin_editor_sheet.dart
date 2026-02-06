@@ -2,13 +2,13 @@ import 'dart:async';
 import 'dart:io';
 import 'package:pingo/core/domain/models/content_visibility.dart';
 import 'package:pingo/core/domain/models/pin_type.dart';
-import 'package:pingo/core/presentation/widgets/visibility_selector.dart';
+import 'package:pingo/core/presentation/widgets/molecules/molecules.dart';
+import 'package:pingo/core/presentation/widgets/atoms/pingo_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pingo/core/presentation/widgets/molecules/pingo_button.dart';
 import 'package:pingo/core/presentation/utils/snackbar_utils.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/radius.dart';
@@ -119,6 +119,8 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
   }
 
   Future<void> _savePin({bool isDraft = false}) async {
+    if (!isDraft && _isFinalSave) return;
+
     // Drafts don't need validation
     if (!isDraft && !_formKey.currentState!.validate()) return;
 
@@ -151,13 +153,7 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
       _allowPop = true;
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Moment saved'),
-            duration: Duration(seconds: 2),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
+        SnackbarUtils.show('Moment saved', isError: false);
         Navigator.of(context).pop();
       }
     } else {
@@ -230,9 +226,7 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
           if (!_isFinalSave && _hasChanges) {
             await _savePin(isDraft: true);
             if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Saved as draft')),
-              );
+              SnackbarUtils.show('Saved as draft', isError: false);
             }
           }
           _allowPop = true;
@@ -335,10 +329,11 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
                                         Icon(Icons.add_a_photo_outlined,
                                             color: AppColors.neutral.s700),
                                         const SizedBox(height: 4),
-                                        Text('Add Photo',
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                color: AppColors.neutral.s700)),
+                                        PingoText.body(
+                                          'Add Photo',
+                                          size: PingoTextSize.small,
+                                          color: AppColors.neutral.s700,
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -451,7 +446,7 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
                             ),
                           ],
                           const SizedBox(height: AppSpacing.md),
-                          VisibilitySelector(
+                          PingoVisibilitySelector(
                             selected: _visibility,
                             onChanged: (v) => setState(() => _visibility = v),
                           ),

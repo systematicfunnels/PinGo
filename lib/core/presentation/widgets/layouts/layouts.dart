@@ -1,2 +1,1 @@
-// Layout components will go here
-// Example: Scaffold wrappers, Screen templates, etc.
+export 'scaffold_with_nav_bar.dart';

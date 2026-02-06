@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pingo/core/domain/models/content_visibility.dart';
-import 'package:pingo/core/presentation/widgets/molecules/pingo_button.dart';
+import 'package:pingo/core/presentation/widgets/molecules/molecules.dart';
+import 'package:pingo/core/presentation/widgets/organisms/organisms.dart';
 import 'package:pingo/core/presentation/utils/snackbar_utils.dart';
 import 'package:pingo/core/routing/route_paths.dart';
 import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
-import 'package:pingo/core/presentation/widgets/visibility_selector.dart';
-import 'package:pingo/core/presentation/widgets/share_confirmation_dialog.dart';
 import 'package:pingo/features/route_recording/domain/models/journey.dart';
 import 'package:pingo/features/route_recording/data/repositories/journey_repository_impl.dart';
 
@@ -92,7 +91,7 @@ class _JourneySummaryScreenState extends ConsumerState<JourneySummaryScreen> {
   void _showShareDialog() {
     showDialog(
       context: context,
-      builder: (context) => ShareConfirmationDialog(
+      builder: (context) => PingoConfirmationDialog(
         title: 'Share Journey',
         content: 'Do you want to share this journey with the community?',
         isPublic: _visibility == ContentVisibility.public,
@@ -218,7 +217,7 @@ class _JourneySummaryScreenState extends ConsumerState<JourneySummaryScreen> {
             ),
             const SizedBox(height: AppSpacing.xl),
 
-            VisibilitySelector(
+            PingoVisibilitySelector(
               selected: _visibility,
               onChanged: (value) => setState(() => _visibility = value),
             ),

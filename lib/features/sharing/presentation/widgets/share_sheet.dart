@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pingo/core/domain/models/content_visibility.dart';
-import 'package:pingo/core/presentation/widgets/visibility_selector.dart';
+import 'package:pingo/core/presentation/utils/snackbar_utils.dart';
+import 'package:pingo/core/presentation/widgets/molecules/molecules.dart';
+import 'package:pingo/core/presentation/widgets/atoms/pingo_text.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/elevation.dart';
 import 'package:pingo/core/theme/radius.dart';
@@ -76,20 +78,13 @@ class _ShareSheetState extends ConsumerState<ShareSheet> {
     try {
       await ref.read(pinsControllerProvider.notifier).updatePin(updatedPin);
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Visibility updated'),
-            duration: Duration(seconds: 1),
-          ),
-        );
+        SnackbarUtils.show('Visibility updated', isError: false);
       }
     } catch (e) {
       // Revert on error
       if (mounted) {
         setState(() => _currentVisibility = widget.pin.visibility);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to update visibility: $e')),
-        );
+        SnackbarUtils.showError('Failed to update visibility: $e');
       }
     }
   }
@@ -101,9 +96,7 @@ class _ShareSheetState extends ConsumerState<ShareSheet> {
     await Clipboard.setData(ClipboardData(text: link));
     if (mounted) {
       HapticFeedback.mediumImpact();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Link copied')),
-      );
+      SnackbarUtils.show('Link copied', isError: false);
     }
   }
 
@@ -184,25 +177,16 @@ class _ShareSheetState extends ConsumerState<ShareSheet> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  'Sensitive content detected?',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleSmall
-                                      ?.copyWith(
-                                        color: AppColors.primary.s500,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                PingoText.heading(
+                                  'Smart Privacy Check',
+                                  color: AppColors.primary.s500,
+                                  size: PingoTextSize.small,
                                 ),
                                 const SizedBox(height: AppSpacing.xs),
-                                Text(
+                                PingoText.body(
                                   'Consider keeping this Private or Trusted.',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(
-                                        color: AppColors.primary.s500,
-                                      ),
+                                  color: AppColors.primary.s500,
+                                  size: PingoTextSize.small,
                                 ),
                               ],
                             ),
@@ -212,7 +196,7 @@ class _ShareSheetState extends ConsumerState<ShareSheet> {
                     ),
 
                   // Visibility Selector
-                  VisibilitySelector(
+                  PingoVisibilitySelector(
                     selected: _currentVisibility,
                     onChanged: _updateVisibility,
                   ),
@@ -220,12 +204,10 @@ class _ShareSheetState extends ConsumerState<ShareSheet> {
                   const SizedBox(height: AppSpacing.xl),
 
                   // Link Sharing Section
-                  Text(
+                  PingoText.heading(
                     'Share Link',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.neutral.s700,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    size: PingoTextSize.small,
+                    color: AppColors.neutral.s700,
                   ),
                   const SizedBox(height: AppSpacing.sm),
 
@@ -255,28 +237,19 @@ class _ShareSheetState extends ConsumerState<ShareSheet> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
+                                PingoText.heading(
                                   _currentVisibility ==
                                           ContentVisibility.private
                                       ? 'Link sharing is disabled'
                                       : 'Link ready to share',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                  size: PingoTextSize.small,
                                 ),
                                 if (_currentVisibility !=
                                     ContentVisibility.private)
-                                  Text(
+                                  PingoText.body(
                                     'Anyone with the link can view',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
-                                        ?.copyWith(
-                                          color: AppColors.neutral.s700,
-                                        ),
+                                    color: AppColors.neutral.s700,
+                                    size: PingoTextSize.small,
                                   ),
                               ],
                             ),
@@ -296,12 +269,10 @@ class _ShareSheetState extends ConsumerState<ShareSheet> {
                   if (_currentVisibility == ContentVisibility.private)
                     Padding(
                       padding: const EdgeInsets.only(top: AppSpacing.sm),
-                      child: Text(
+                      child: PingoText.body(
                         'Make this memory Trusted or Public to share a link.',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: AppColors.neutral.s700,
-                              fontStyle: FontStyle.italic,
-                            ),
+                        color: AppColors.neutral.s700,
+                        size: PingoTextSize.small,
                       ),
                     ),
                 ],

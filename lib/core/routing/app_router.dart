@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:pingo/core/routing/route_paths.dart';
-import 'package:pingo/core/presentation/widgets/scaffold_with_nav_bar.dart';
+import 'package:pingo/core/presentation/widgets/layouts/layouts.dart';
 import 'package:pingo/features/onboarding/presentation/splash_screen.dart';
 import 'package:pingo/features/onboarding/presentation/welcome_screen.dart';
 import 'package:pingo/features/onboarding/presentation/persona_selection_screen.dart';

@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:pingo/core/domain/models/content_visibility.dart';
+import 'package:pingo/core/presentation/widgets/atoms/pingo_icon.dart';
+import 'package:pingo/core/presentation/widgets/atoms/pingo_text.dart';
+import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
-import 'package:pingo/core/theme/app_theme.dart';
 
-class VisibilitySelector extends StatelessWidget {
+class PingoVisibilitySelector extends StatelessWidget {
   final ContentVisibility selected;
   final ValueChanged<ContentVisibility> onChanged;
 
-  const VisibilitySelector({
+  const PingoVisibilitySelector({
     super.key,
     required this.selected,
     required this.onChanged,
@@ -19,12 +21,9 @@ class VisibilitySelector extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        PingoText.caption(
           'Visibility',
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.neutral.s700,
-                fontWeight: FontWeight.bold,
-              ),
+          color: AppColors.neutral.s700,
         ),
         const SizedBox(height: AppSpacing.sm),
         SingleChildScrollView(
@@ -59,23 +58,20 @@ class VisibilitySelector extends StatelessWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(
+                          PingoIcon(
                             _getIcon(visibility),
-                            size: AppSpacing.lg,
+                            size: PingoIconSize.medium,
                             color: isSelected
                                 ? AppColors.neutral.s100
                                 : AppColors.neutral.s700,
                           ),
                           const SizedBox(width: AppSpacing.sm),
-                          Text(
+                          PingoText.body(
                             visibility.label,
-                            style: TextStyle(
-                              color: isSelected
-                                  ? AppColors.neutral.s100
-                                  : AppColors.neutral.s900,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                            ),
+                            color: isSelected
+                                ? AppColors.neutral.s100
+                                : AppColors.neutral.s900,
+                            size: PingoTextSize.small,
                           ),
                         ],
                       ),
