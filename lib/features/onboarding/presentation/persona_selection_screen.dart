@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/elevation.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/core/routing/route_paths.dart';
 import '../domain/onboarding_state.dart';
@@ -106,52 +108,59 @@ class _PersonaCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(AppSpacing.lg),
-      child: Container(
-        padding: AppSpacing.allXl,
-        decoration: BoxDecoration(
-          color: AppColors.neutral.s100,
-          borderRadius: BorderRadius.circular(AppSpacing.lg),
-          border: Border.all(
-            color: AppColors.primary.s500.withValues(alpha: 0.1),
-          ),
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.neutral.s100,
+        borderRadius: AppRadius.all12,
+        boxShadow: AppElevation.card,
+        border: Border.all(
+          color: AppColors.primary.s500.withValues(alpha: 0.1),
         ),
-        child: Row(
-          children: [
-            Container(
-              padding: AppSpacing.allMd,
-              decoration: BoxDecoration(
-                color: AppColors.primary.s500.withValues(alpha: 0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(icon, color: AppColors.primary.s500),
-            ),
-            const SizedBox(width: AppSpacing.lg),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    label,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: AppRadius.all12,
+          child: Padding(
+            padding: AppSpacing.allXl,
+            child: Row(
+              children: [
+                Container(
+                  padding: AppSpacing.allMd,
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.s500.withValues(alpha: 0.1),
+                    shape: BoxShape.circle,
                   ),
-                  const SizedBox(height: AppSpacing.xs),
-                  Text(
-                    description,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.neutral.s700,
-                        ),
+                  child: Icon(icon, color: AppColors.primary.s500),
+                ),
+                const SizedBox(width: AppSpacing.lg),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        label,
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                      ),
+                      const SizedBox(height: AppSpacing.xs),
+                      Text(
+                        description,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: AppColors.neutral.s700,
+                            ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                Icon(Icons.arrow_forward_ios,
+                    size: AppSpacing.lg, color: AppColors.neutral.s500),
+              ],
             ),
-            Icon(Icons.arrow_forward_ios,
-                size: AppSpacing.lg, color: AppColors.neutral.s500),
-          ],
+          ),
         ),
       ),
     );

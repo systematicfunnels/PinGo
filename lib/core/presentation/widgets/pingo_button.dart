@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 
 /// A global button component that implements the "Disabled vs Active States" rules.
@@ -186,7 +187,7 @@ class _PingoButtonState extends State<PingoButton> {
         vertical: AppSpacing.lg,
       ),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSpacing.md),
+        borderRadius: AppRadius.all8,
       ),
       // We handle disabled state manually to support tap-on-disabled
       disabledBackgroundColor: effectiveBgColor,

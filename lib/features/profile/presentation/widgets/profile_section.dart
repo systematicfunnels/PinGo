@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/elevation.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 
 class ProfileSection extends StatelessWidget {
@@ -31,14 +33,8 @@ class ProfileSection extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             color: AppColors.neutral.s100,
-            borderRadius: BorderRadius.circular(AppSpacing.lg),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
-                blurRadius: 4,
-                offset: const Offset(0, 2),
-              ),
-            ],
+            borderRadius: AppRadius.all16,
+            boxShadow: AppElevation.floating,
           ),
           child: Column(
             children: children,

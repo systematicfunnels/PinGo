@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pingo/core/presentation/widgets/pingo_button.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/elevation.dart';
 import 'package:pingo/core/theme/spacing.dart';
 
 class StickyActionBottomBar extends StatelessWidget {
@@ -21,13 +22,7 @@ class StickyActionBottomBar extends StatelessWidget {
       padding: const EdgeInsets.all(AppSpacing.xl),
       decoration: BoxDecoration(
         color: AppColors.neutral.s100,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 10,
-            offset: const Offset(0, -5),
-          ),
-        ],
+        boxShadow: AppElevation.floating,
       ),
       child: PingoButton(
         onPressed: onPressed,

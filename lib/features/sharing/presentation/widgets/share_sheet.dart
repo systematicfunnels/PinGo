@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:pingo/core/domain/models/content_visibility.dart';
 import 'package:pingo/core/presentation/widgets/visibility_selector.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/elevation.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/features/pins/domain/models/pin.dart';
 import 'package:pingo/features/pins/presentation/controllers/pins_controller.dart';
@@ -110,8 +112,8 @@ class _ShareSheetState extends ConsumerState<ShareSheet> {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.neutral.s100,
-        borderRadius:
-            BorderRadius.vertical(top: Radius.circular(AppSpacing.xl)),
+        borderRadius: AppRadius.top16,
+        boxShadow: AppElevation.modal,
       ),
       child: SafeArea(
         top: false,
@@ -122,12 +124,12 @@ class _ShareSheetState extends ConsumerState<ShareSheet> {
             // Drag Handle
             Center(
               child: Container(
-                width: 32,
-                height: 4,
+                width: AppSpacing.xxl,
+                height: AppSpacing.xs,
                 margin: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
                 decoration: BoxDecoration(
                   color: AppColors.neutral.s300,
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: AppRadius.allFull,
                 ),
               ),
             ),
@@ -168,7 +170,7 @@ class _ShareSheetState extends ConsumerState<ShareSheet> {
                       padding: const EdgeInsets.all(AppSpacing.md),
                       decoration: BoxDecoration(
                         color: AppColors.primary.s500.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(AppSpacing.md),
+                        borderRadius: AppRadius.all12,
                         border: Border.all(
                             color:
                                 AppColors.primary.s500.withValues(alpha: 0.3)),
@@ -192,7 +194,7 @@ class _ShareSheetState extends ConsumerState<ShareSheet> {
                                         fontWeight: FontWeight.bold,
                                       ),
                                 ),
-                                const SizedBox(height: 4),
+                                const SizedBox(height: AppSpacing.xs),
                                 Text(
                                   'Consider keeping this Private or Trusted.',
                                   style: Theme.of(context)
@@ -235,7 +237,7 @@ class _ShareSheetState extends ConsumerState<ShareSheet> {
                       padding: const EdgeInsets.all(AppSpacing.md),
                       decoration: BoxDecoration(
                         color: AppColors.neutral.s50,
-                        borderRadius: BorderRadius.circular(AppSpacing.md),
+                        borderRadius: AppRadius.all12,
                       ),
                       child: Row(
                         children: [

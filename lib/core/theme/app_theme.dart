@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 
 // --- Color Tokens ---
@@ -65,34 +66,125 @@ class _MapColors {
 // --- Typography ---
 
 class AppTypography {
+  // Font Roles
+  static final _primaryFont = GoogleFonts.inter; // UI + Body
+  static final _secondaryFont =
+      GoogleFonts.libreBaskerville; // Headings / Emphasis
+
   static TextTheme get textTheme {
     return TextTheme(
-      displayLarge: GoogleFonts.libreBaskerville(
+      // Display.XL: Hero statements
+      displayLarge: _secondaryFont(
         fontSize: 32,
         fontWeight: FontWeight.w700,
         color: AppColors.neutral.s900,
+        height: 1.2,
       ),
-      displayMedium: GoogleFonts.libreBaskerville(
+
+      // Heading.L: Section titles
+      // Mapped to headlineLarge and displayMedium (legacy)
+      headlineLarge: _secondaryFont(
         fontSize: 24,
         fontWeight: FontWeight.w600,
         color: AppColors.neutral.s900,
+        height: 1.3,
       ),
-      titleLarge: GoogleFonts.libreBaskerville(
+      displayMedium: _secondaryFont(
+        fontSize: 24,
+        fontWeight: FontWeight.w600,
+        color: AppColors.neutral.s900,
+        height: 1.3,
+      ),
+
+      // Heading.M: Cards, modals
+      // Mapped to headlineMedium and titleLarge (legacy)
+      headlineMedium: _secondaryFont(
         fontSize: 20,
         fontWeight: FontWeight.w600,
         color: AppColors.neutral.s900,
+        height: 1.3,
       ),
-      bodyLarge: GoogleFonts.inter(
-        fontSize: 16,
-        height: 1.5,
+      titleLarge: _secondaryFont(
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
         color: AppColors.neutral.s900,
+        height: 1.3,
       ),
-      bodyMedium: GoogleFonts.inter(
+
+      // Heading.S
+      // Mapped to headlineSmall and titleMedium
+      headlineSmall: _secondaryFont(
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+        color: AppColors.neutral.s900,
+        height: 1.3,
+      ),
+      titleMedium: _secondaryFont(
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+        color: AppColors.neutral.s900,
+        height: 1.3,
+      ),
+
+      // Body.L: Long reading (stories)
+      bodyLarge: _primaryFont(
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+        color: AppColors.neutral.s900,
+        height: 1.5, // Generous line-height
+      ),
+
+      // Body.M: Default UI text
+      bodyMedium: _primaryFont(
         fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: AppColors.neutral.s900,
         height: 1.5,
-        color: AppColors.neutral.s700,
       ),
-      labelLarge: GoogleFonts.inter(
+
+      // Body.S: Secondary info
+      bodySmall: _primaryFont(
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
+        color: AppColors.neutral.s700,
+        height: 1.5,
+      ),
+
+      // Caption: Metadata, timestamps
+      labelSmall: _primaryFont(
+        fontSize: 11,
+        fontWeight: FontWeight.w500,
+        color: AppColors.neutral.s500,
+        height: 1.4,
+      ),
+
+      // Title Small: Mapped to Label Large (14px Bold)
+      titleSmall: _primaryFont(
+        fontSize: 14,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.1,
+        color: AppColors.neutral.s900,
+        height: 1.4,
+      ),
+
+      // Label Medium: Mapped to Body Small (12px)
+      labelMedium: _primaryFont(
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        color: AppColors.neutral.s700,
+        height: 1.4,
+      ),
+
+      // Display Small: Mapped to Heading.L (24px) for safety
+      displaySmall: _secondaryFont(
+        fontSize: 24,
+        fontWeight: FontWeight.w600,
+        color: AppColors.neutral.s900,
+        height: 1.3,
+      ),
+
+      // Button Text (derived from Body.M but bold)
+      labelLarge: _primaryFont(
         fontSize: 14,
         fontWeight: FontWeight.w600,
         letterSpacing: 0.5,
@@ -129,7 +221,7 @@ class AppTheme {
           padding: const EdgeInsets.symmetric(
               horizontal: AppSpacing.xl, vertical: AppSpacing.lg),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSpacing.md),
+            borderRadius: AppRadius.all8,
           ),
           textStyle: AppTypography.textTheme.labelLarge,
         ),
@@ -138,10 +230,25 @@ class AppTheme {
         color: AppColors.neutral.s100,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: AppRadius.all12,
           side: BorderSide(color: AppColors.neutral.s300, width: 0.5),
         ),
         margin: EdgeInsets.zero,
+      ),
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: AppRadius.top16),
+      ),
+      dialogTheme: const DialogThemeData(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: AppRadius.all16),
+      ),
+      chipTheme: const ChipThemeData(
+        shape: RoundedRectangleBorder(borderRadius: AppRadius.all4),
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        shape: RoundedRectangleBorder(borderRadius: AppRadius.allFull),
+        elevation: 2, // Elevation.2
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
@@ -154,15 +261,15 @@ class AppTheme {
           vertical: AppSpacing.md,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSpacing.md),
+          borderRadius: AppRadius.all12,
           borderSide: BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSpacing.md),
+          borderRadius: AppRadius.all12,
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSpacing.md),
+          borderRadius: AppRadius.all12,
           borderSide: BorderSide(color: AppColors.primary.s500, width: 1.5),
         ),
         labelStyle: AppTypography.textTheme.bodyMedium,

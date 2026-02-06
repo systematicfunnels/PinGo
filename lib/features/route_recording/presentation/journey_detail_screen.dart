@@ -5,6 +5,8 @@ import 'package:latlong2/latlong.dart';
 import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/elevation.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/features/route_recording/data/repositories/journey_repository_impl.dart';
 import 'package:pingo/core/domain/models/content_visibility.dart';
@@ -183,7 +185,7 @@ class JourneyDetailScreen extends ConsumerWidget {
                         padding: AppSpacing.allLg,
                         decoration: BoxDecoration(
                           color: AppColors.neutral.s100,
-                          borderRadius: BorderRadius.circular(AppSpacing.lg),
+                          borderRadius: AppRadius.all16,
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -305,7 +307,8 @@ class _ShareSheetState extends ConsumerState<_ShareSheet> {
     return Container(
         decoration: BoxDecoration(
           color: AppColors.neutral.s100,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          borderRadius: AppRadius.top16,
+          boxShadow: AppElevation.modal,
         ),
         child: SafeArea(
             top: false,
@@ -320,7 +323,7 @@ class _ShareSheetState extends ConsumerState<_ShareSheet> {
                     margin: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
                     decoration: BoxDecoration(
                       color: AppColors.neutral.s300,
-                      borderRadius: BorderRadius.circular(2),
+                      borderRadius: AppRadius.allFull,
                     ),
                   ),
                 ),

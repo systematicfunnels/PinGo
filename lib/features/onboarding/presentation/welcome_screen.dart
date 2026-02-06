@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/elevation.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/core/routing/route_paths.dart';
 import 'onboarding_controller.dart';
@@ -96,62 +98,68 @@ class WelcomeScreen extends ConsumerWidget {
     required VoidCallback onTap,
     bool isSecondary = false,
   }) {
-    return Card(
-      color: isSecondary ? AppColors.neutral.s100 : AppColors.primary.s500,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSpacing.lg),
-        side: isSecondary
-            ? BorderSide(color: AppColors.neutral.s300)
-            : BorderSide.none,
+    return Container(
+      decoration: BoxDecoration(
+        color: isSecondary ? AppColors.neutral.s100 : AppColors.primary.s500,
+        borderRadius: AppRadius.all12,
+        boxShadow: AppElevation.card,
+        border: isSecondary
+            ? Border.all(color: AppColors.neutral.s300)
+            : Border.all(style: BorderStyle.none),
       ),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(AppSpacing.lg),
-        child: Padding(
-          padding: AppSpacing.allXl,
-          child: Row(
-            children: [
-              Icon(
-                icon,
-                color: isSecondary
-                    ? AppColors.primary.s500
-                    : AppColors.neutral.s100,
-                size: AppSpacing.xxl,
-              ),
-              const SizedBox(width: AppSpacing.lg),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: isSecondary
-                                ? AppColors.neutral.s900
-                                : AppColors.neutral.s100,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    const SizedBox(height: AppSpacing.xs),
-                    Text(
-                      description,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: isSecondary
-                                ? AppColors.neutral.s700
-                                : AppColors.neutral.s100.withValues(alpha: 0.8),
-                          ),
-                    ),
-                  ],
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: AppRadius.all12,
+          child: Padding(
+            padding: AppSpacing.allXl,
+            child: Row(
+              children: [
+                Icon(
+                  icon,
+                  color: isSecondary
+                      ? AppColors.primary.s500
+                      : AppColors.neutral.s100,
+                  size: AppSpacing.xxl,
                 ),
-              ),
-              Icon(
-                Icons.arrow_forward_ios_rounded,
-                color: isSecondary
-                    ? AppColors.neutral.s500
-                    : AppColors.neutral.s100.withValues(alpha: 0.5),
-                size: AppSpacing.lg,
-              ),
-            ],
+                const SizedBox(width: AppSpacing.lg),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: isSecondary
+                                      ? AppColors.neutral.s900
+                                      : AppColors.neutral.s100,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                      ),
+                      const SizedBox(height: AppSpacing.xs),
+                      Text(
+                        description,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: isSecondary
+                                  ? AppColors.neutral.s700
+                                  : AppColors.neutral.s100
+                                      .withValues(alpha: 0.8),
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  color: isSecondary
+                      ? AppColors.neutral.s500
+                      : AppColors.neutral.s100.withValues(alpha: 0.5),
+                  size: AppSpacing.lg,
+                ),
+              ],
+            ),
           ),
         ),
       ),

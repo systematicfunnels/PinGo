@@ -8,6 +8,8 @@ import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:pingo/core/presentation/widgets/pingo_button.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/elevation.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/features/map/presentation/saved_maps_controller.dart';
 
@@ -62,8 +64,8 @@ class _RegionSelectionScreenState extends ConsumerState<RegionSelectionScreen> {
           IgnorePointer(
             child: Container(
               decoration: BoxDecoration(
-                border:
-                    Border.all(color: AppColors.primary.s500, width: AppSpacing.xs),
+                border: Border.all(
+                    color: AppColors.primary.s500, width: AppSpacing.xs),
               ),
             ),
           ),
@@ -73,12 +75,14 @@ class _RegionSelectionScreenState extends ConsumerState<RegionSelectionScreen> {
             bottom: AppSpacing.xxl,
             left: AppSpacing.lg,
             right: AppSpacing.lg,
-            child: Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppSpacing.md)),
+            child: Container(
+              decoration: BoxDecoration(
+                color: AppColors.neutral.s100,
+                borderRadius: AppRadius.all12,
+                boxShadow: AppElevation.floating,
+              ),
               child: Padding(
-                padding: AppSpacing.allMd,
+                padding: const EdgeInsets.all(AppSpacing.cardPadding),
                 child: Text(
                   'Pan and zoom to select the area to download.\nCurrently visible area will be saved.',
                   textAlign: TextAlign.center,

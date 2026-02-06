@@ -8,6 +8,8 @@ import 'package:pingo/core/presentation/widgets/pingo_button.dart';
 import 'package:pingo/core/routing/route_paths.dart';
 import 'package:pingo/core/presentation/utils/snackbar_utils.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/elevation.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/features/map/presentation/map_controller.dart';
 import 'controllers/record_controller.dart';
@@ -116,12 +118,7 @@ class _RecordScreenState extends ConsumerState<RecordScreen> {
                           color: AppColors.primary.s300,
                           shape: BoxShape.circle,
                           border: Border.all(color: Colors.white, width: 2),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.2),
-                              blurRadius: 4,
-                            ),
-                          ],
+                          boxShadow: AppElevation.floating,
                         ),
                       ),
                     ),
@@ -148,11 +145,11 @@ class _RecordScreenState extends ConsumerState<RecordScreen> {
             left: AppSpacing.lg,
             right: AppSpacing.lg,
             bottom: AppSpacing.xxl + MediaQuery.of(context).padding.bottom,
-            child: Card(
-              elevation: 4,
-              shadowColor: Colors.black12,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppSpacing.xl),
+            child: Container(
+              decoration: BoxDecoration(
+                color: AppColors.neutral.s100,
+                borderRadius: AppRadius.all16,
+                boxShadow: AppElevation.floating,
               ),
               child: Padding(
                 padding: AppSpacing.allXl,
@@ -293,9 +290,8 @@ class _RecordScreenState extends ConsumerState<RecordScreen> {
                                     vertical: AppSpacing.md),
                                 side: BorderSide(color: AppColors.neutral.s300),
                                 foregroundColor: AppColors.neutral.s900,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(AppSpacing.lg),
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: AppRadius.all16,
                                 ),
                               ),
                               child: Column(

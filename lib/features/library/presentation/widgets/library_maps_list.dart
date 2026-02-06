@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:pingo/core/presentation/widgets/pingo_button.dart';
 import 'package:pingo/core/routing/route_paths.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/elevation.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/core/utils/date_utils.dart';
 import 'package:pingo/features/map/presentation/saved_maps_controller.dart';
@@ -82,100 +84,109 @@ class LibraryMapsList extends ConsumerWidget {
                     .read(savedMapsControllerProvider.notifier)
                     .deleteRegion(region.id);
               },
-              child: Card(
-                elevation: 0,
-                color: AppColors.neutral.s100,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppSpacing.md),
-                  side: BorderSide(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColors.neutral.s100,
+                  borderRadius: AppRadius.all12,
+                  boxShadow: AppElevation.card,
+                  border: Border.all(
                       color: AppColors.neutral.s500.withValues(alpha: 0.1)),
                 ),
-                child: ListTile(
-                  contentPadding: AppSpacing.allLg,
-                  leading: Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.s500.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(AppSpacing.sm),
+                child: Material(
+                  color: Colors.transparent,
+                  child: ListTile(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: AppRadius.all12,
                     ),
-                    child: Icon(Icons.map, color: AppColors.primary.s500),
-                  ),
-                  title: Text(
-                    region.name,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.neutral.s900,
-                    ),
-                  ),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: AppSpacing.xs),
-                      Text(
-                        '$sizeMb MB • ${AppDateUtils.formatDateTime(region.downloadedAt)}',
-                        style: TextStyle(color: AppColors.neutral.s500),
+                    contentPadding: AppSpacing.allLg,
+                    leading: Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.s500.withValues(alpha: 0.1),
+                        borderRadius: AppRadius.all8,
                       ),
-                    ],
-                  ),
-                  trailing: PopupMenuButton<String>(
-                    icon: Icon(Icons.more_vert, color: AppColors.neutral.s700),
-                    onSelected: (value) async {
-                      if (value == 'delete') {
-                        final confirm = await showDialog<bool>(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text('Delete Map Region'),
-                            content: const Text(
-                                'Are you sure you want to delete this downloaded map?'),
-                            actions: [
-                              TextButton(
-                                onPressed: () => context.pop(false),
-                                child: const Text('Cancel'),
-                              ),
-                              TextButton(
-                                onPressed: () => context.pop(true),
-                                child: Text('Delete',
-                                    style:
-                                        TextStyle(color: AppColors.error.s500)),
-                              ),
+                      child: Icon(Icons.map, color: AppColors.primary.s500),
+                    ),
+                    title: Text(
+                      region.name,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.neutral.s900,
+                      ),
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: AppSpacing.xs),
+                        Text(
+                          '$sizeMb MB • ${AppDateUtils.formatDateTime(region.downloadedAt)}',
+                          style: TextStyle(color: AppColors.neutral.s500),
+                        ),
+                      ],
+                    ),
+                    trailing: PopupMenuButton<String>(
+                      icon:
+                          Icon(Icons.more_vert, color: AppColors.neutral.s700),
+                      onSelected: (value) async {
+                        if (value == 'delete') {
+                          final confirm = await showDialog<bool>(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('Delete Map Region'),
+                              content: const Text(
+                                  'Are you sure you want to delete this downloaded map?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => context.pop(false),
+                                  child: const Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () => context.pop(true),
+                                  child: Text('Delete',
+                                      style: TextStyle(
+                                          color: AppColors.error.s500)),
+                                ),
+                              ],
+                            ),
+                          );
+                          if (confirm == true) {
+                            ref
+                                .read(savedMapsControllerProvider.notifier)
+                                .deleteRegion(region.id);
+                          }
+                        } else if (value == 'rename') {
+                          _showRenameDialog(
+                              context, ref, region.id, region.name);
+                        }
+                      },
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          value: 'rename',
+                          child: Row(
+                            children: [
+                              Icon(Icons.edit,
+                                  size: 18, color: AppColors.neutral.s700),
+                              SizedBox(width: AppSpacing.sm),
+                              Text('Rename'),
                             ],
                           ),
-                        );
-                        if (confirm == true) {
-                          ref
-                              .read(savedMapsControllerProvider.notifier)
-                              .deleteRegion(region.id);
-                        }
-                      } else if (value == 'rename') {
-                        _showRenameDialog(context, ref, region.id, region.name);
-                      }
-                    },
-                    itemBuilder: (context) => [
-                      PopupMenuItem(
-                        value: 'rename',
-                        child: Row(
-                          children: [
-                            Icon(Icons.edit,
-                                size: 18, color: AppColors.neutral.s700),
-                            SizedBox(width: AppSpacing.sm),
-                            Text('Rename'),
-                          ],
                         ),
-                      ),
-                      PopupMenuItem(
-                        value: 'delete',
-                        child: Row(
-                          children: [
-                            Icon(Icons.delete,
-                                size: 18, color: AppColors.error.s500),
-                            SizedBox(width: AppSpacing.sm),
-                            Text('Delete',
-                                style: TextStyle(color: AppColors.error.s500)),
-                          ],
+                        PopupMenuItem(
+                          value: 'delete',
+                          child: Row(
+                            children: [
+                              Icon(Icons.delete,
+                                  size: 18, color: AppColors.error.s500),
+                              SizedBox(width: AppSpacing.sm),
+                              Text('Delete',
+                                  style:
+                                      TextStyle(color: AppColors.error.s500)),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

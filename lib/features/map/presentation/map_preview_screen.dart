@@ -5,6 +5,8 @@ import 'package:pingo/core/domain/models/content_visibility.dart';
 import 'package:pingo/core/presentation/widgets/pingo_button.dart';
 import 'package:pingo/core/presentation/utils/snackbar_utils.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/elevation.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/features/map/data/repositories/map_repository_impl.dart';
 import 'package:pingo/features/map/domain/map_entity.dart';
@@ -152,17 +154,10 @@ class _MapPreviewScreenState extends ConsumerState<MapPreviewScreen> {
                         Expanded(
                           flex: 3,
                           child: Container(
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(AppSpacing.xl)),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black12,
-                                  blurRadius: 10,
-                                  offset: Offset(0, -2),
-                                ),
-                              ],
+                              borderRadius: AppRadius.top16,
+                              boxShadow: AppElevation.modal,
                             ),
                             padding: AppSpacing.allLg,
                             child: Column(

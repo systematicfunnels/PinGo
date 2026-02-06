@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:pingo/core/config/constants.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/elevation.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/features/route_recording/domain/models/journey.dart';
 import 'package:pingo/features/route_recording/data/repositories/journey_repository_impl.dart';
@@ -179,12 +180,7 @@ class _MemoryReplayScreenState extends ConsumerState<MemoryReplayScreen> {
                         color: AppColors.primary.s300,
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.white, width: 2),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.2),
-                            blurRadius: 4,
-                          ),
-                        ],
+                        boxShadow: AppElevation.floating,
                       ),
                       child: const Icon(Icons.navigation,
                           size: 16, color: Colors.white),
@@ -200,8 +196,8 @@ class _MemoryReplayScreenState extends ConsumerState<MemoryReplayScreen> {
             bottom: AppSpacing.xxl,
             child: Card(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(
+                    vertical: AppSpacing.sm, horizontal: AppSpacing.lg),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

@@ -6,6 +6,7 @@ import 'package:pingo/core/presentation/widgets/pingo_button.dart';
 import 'package:pingo/core/presentation/utils/snackbar_utils.dart';
 import 'package:pingo/core/presentation/widgets/visibility_selector.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/features/map/domain/map_entity.dart';
 import 'package:pingo/features/map/presentation/user_maps_controller.dart';
@@ -94,8 +95,7 @@ class _ShareMapSheetState extends ConsumerState<ShareMapSheet> {
       ),
       decoration: BoxDecoration(
         color: AppColors.neutral.s100,
-        borderRadius:
-            const BorderRadius.vertical(top: Radius.circular(AppSpacing.lg)),
+        borderRadius: AppRadius.top16,
       ),
       child: SafeArea(
         child: SingleChildScrollView(

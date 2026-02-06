@@ -5,6 +5,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pingo/core/domain/models/pin_type.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/elevation.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/features/pins/presentation/controllers/pins_controller.dart';
 import 'package:pingo/features/pins/presentation/widgets/pin_editor_sheet.dart';
@@ -77,8 +78,8 @@ class _ExploreMapViewState extends ConsumerState<ExploreMapView> {
                   Marker(
                     point: LatLng(locationAsync.value!.latitude,
                         locationAsync.value!.longitude),
-                    width: 60,
-                    height: 60,
+                    width: 64,
+                    height: 64,
                     child: Container(
                       decoration: BoxDecoration(
                         color: AppColors.primary.s500.withValues(alpha: 0.2),
@@ -87,7 +88,7 @@ class _ExploreMapViewState extends ConsumerState<ExploreMapView> {
                       child: Icon(
                         Icons.my_location,
                         color: AppColors.primary.s500,
-                        size: 30,
+                        size: AppSpacing.xxl,
                       ),
                     ),
                   ),
@@ -96,8 +97,8 @@ class _ExploreMapViewState extends ConsumerState<ExploreMapView> {
                   data: (pins) => pins
                       .map((pin) => Marker(
                             point: LatLng(pin.latitude, pin.longitude),
-                            width: 50,
-                            height: 50,
+                            width: AppSpacing.xxxl,
+                            height: AppSpacing.xxxl,
                             child: GestureDetector(
                               onTap: () {
                                 HapticFeedback.lightImpact();
@@ -128,16 +129,17 @@ class _ExploreMapViewState extends ConsumerState<ExploreMapView> {
                                   ),
                                   if (!pin.isSynced && !pin.isDraft)
                                     Positioned(
-                                      right: 8,
-                                      bottom: 8,
+                                      right: 0,
+                                      bottom: AppSpacing.sm,
                                       child: Container(
-                                        padding: EdgeInsets.all(2),
-                                        decoration: BoxDecoration(
+                                        padding:
+                                            const EdgeInsets.all(AppSpacing.xs),
+                                        decoration: const BoxDecoration(
                                           color: Colors.white,
                                           shape: BoxShape.circle,
                                         ),
                                         child: Icon(Icons.cloud_off,
-                                            size: 10,
+                                            size: AppSpacing.sm,
                                             color: AppColors.neutral.s700),
                                       ),
                                     )
@@ -163,16 +165,11 @@ class _ExploreMapViewState extends ConsumerState<ExploreMapView> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1),
-                      blurRadius: 8,
-                    ),
-                  ],
+                  boxShadow: AppElevation.floating,
                 ),
                 child: const SizedBox(
-                  width: 20,
-                  height: 20,
+                  width: AppSpacing.xl,
+                  height: AppSpacing.xl,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 ),
               ),

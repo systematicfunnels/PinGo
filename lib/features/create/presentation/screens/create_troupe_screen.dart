@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:pingo/core/domain/models/content_visibility.dart';
 import 'package:pingo/core/presentation/widgets/visibility_selector.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/features/troupes/presentation/troupes_controller.dart';
 import 'package:pingo/shared/widgets/sticky_action_bottom_bar.dart';
@@ -227,7 +228,7 @@ class _DateSelector extends StatelessWidget {
         const SizedBox(height: AppSpacing.xs),
         InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(AppSpacing.md),
+          borderRadius: AppRadius.all12,
           child: Container(
             padding: const EdgeInsets.symmetric(
               horizontal: AppSpacing.md,
@@ -235,7 +236,7 @@ class _DateSelector extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               color: AppColors.neutral.s50,
-              borderRadius: BorderRadius.circular(AppSpacing.md),
+              borderRadius: AppRadius.all12,
             ),
             child: Row(
               children: [

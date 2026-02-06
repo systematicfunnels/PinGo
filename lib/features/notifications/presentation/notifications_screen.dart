@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/elevation.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/features/notifications/domain/notification_entity.dart';
 import 'package:pingo/features/notifications/presentation/notifications_controller.dart';
@@ -79,7 +81,7 @@ class NotificationsScreen extends ConsumerWidget {
                       padding: const EdgeInsets.only(right: AppSpacing.lg),
                       decoration: BoxDecoration(
                         color: AppColors.error.s500,
-                        borderRadius: BorderRadius.circular(AppSpacing.md),
+                        borderRadius: AppRadius.all12,
                       ),
                       child:
                           const Icon(Icons.delete_outline, color: Colors.white),
@@ -98,7 +100,14 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Container(
+      padding: AppSpacing.allMd,
+      decoration: BoxDecoration(
+        color: AppColors.neutral.s100,
+        borderRadius: AppRadius.all12,
+        boxShadow: AppElevation.card,
+        border: Border.all(color: AppColors.neutral.s300),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

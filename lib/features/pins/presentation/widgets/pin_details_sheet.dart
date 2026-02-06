@@ -1,8 +1,11 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pingo/core/domain/models/pin_type.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/elevation.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/features/pins/domain/models/pin.dart';
 import 'package:pingo/features/sharing/presentation/widgets/share_sheet.dart';
@@ -30,8 +33,8 @@ class PinDetailsSheet extends ConsumerWidget {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.neutral.s100,
-        borderRadius:
-            BorderRadius.vertical(top: Radius.circular(AppSpacing.xl)),
+        borderRadius: AppRadius.top16,
+        boxShadow: AppElevation.modal,
       ),
       child: SafeArea(
         top: false,
@@ -47,7 +50,7 @@ class PinDetailsSheet extends ConsumerWidget {
                 margin: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
                 decoration: BoxDecoration(
                   color: AppColors.neutral.s300,
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: AppRadius.allFull,
                 ),
               ),
             ),
@@ -201,12 +204,12 @@ class PinDetailsSheet extends ConsumerWidget {
                           return Container(
                             width: 100,
                             decoration: BoxDecoration(
-                              color: AppColors.neutral.s50,
-                              borderRadius:
-                                  BorderRadius.circular(AppSpacing.md),
+                              image: DecorationImage(
+                                image: FileImage(File(livePin.mediaPaths[index])),
+                                fit: BoxFit.cover,
+                              ),
+                              borderRadius: AppRadius.all12,
                             ),
-                            child: Icon(Icons.image,
-                                color: AppColors.neutral.s500),
                           );
                         },
                       ),

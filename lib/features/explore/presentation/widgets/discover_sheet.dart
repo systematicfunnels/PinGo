@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/elevation.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/core/presentation/widgets/pingo_button.dart';
 import 'package:pingo/features/explore/presentation/controllers/explore_feed_controller.dart';
@@ -31,11 +33,11 @@ class DiscoverSheet extends ConsumerWidget {
           children: [
             Center(
               child: Container(
-                width: 40,
-                height: 4,
+                width: AppSpacing.xxl,
+                height: AppSpacing.xs,
                 decoration: BoxDecoration(
-                  color: AppColors.neutral.s500.withValues(alpha: 0.3),
-                  borderRadius: BorderRadius.circular(2),
+                  color: AppColors.neutral.s300,
+                  borderRadius: AppRadius.allFull,
                 ),
               ),
             ),
@@ -79,16 +81,8 @@ class DiscoverSheet extends ConsumerWidget {
         return Container(
           decoration: BoxDecoration(
             color: AppColors.neutral.s100,
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(AppSpacing.xl),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
-                blurRadius: 10,
-                offset: const Offset(0, -2),
-              ),
-            ],
+            borderRadius: AppRadius.top16,
+            boxShadow: AppElevation.modal,
           ),
           child: RefreshIndicator(
             onRefresh: () => ref.refresh(exploreFeedControllerProvider.future),
@@ -108,7 +102,7 @@ class DiscoverSheet extends ConsumerWidget {
                             const EdgeInsets.symmetric(vertical: AppSpacing.sm),
                         decoration: BoxDecoration(
                           color: AppColors.neutral.s500.withValues(alpha: 0.3),
-                          borderRadius: BorderRadius.circular(2),
+                          borderRadius: AppRadius.allFull,
                         ),
                       ),
                       const SizedBox(height: AppSpacing.sm),

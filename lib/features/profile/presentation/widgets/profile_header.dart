@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/elevation.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 
 class ProfileHeader extends StatelessWidget {
@@ -29,13 +31,7 @@ class ProfileHeader extends StatelessWidget {
             color: AppColors.primary.s500,
             shape: BoxShape.circle,
             border: Border.all(color: Colors.white, width: 4),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ],
+            boxShadow: AppElevation.floating,
           ),
           child: const Icon(Icons.person, color: Colors.white, size: 40),
         ),
@@ -61,7 +57,7 @@ class ProfileHeader extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       color: AppColors.primary.s500.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: AppRadius.all4,
                     ),
                     child: Text(
                       role,

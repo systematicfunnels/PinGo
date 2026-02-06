@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 
 class StatCard extends StatelessWidget {
@@ -20,7 +21,7 @@ class StatCard extends StatelessWidget {
       padding: AppSpacing.allLg,
       decoration: BoxDecoration(
         color: AppColors.neutral.s100,
-        borderRadius: BorderRadius.circular(AppSpacing.lg),
+        borderRadius: AppRadius.all16,
         border:
             Border.all(color: AppColors.neutral.s300.withValues(alpha: 0.5)),
       ),
@@ -32,7 +33,8 @@ class StatCard extends StatelessWidget {
               color: AppColors.primary.s500.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, color: AppColors.primary.s500, size: 24),
+            child:
+                Icon(icon, color: AppColors.primary.s500, size: AppSpacing.xl),
           ),
           const SizedBox(width: AppSpacing.lg),
           Column(
@@ -48,7 +50,6 @@ class StatCard extends StatelessWidget {
               Text(
                 value,
                 style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                      fontSize: 24,
                       height: 1,
                       fontWeight: FontWeight.bold,
                     ),

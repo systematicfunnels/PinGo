@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/elevation.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 
 import 'package:pingo/features/explore/presentation/widgets/explore_search_view.dart';
@@ -16,19 +18,13 @@ class ExploreSearchBar extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: AppColors.neutral.s100,
-        borderRadius: BorderRadius.circular(30), // Pill shape
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        borderRadius: AppRadius.allFull, // Pill shape
+        boxShadow: AppElevation.floating,
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: AppRadius.allFull,
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(

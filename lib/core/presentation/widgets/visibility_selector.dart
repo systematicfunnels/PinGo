@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pingo/core/domain/models/content_visibility.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 
@@ -35,7 +36,7 @@ class VisibilitySelector extends StatelessWidget {
                 padding: const EdgeInsets.only(right: AppSpacing.sm),
                 child: InkWell(
                   onTap: () => onChanged(visibility),
-                  borderRadius: BorderRadius.circular(AppSpacing.xl),
+                  borderRadius: AppRadius.allFull,
                   child: Semantics(
                     selected: isSelected,
                     label: visibility.label,
@@ -48,7 +49,7 @@ class VisibilitySelector extends StatelessWidget {
                         color: isSelected
                             ? AppColors.primary.s500
                             : AppColors.neutral.s100,
-                        borderRadius: BorderRadius.circular(AppSpacing.xl),
+                        borderRadius: AppRadius.allFull,
                         border: Border.all(
                           color: isSelected
                               ? AppColors.primary.s500

@@ -8,6 +8,7 @@ import 'package:pingo/core/domain/models/content_visibility.dart';
 import 'package:pingo/core/domain/models/pin_type.dart';
 import 'package:pingo/core/presentation/widgets/visibility_selector.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/features/pins/presentation/controllers/pins_controller.dart';
 import 'package:pingo/features/map/presentation/user_maps_controller.dart';
@@ -191,8 +192,7 @@ class _AddPinScreenState extends ConsumerState<AddPinScreen> {
                                       right: AppSpacing.sm),
                                   decoration: BoxDecoration(
                                     color: AppColors.neutral.s50,
-                                    borderRadius:
-                                        BorderRadius.circular(AppSpacing.md),
+                                    borderRadius: AppRadius.all12,
                                     border: Border.all(
                                         color: AppColors.neutral.s300),
                                   ),
@@ -216,8 +216,7 @@ class _AddPinScreenState extends ConsumerState<AddPinScreen> {
                                     margin: const EdgeInsets.only(
                                         right: AppSpacing.sm),
                                     decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(AppSpacing.md),
+                                      borderRadius: AppRadius.all12,
                                       image: DecorationImage(
                                         image: FileImage(File(file.path)),
                                         fit: BoxFit.cover,
@@ -236,8 +235,9 @@ class _AddPinScreenState extends ConsumerState<AddPinScreen> {
                                             },
                                             child: Container(
                                               padding: const EdgeInsets.all(4),
-                                              decoration: const BoxDecoration(
-                                                color: Colors.black54,
+                                              decoration: BoxDecoration(
+                                                color: Colors.black
+                                                    .withValues(alpha: 0.5),
                                                 shape: BoxShape.circle,
                                               ),
                                               child: const Icon(Icons.close,

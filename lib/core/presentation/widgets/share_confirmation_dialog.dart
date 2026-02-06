@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/core/presentation/widgets/pingo_button.dart';
 
@@ -32,7 +33,7 @@ class ShareConfirmationDialog extends StatelessWidget {
               padding: AppSpacing.allMd,
               decoration: BoxDecoration(
                 color: AppColors.warning.s500.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(AppSpacing.sm),
+                borderRadius: AppRadius.all8,
                 border: Border.all(color: AppColors.warning.s500),
               ),
               child: Row(

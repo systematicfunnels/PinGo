@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/features/explore/presentation/controllers/explore_search_controller.dart';
 
@@ -61,7 +62,7 @@ class _ExploreSearchViewState extends ConsumerState<ExploreSearchView> {
                     child: Container(
                       decoration: BoxDecoration(
                         color: AppColors.neutral.s100,
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: AppRadius.allFull,
                         border: Border.all(color: AppColors.neutral.s300),
                       ),
                       child: TextField(

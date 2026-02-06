@@ -5,6 +5,7 @@ import 'package:pingo/core/domain/models/content_visibility.dart';
 import 'package:pingo/core/presentation/widgets/pingo_button.dart';
 import 'package:pingo/core/presentation/utils/snackbar_utils.dart';
 import 'package:pingo/core/routing/route_paths.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/core/presentation/widgets/visibility_selector.dart';
 import 'package:pingo/core/presentation/widgets/share_confirmation_dialog.dart';
@@ -157,7 +158,7 @@ class _JourneySummaryScreenState extends ConsumerState<JourneySummaryScreen> {
               height: 200,
               decoration: BoxDecoration(
                 color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(AppSpacing.md),
+                borderRadius: AppRadius.all12,
               ),
               child: const Center(
                 child: Icon(Icons.map, size: 48, color: Colors.grey),

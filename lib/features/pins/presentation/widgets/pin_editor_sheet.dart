@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pingo/core/presentation/widgets/pingo_button.dart';
 import 'package:pingo/core/presentation/utils/snackbar_utils.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/radius.dart';
 import 'package:pingo/core/theme/spacing.dart';
 import '../../domain/models/pin.dart';
 import '../controllers/pins_controller.dart';
@@ -246,8 +247,7 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
           ),
           decoration: BoxDecoration(
             color: AppColors.neutral.s100,
-            borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(AppSpacing.xl)),
+            borderRadius: AppRadius.top16,
           ),
           child: SafeArea(
             top: false,
@@ -257,12 +257,12 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
                 // Drag Handle
                 Center(
                   child: Container(
-                    width: 32,
-                    height: 4,
+                    width: AppSpacing.xxl,
+                    height: AppSpacing.xs,
                     margin: const EdgeInsets.only(top: AppSpacing.sm),
                     decoration: BoxDecoration(
                       color: AppColors.neutral.s300,
-                      borderRadius: BorderRadius.circular(2),
+                      borderRadius: AppRadius.allFull,
                     ),
                   ),
                 ),
@@ -324,8 +324,7 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
                                         right: AppSpacing.sm),
                                     decoration: BoxDecoration(
                                       color: AppColors.neutral.s50,
-                                      borderRadius:
-                                          BorderRadius.circular(AppSpacing.md),
+                                      borderRadius: AppRadius.all12,
                                       border: Border.all(
                                           color: AppColors.neutral.s300),
                                     ),
@@ -350,12 +349,11 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
                                       margin: const EdgeInsets.only(
                                           right: AppSpacing.sm),
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                            AppSpacing.md),
                                         image: DecorationImage(
                                           image: FileImage(File(path)),
                                           fit: BoxFit.cover,
                                         ),
+                                        borderRadius: AppRadius.all12,
                                       ),
                                       child: Stack(
                                         children: [
@@ -369,14 +367,14 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
                                                 });
                                               },
                                               child: Container(
-                                                padding:
-                                                    const EdgeInsets.all(4),
+                                                padding: const EdgeInsets.all(
+                                                    AppSpacing.xs),
                                                 decoration: const BoxDecoration(
                                                   color: Colors.black54,
                                                   shape: BoxShape.circle,
                                                 ),
                                                 child: const Icon(Icons.close,
-                                                    size: 16,
+                                                    size: AppSpacing.lg,
                                                     color: Colors.white),
                                               ),
                                             ),
@@ -414,6 +412,9 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
                               return ChoiceChip(
                                 label: Text(type.name.toUpperCase()),
                                 selected: _type == type,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: AppRadius.all4,
+                                ),
                                 onSelected: (selected) {
                                   if (selected) setState(() => _type = type);
                                 },
@@ -427,8 +428,7 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
                               decoration: BoxDecoration(
                                 color:
                                     AppColors.error.s500.withValues(alpha: 0.1),
-                                borderRadius:
-                                    BorderRadius.circular(AppSpacing.sm),
+                                borderRadius: AppRadius.all8,
                                 border: Border.all(
                                     color: AppColors.error.s500
                                         .withValues(alpha: 0.5)),
@@ -497,7 +497,7 @@ class _PinEditorSheetState extends ConsumerState<PinEditorSheet> {
             filled: true,
             fillColor: AppColors.neutral.s100,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppSpacing.md),
+              borderRadius: AppRadius.all12,
               borderSide: BorderSide.none,
             ),
           ),
