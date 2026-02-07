@@ -14,20 +14,28 @@ class PinsScreen extends ConsumerWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: AppColors.background,
         appBar: AppBar(
           title: Text(
-            'My Journey',
-            style: Theme.of(context).textTheme.titleLarge,
+            'Library',
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontFamily: 'Serif',
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
+                ),
           ),
+          centerTitle: false,
           backgroundColor: AppColors.background,
           elevation: 0,
           bottom: const TabBar(
             labelColor: AppColors.primary,
             unselectedLabelColor: AppColors.textTertiary,
             indicatorColor: AppColors.primary,
+            dividerColor: Colors.transparent,
+            labelStyle: TextStyle(fontWeight: FontWeight.bold),
             tabs: [
-              Tab(text: 'Pins'),
-              Tab(text: 'Journeys'),
+              Tab(text: 'My Pins'),
+              Tab(text: 'Collections'),
             ],
           ),
         ),
@@ -51,7 +59,7 @@ class PinsScreen extends ConsumerWidget {
             // Tab 1: Pins List
             _PinsList(),
 
-            // Tab 2: Journeys List
+            // Tab 2: Journeys List (styled as Collections)
             JourneyList(),
           ],
         ),
@@ -92,43 +100,132 @@ class _PinsList extends ConsumerWidget {
           );
         }
         return ListView.separated(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(24),
           itemCount: pins.length,
-          separatorBuilder: (context, index) => const SizedBox(height: 12),
+          separatorBuilder: (context, index) => const SizedBox(height: 16),
           itemBuilder: (context, index) {
             final pin = pins[index];
-            return Card(
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: AppColors.secondary.withValues(alpha: 0.2),
-                  child: const Icon(Icons.place, color: AppColors.secondary),
-                ),
-                title: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        pin.title ?? 'Untitled Pin',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ),
-                    Icon(
-                      _getVisibilityIcon(pin.visibility),
-                      size: 14,
-                      color: AppColors.textTertiary,
-                    ),
-                  ],
-                ),
-                subtitle: Text(
-                  pin.description ?? '',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                trailing: IconButton(
-                  icon: const Icon(Icons.delete_outline,
-                      color: AppColors.textTertiary),
-                  onPressed: () {
-                    ref.read(pinsControllerProvider.notifier).deletePin(pin.id);
+            return Container(
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.border),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    // TODO: Open Pin Editor
                   },
+                  borderRadius: BorderRadius.circular(16),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Leading Icon/Image Placeholder
+                        Container(
+                          width: 64,
+                          height: 64,
+                          decoration: BoxDecoration(
+                            color: AppColors.secondary.withValues(alpha: 0.3),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Icon(
+                            Icons.camera_alt_outlined, // Placeholder icon type
+                            color: AppColors.primary,
+                            size: 24,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        
+                        // Content
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.location_on,
+                                    size: 14,
+                                    color: AppColors.primary,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Expanded(
+                                    child: Text(
+                                      pin.title ?? 'Untitled Pin',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium
+                                          ?.copyWith(
+                                            fontFamily: 'Serif',
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 4),
+                              if (pin.description != null &&
+                                  pin.description!.isNotEmpty)
+                                Text(
+                                  pin.description!,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        color: AppColors.textSecondary,
+                                      ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              const SizedBox(height: 8),
+                              // Metadata Row
+                              Row(
+                                children: [
+                                  Text(
+                                    'Unknown Journey', // Placeholder
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                          color: AppColors.textTertiary,
+                                        ),
+                                  ),
+                                  const Spacer(),
+                                  Icon(
+                                    _getVisibilityIcon(pin.visibility),
+                                    size: 14,
+                                    color: AppColors.textTertiary,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        
+                        // Delete Action
+                        IconButton(
+                          icon: const Icon(Icons.more_vert,
+                              color: AppColors.textTertiary),
+                          onPressed: () {
+                             ref.read(pinsControllerProvider.notifier).deletePin(pin.id);
+                          },
+                          visualDensity: VisualDensity.compact,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             );

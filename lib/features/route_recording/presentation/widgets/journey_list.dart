@@ -23,71 +23,108 @@ class JourneyList extends ConsumerWidget {
           itemCount: journeys.length,
           itemBuilder: (context, index) {
             final journey = journeys[index];
-            return Card(
-              margin: const EdgeInsets.only(bottom: 12),
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-                side: BorderSide(color: Colors.grey.withValues(alpha: 0.2)),
-              ),
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(16),
-                leading: Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withValues(alpha: 0.1),
-                    shape: BoxShape.circle,
+            return Container(
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.border),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
                   ),
-                  child: const Icon(Icons.directions_walk,
-                      color: AppColors.primary),
-                ),
-                title: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        journey.name ?? 'Untitled Journey',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Icon(
-                      _getVisibilityIcon(journey.visibility),
-                      size: 14,
-                      color: AppColors.textTertiary,
-                    ),
-                  ],
-                ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 4),
-                    Text(AppDateUtils.formatDateTime(journey.startTime)),
-                    const SizedBox(height: 4),
-                    Row(
+                ],
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    context.go('/library/journey/${journey.id}');
+                  },
+                  borderRadius: BorderRadius.circular(16),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Icon(Icons.straighten,
-                            size: 14, color: AppColors.textSecondary),
-                        const SizedBox(width: 4),
-                        Text(
-                          '${(journey.totalDistance / 1000).toStringAsFixed(2)} km',
-                          style:
-                              const TextStyle(color: AppColors.textSecondary),
+                        // Header
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    journey.name ?? 'Untitled Collection',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleLarge
+                                        ?.copyWith(
+                                          fontFamily: 'Serif',
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColors.textPrimary,
+                                        ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    AppDateUtils.formatDateTime(journey.startTime),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          color: AppColors.textSecondary,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Icon(
+                              Icons.chevron_right,
+                              color: AppColors.textTertiary.withValues(alpha: 0.5),
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 16),
-                        const Icon(Icons.timer_outlined,
-                            size: 14, color: AppColors.textSecondary),
-                        const SizedBox(width: 4),
-                        Text(
-                          '${(journey.durationSeconds / 60).toStringAsFixed(0)} min',
-                          style:
-                              const TextStyle(color: AppColors.textSecondary),
+                        
+                        const SizedBox(height: 16),
+                        
+                        // Fake "Days" Summary (using actual journey data)
+                        _buildSummaryRow(
+                          context,
+                          Icons.grid_view,
+                          'Day 1',
+                          '${(journey.durationSeconds / 60).toStringAsFixed(0)} mins',
+                        ),
+                        
+                        const SizedBox(height: 16),
+                        Divider(height: 1, color: AppColors.border.withValues(alpha: 0.5)),
+                        const SizedBox(height: 16),
+                        
+                        // Stats Footer
+                        Row(
+                          children: [
+                            Icon(Icons.map_outlined, size: 16, color: AppColors.textSecondary),
+                            const SizedBox(width: 6),
+                            Text(
+                              '${(journey.totalDistance / 1000).toStringAsFixed(2)} km',
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                            const Spacer(),
+                             Icon(
+                              _getVisibilityIcon(journey.visibility),
+                              size: 16,
+                              color: AppColors.textTertiary,
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
-                onTap: () {
-                  context.go('/library/journey/${journey.id}');
-                },
               ),
             );
           },
@@ -95,6 +132,30 @@ class JourneyList extends ConsumerWidget {
       },
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (err, stack) => Center(child: Text('Error: $err')),
+    );
+  }
+
+
+  Widget _buildSummaryRow(BuildContext context, IconData icon, String label, String value) {
+    return Row(
+      children: [
+        Icon(icon, size: 16, color: AppColors.textTertiary.withValues(alpha: 0.5)),
+        const SizedBox(width: 8),
+        Text(
+          label,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: AppColors.textSecondary,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Text(
+          value,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: AppColors.textTertiary,
+          ),
+        ),
+      ],
     );
   }
 

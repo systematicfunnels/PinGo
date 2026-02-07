@@ -4,6 +4,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pingo/core/routing/route_paths.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 import 'package:pingo/features/route_recording/data/repositories/journey_repository_impl.dart';
 import 'package:pingo/core/domain/models/content_visibility.dart';

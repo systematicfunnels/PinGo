@@ -3,29 +3,33 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppColors {
   // Backgrounds
-  static const Color background = Color(0xFFF5F5F0); // Soft sand / mist
+  static const Color background = Color(0xFFFAF8F5); // Soft fog white
   static const Color surface = Color(0xFFFFFFFF);
-  static const Color surfaceVariant = Color(0xFFEBEBE6);
+  static const Color surfaceVariant = Color(0xFFF5F1ED);
 
   // Primary
-  static const Color primary = Color(0xFF2C4A52); // Deep forest/slate
+  static const Color primary = Color(0xFF2D4A3E); // Deep forest green
   static const Color onPrimary = Color(0xFFFFFFFF);
 
   // Secondary
-  static const Color secondary = Color(0xFFD4A373); // Muted warm amber
-  static const Color onSecondary = Color(0xFFFFFFFF);
+  static const Color secondary = Color(0xFFE8DFD6); // Soft sand
+  static const Color onSecondary = Color(0xFF3A3531);
+
+  // Accent
+  static const Color accent = Color(0xFFC8A882); // Warm amber
+  static const Color onAccent = Color(0xFF3A3531);
 
   // Text
-  static const Color textPrimary = Color(0xFF2D2D2D);
-  static const Color textSecondary = Color(0xFF5C5C5C);
-  static const Color textTertiary = Color(0xFF8E8E8E);
+  static const Color textPrimary = Color(0xFF3A3531); // Warm dark brown
+  static const Color textSecondary = Color(0xFF7A7269); // Warm gray
+  static const Color textTertiary = Color(0xFFB0A8A0);
 
   // Status
-  static const Color danger = Color(0xFFC27E7E); // Muted rust
+  static const Color danger = Color(0xFFB85C4F); // Muted rust
   static const Color success = Color(0xFF7E9C82); // Muted sage green
 
   // Borders
-  static const Color border = Color(0xFFE0E0E0);
+  static const Color border = Color(0x1F3A3531); // rgba(58, 53, 49, 0.12)
 }
 
 class AppTypography {

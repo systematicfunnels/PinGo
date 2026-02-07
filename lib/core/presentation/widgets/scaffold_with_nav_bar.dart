@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pingo/core/routing/route_paths.dart';
 import 'package:pingo/core/theme/app_theme.dart';
 
 class ScaffoldWithNavBar extends StatelessWidget {
@@ -21,6 +22,12 @@ class ScaffoldWithNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: navigationShell,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.push(RoutePaths.record),
+        backgroundColor: AppColors.primary,
+        foregroundColor: AppColors.onPrimary,
+        child: const Icon(Icons.add),
+      ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: (index) => _onTap(context, index),
@@ -30,25 +37,19 @@ class ScaffoldWithNavBar extends StatelessWidget {
         shadowColor: Colors.black12,
         destinations: const [
           NavigationDestination(
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home, color: AppColors.primary),
+            label: 'Home',
+          ),
+          NavigationDestination(
             icon: Icon(Icons.map_outlined),
             selectedIcon: Icon(Icons.map, color: AppColors.primary),
-            label: 'Map',
+            label: 'Explore',
           ),
           NavigationDestination(
-            icon: Icon(Icons.radio_button_checked),
-            selectedIcon:
-                Icon(Icons.radio_button_checked, color: AppColors.primary),
-            label: 'Go',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.book_outlined),
-            selectedIcon: Icon(Icons.book, color: AppColors.primary),
-            label: 'Journal',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.person_outline),
-            selectedIcon: Icon(Icons.person, color: AppColors.primary),
-            label: 'Profile',
+            icon: Icon(Icons.bookmark_outline),
+            selectedIcon: Icon(Icons.bookmark, color: AppColors.primary),
+            label: 'Library',
           ),
         ],
       ),

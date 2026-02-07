@@ -28,31 +28,45 @@ class PersonaSelectionScreen extends StatelessWidget {
 
               // Persona Cards
               _PersonaCard(
-                icon: Icons.backpack_outlined,
+                icon: Icons.flight_outlined,
                 label: 'Traveler',
-                description: 'Finding new paths in new places.',
-                onTap: () => context.go(RoutePaths.map),
+                description: 'I like moving from place to place.',
+                onTap: () => context.go(RoutePaths.homeFeed),
+              ),
+              const SizedBox(height: 16),
+              _PersonaCard(
+                icon: Icons.explore_outlined,
+                label: 'Explorer',
+                description: 'I enjoy discovering what\'s not marked.',
+                onTap: () => context.go(RoutePaths.homeFeed),
+              ),
+              const SizedBox(height: 16),
+              _PersonaCard(
+                icon: Icons.home_outlined,
+                label: 'Local',
+                description: 'I know this place deeply.',
+                onTap: () => context.go(RoutePaths.homeFeed),
               ),
               const SizedBox(height: 16),
               _PersonaCard(
                 icon: Icons.landscape_outlined,
-                label: 'Explorer',
-                description: 'Going where maps are empty.',
-                onTap: () => context.go(RoutePaths.map),
+                label: 'Mountaineer',
+                description: 'I go where paths are uncertain.',
+                onTap: () => context.go(RoutePaths.homeFeed),
               ),
               const SizedBox(height: 16),
               _PersonaCard(
-                icon: Icons.camera_alt_outlined,
+                icon: Icons.visibility_outlined,
                 label: 'Observer',
-                description: 'Capturing moments quietly.',
-                onTap: () => context.go(RoutePaths.map),
+                description: 'I like noticing, not rushing.',
+                onTap: () => context.go(RoutePaths.homeFeed),
               ),
-
+              
               const Spacer(),
 
               // Skip
               TextButton(
-                onPressed: () => context.go(RoutePaths.map),
+                onPressed: () => context.go(RoutePaths.homeFeed),
                 child: Text(
                   'Skip for now',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -99,8 +113,8 @@ class _PersonaCard extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: 0.1),
+              decoration: const BoxDecoration(
+                color: AppColors.secondary,
                 shape: BoxShape.circle,
               ),
               child: Icon(icon, color: AppColors.primary),
@@ -113,7 +127,9 @@ class _PersonaCard extends StatelessWidget {
                   Text(
                     label,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontFamily: 'Serif',
                           fontWeight: FontWeight.bold,
+                          color: AppColors.textPrimary,
                         ),
                   ),
                   const SizedBox(height: 4),
