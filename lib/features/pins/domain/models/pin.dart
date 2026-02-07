@@ -11,6 +11,11 @@ class Pin {
   final bool isSynced;
   final ContentVisibility visibility;
   final PinType type;
+  final List<String> mediaPaths;
+  final int? mapId;
+  final int? troupeId;
+  final int? journeyId;
+  final bool isDraft;
 
   const Pin({
     required this.id,
@@ -22,5 +27,10 @@ class Pin {
     this.isSynced = false,
     this.visibility = ContentVisibility.private,
     this.type = PinType.memory,
+    this.mediaPaths = const [],
+    this.mapId,
+    this.troupeId,
+    this.journeyId,
+    this.isDraft = false,
   });
 }

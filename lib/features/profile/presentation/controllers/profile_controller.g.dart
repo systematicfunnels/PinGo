@@ -6,21 +6,46 @@ part of 'profile_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$profileControllerHash() => r'e926edcd8ebf3331302166da60ed839f6823650a';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [ProfileController].
 @ProviderFor(ProfileController)
-final profileControllerProvider =
-    AutoDisposeAsyncNotifierProvider<ProfileController, ProfileStats>.internal(
-  ProfileController.new,
-  name: r'profileControllerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$profileControllerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final profileControllerProvider = ProfileControllerProvider._();
 
-typedef _$ProfileController = AutoDisposeAsyncNotifier<ProfileStats>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class ProfileControllerProvider
+    extends $AsyncNotifierProvider<ProfileController, ProfileState> {
+  ProfileControllerProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'profileControllerProvider',
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$profileControllerHash();
+
+  @$internal
+  @override
+  ProfileController create() => ProfileController();
+}
+
+String _$profileControllerHash() => r'c735bf301ac7b4754713e8422f9de72bf1bd0224';
+
+abstract class _$ProfileController extends $AsyncNotifier<ProfileState> {
+  FutureOr<ProfileState> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref = this.ref as $Ref<AsyncValue<ProfileState>, ProfileState>;
+    final element = ref.element as $ClassProviderElement<
+        AnyNotifier<AsyncValue<ProfileState>, ProfileState>,
+        AsyncValue<ProfileState>,
+        Object?,
+        Object?>;
+    element.handleCreate(ref, build);
+  }
+}

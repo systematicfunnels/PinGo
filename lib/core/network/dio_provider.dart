@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import '../auth/token_storage.dart';
 import '../config/env.dart';
+import 'interceptors.dart';
 
 part 'dio_provider.g.dart';
 
@@ -19,6 +20,8 @@ Dio dio(Ref ref) {
     ),
   );
 
+  final tokenStorage = ref.watch(tokenStorageProvider);
+  dio.interceptors.add(AuthInterceptor(tokenStorage));
   dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
 
   return dio;

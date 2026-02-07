@@ -4,7 +4,10 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:pingo/core/config/constants.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/elevation.dart';
+import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/features/route_recording/domain/models/journey.dart';
 import 'package:pingo/features/route_recording/data/repositories/journey_repository_impl.dart';
 
@@ -85,7 +88,8 @@ class _MemoryReplayScreenState extends ConsumerState<MemoryReplayScreen> {
   void _moveMap() {
     if (_journey != null && _journey!.routePoints.isNotEmpty) {
       final point = _journey!.routePoints[_currentIndex];
-      _mapController.move(LatLng(point[0], point[1]), _mapController.camera.zoom);
+      _mapController.move(
+          LatLng(point[0], point[1]), _mapController.camera.zoom);
     }
   }
 
@@ -117,12 +121,11 @@ class _MemoryReplayScreenState extends ConsumerState<MemoryReplayScreen> {
       );
     }
 
-    final routePoints = _journey!.routePoints
-        .map((p) => LatLng(p[0], p[1]))
-        .toList();
+    final routePoints =
+        _journey!.routePoints.map((p) => LatLng(p[0], p[1])).toList();
 
     if (routePoints.isEmpty) {
-       return Scaffold(
+      return Scaffold(
         appBar: AppBar(title: const Text('Empty Journey')),
         body: const Center(child: Text('No route data available')),
       );
@@ -148,20 +151,20 @@ class _MemoryReplayScreenState extends ConsumerState<MemoryReplayScreen> {
             ),
             children: [
               TileLayer(
-                urlTemplate: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png',
-                userAgentPackageName: 'com.example.pingo',
+                urlTemplate: AppConstants.mapStyleUrl,
+                userAgentPackageName: 'com.hemant.pingo',
               ),
               PolylineLayer(
                 polylines: [
                   Polyline(
                     points: routePoints,
-                    color: AppColors.primary.withValues(alpha: 0.5),
+                    color: AppColors.primary.s500.withValues(alpha: 0.5),
                     strokeWidth: 4.0,
                   ),
                   // Progress line
-                   Polyline(
+                  Polyline(
                     points: routePoints.take(_currentIndex + 1).toList(),
-                    color: AppColors.primary,
+                    color: AppColors.primary.s500,
                     strokeWidth: 4.0,
                   ),
                 ],
@@ -170,21 +173,17 @@ class _MemoryReplayScreenState extends ConsumerState<MemoryReplayScreen> {
                 markers: [
                   Marker(
                     point: currentPoint,
-                    width: 30,
-                    height: 30,
+                    width: AppSpacing.xxl,
+                    height: AppSpacing.xxl,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: AppColors.secondary,
+                        color: AppColors.primary.s300,
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.white, width: 2),
-                         boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.2),
-                              blurRadius: 4,
-                            ),
-                          ],
+                        boxShadow: AppElevation.floating,
                       ),
-                      child: const Icon(Icons.navigation, size: 16, color: Colors.white),
+                      child: const Icon(Icons.navigation,
+                          size: 16, color: Colors.white),
                     ),
                   ),
                 ],
@@ -192,20 +191,21 @@ class _MemoryReplayScreenState extends ConsumerState<MemoryReplayScreen> {
             ],
           ),
           Positioned(
-            left: 16,
-            right: 16,
-            bottom: 32,
+            left: AppSpacing.lg,
+            right: AppSpacing.lg,
+            bottom: AppSpacing.xxl,
             child: Card(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(
+                    vertical: AppSpacing.sm, horizontal: AppSpacing.lg),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                     IconButton(
+                    IconButton(
                       icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
                       onPressed: _togglePlay,
                       iconSize: 32,
-                      color: AppColors.primary,
+                      color: AppColors.primary.s500,
                     ),
                     Expanded(
                       child: Slider(

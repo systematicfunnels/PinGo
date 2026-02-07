@@ -6,21 +6,54 @@ part of 'record_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$recordControllerHash() => r'a918a0e985a3c5a33364782336b778ec1036a72f';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [RecordController].
 @ProviderFor(RecordController)
-final recordControllerProvider =
-    NotifierProvider<RecordController, RecorderState>.internal(
-  RecordController.new,
-  name: r'recordControllerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$recordControllerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final recordControllerProvider = RecordControllerProvider._();
 
-typedef _$RecordController = Notifier<RecorderState>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class RecordControllerProvider
+    extends $NotifierProvider<RecordController, RecorderState> {
+  RecordControllerProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'recordControllerProvider',
+          isAutoDispose: false,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$recordControllerHash();
+
+  @$internal
+  @override
+  RecordController create() => RecordController();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(RecorderState value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<RecorderState>(value),
+    );
+  }
+}
+
+String _$recordControllerHash() => r'8f0889fd8f79644a188259b65f49af0d88c8ac6e';
+
+abstract class _$RecordController extends $Notifier<RecorderState> {
+  RecorderState build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref = this.ref as $Ref<RecorderState, RecorderState>;
+    final element = ref.element as $ClassProviderElement<
+        AnyNotifier<RecorderState, RecorderState>,
+        RecorderState,
+        Object?,
+        Object?>;
+    element.handleCreate(ref, build);
+  }
+}

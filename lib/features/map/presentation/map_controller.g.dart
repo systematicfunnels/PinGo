@@ -6,21 +6,46 @@ part of 'map_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(MapController)
+final mapControllerProvider = MapControllerProvider._();
+
+final class MapControllerProvider
+    extends $AsyncNotifierProvider<MapController, Position?> {
+  MapControllerProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'mapControllerProvider',
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$mapControllerHash();
+
+  @$internal
+  @override
+  MapController create() => MapController();
+}
+
 String _$mapControllerHash() => r'd4f4ba7d8ae282dc1a5cfb56619d6f40f747ed08';
 
-/// See also [MapController].
-@ProviderFor(MapController)
-final mapControllerProvider =
-    AutoDisposeAsyncNotifierProvider<MapController, Position?>.internal(
-  MapController.new,
-  name: r'mapControllerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$mapControllerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$MapController = AutoDisposeAsyncNotifier<Position?>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$MapController extends $AsyncNotifier<Position?> {
+  FutureOr<Position?> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref = this.ref as $Ref<AsyncValue<Position?>, Position?>;
+    final element = ref.element as $ClassProviderElement<
+        AnyNotifier<AsyncValue<Position?>, Position?>,
+        AsyncValue<Position?>,
+        Object?,
+        Object?>;
+    element.handleCreate(ref, build);
+  }
+}

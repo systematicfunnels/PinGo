@@ -1,7 +1,9 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pingo/core/presentation/widgets/molecules/pingo_button.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/core/routing/route_paths.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -94,10 +96,13 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.neutral.s50,
       body: Stack(
         children: [
+<<<<<<< HEAD
           // Background texture (placeholder)
+=======
+>>>>>>> 7bff084ce9060fcc732c36c2de38dd4d786fe41c
           Positioned.fill(
             child: Opacity(
               opacity: 0.05,
@@ -106,14 +111,14 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
               ),
             ),
           ),
-
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Spacer(),
+<<<<<<< HEAD
 
                   // Abstract Compass/Path Motif
                   AnimatedBuilder(
@@ -242,6 +247,37 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                     ),
                   ),
                   const SizedBox(height: 16),
+=======
+                  Icon(
+                    Icons.explore_off_outlined,
+                    size: 80,
+                    color: AppColors.primary.s500,
+                  ),
+                  const SizedBox(height: AppSpacing.xxl),
+                  Text(
+                    'The world is bigger than the map.',
+                    style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                          height: 1.2,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+                  Text(
+                    'Create your own journeys. Save moments. Share only when ready.',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: AppColors.neutral.s700,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const Spacer(),
+                  PingoButton.primary(
+                    onPressed: () {
+                      context.go(RoutePaths.welcome);
+                    },
+                    label: 'Start exploring',
+                  ),
+                  const SizedBox(height: AppSpacing.xxl),
+>>>>>>> 7bff084ce9060fcc732c36c2de38dd4d786fe41c
                 ],
               ),
             ),
@@ -256,7 +292,12 @@ class _DotPatternPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
+<<<<<<< HEAD
       ..color = AppColors.textPrimary
+=======
+      ..color = AppColors.neutral.s900
+      ..style = PaintingStyle.stroke
+>>>>>>> 7bff084ce9060fcc732c36c2de38dd4d786fe41c
       ..strokeWidth = 1.0;
 
     // Draw a simple grid of dots

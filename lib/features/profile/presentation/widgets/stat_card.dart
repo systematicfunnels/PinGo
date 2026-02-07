@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/radius.dart';
+import 'package:pingo/core/theme/spacing.dart';
 
 class StatCard extends StatelessWidget {
   final String label;
@@ -16,28 +18,43 @@ class StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: AppSpacing.allLg,
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border.withValues(alpha: 0.5)),
+        color: AppColors.neutral.s100,
+        borderRadius: AppRadius.all16,
+        border:
+            Border.all(color: AppColors.neutral.s300.withValues(alpha: 0.5)),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
-          Icon(icon, color: AppColors.secondary, size: 24),
-          const Spacer(),
-          Text(
-            value,
-            style: Theme.of(context).textTheme.displayMedium?.copyWith(
-              fontSize: 28,
-              height: 1,
+          Container(
+            padding: AppSpacing.allMd,
+            decoration: BoxDecoration(
+              color: AppColors.primary.s500.withValues(alpha: 0.1),
+              shape: BoxShape.circle,
             ),
+            child:
+                Icon(icon, color: AppColors.primary.s500, size: AppSpacing.xl),
           ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: Theme.of(context).textTheme.bodyMedium,
+          const SizedBox(width: AppSpacing.lg),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppColors.neutral.s700,
+                    ),
+              ),
+              const SizedBox(height: AppSpacing.xs),
+              Text(
+                value,
+                style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                      height: 1,
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+            ],
           ),
         ],
       ),

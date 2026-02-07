@@ -1,18 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pingo/core/theme/app_theme.dart';
+import 'package:pingo/core/theme/elevation.dart';
+import 'package:pingo/core/theme/radius.dart';
+import 'package:pingo/core/theme/spacing.dart';
 import 'package:pingo/core/routing/route_paths.dart';
+import '../domain/onboarding_state.dart';
+import 'onboarding_controller.dart';
 
-class PersonaSelectionScreen extends StatelessWidget {
+class PersonaSelectionScreen extends ConsumerWidget {
   const PersonaSelectionScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(onboardingControllerProvider);
+    final controller = ref.read(onboardingControllerProvider.notifier);
+
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.neutral.s50,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: AppSpacing.allXl,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -20,12 +29,13 @@ class PersonaSelectionScreen extends StatelessWidget {
               Text(
                 'How do you usually explore?',
                 style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                      color: AppColors.textPrimary,
+                      color: AppColors.neutral.s900,
                       fontWeight: FontWeight.bold,
                     ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: AppSpacing.xxl),
 
+<<<<<<< HEAD
               // Persona Cards
               _PersonaCard(
                 icon: Icons.flight_outlined,
@@ -62,15 +72,59 @@ class PersonaSelectionScreen extends StatelessWidget {
                 onTap: () => context.go(RoutePaths.homeFeed),
               ),
               
+=======
+              if (state.isLoading)
+                const Center(child: CircularProgressIndicator())
+              else ...[
+                // Persona Cards
+                _PersonaCard(
+                  icon: Icons.backpack_outlined,
+                  label: 'Traveler',
+                  description: 'Finding new paths in new places.',
+                  onTap: () async {
+                    await controller.selectPersona(Persona.traveler);
+                    if (context.mounted) context.go(RoutePaths.create);
+                  },
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                _PersonaCard(
+                  icon: Icons.landscape_outlined,
+                  label: 'Explorer',
+                  description: 'Going where maps are empty.',
+                  onTap: () async {
+                    await controller.selectPersona(Persona.explorer);
+                    if (context.mounted) context.go(RoutePaths.explore);
+                  },
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                _PersonaCard(
+                  icon: Icons.camera_alt_outlined,
+                  label: 'Observer',
+                  description: 'Capturing moments quietly.',
+                  onTap: () async {
+                    await controller.selectPersona(Persona.observer);
+                    if (context.mounted) context.go(RoutePaths.home);
+                  },
+                ),
+              ],
+
+>>>>>>> 7bff084ce9060fcc732c36c2de38dd4d786fe41c
               const Spacer(),
 
               // Skip
               TextButton(
+<<<<<<< HEAD
                 onPressed: () => context.go(RoutePaths.homeFeed),
+=======
+                onPressed: () async {
+                  await controller.skipOnboarding();
+                  if (context.mounted) context.go(RoutePaths.home);
+                },
+>>>>>>> 7bff084ce9060fcc732c36c2de38dd4d786fe41c
                 child: Text(
                   'Skip for now',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSecondary,
+                        color: AppColors.neutral.s700,
                       ),
                 ),
               ),
@@ -97,18 +151,15 @@ class _PersonaCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: AppColors.primary.withValues(alpha: 0.1),
-          ),
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.neutral.s100,
+        borderRadius: AppRadius.all12,
+        boxShadow: AppElevation.card,
+        border: Border.all(
+          color: AppColors.primary.s500.withValues(alpha: 0.1),
         ),
+<<<<<<< HEAD
         child: Row(
           children: [
             Container(
@@ -131,20 +182,53 @@ class _PersonaCard extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           color: AppColors.textPrimary,
                         ),
+=======
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: AppRadius.all12,
+          child: Padding(
+            padding: AppSpacing.allXl,
+            child: Row(
+              children: [
+                Container(
+                  padding: AppSpacing.allMd,
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.s500.withValues(alpha: 0.1),
+                    shape: BoxShape.circle,
+>>>>>>> 7bff084ce9060fcc732c36c2de38dd4d786fe41c
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    description,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.textSecondary,
-                        ),
+                  child: Icon(icon, color: AppColors.primary.s500),
+                ),
+                const SizedBox(width: AppSpacing.lg),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        label,
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                      ),
+                      const SizedBox(height: AppSpacing.xs),
+                      Text(
+                        description,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: AppColors.neutral.s700,
+                            ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                Icon(Icons.arrow_forward_ios,
+                    size: AppSpacing.lg, color: AppColors.neutral.s500),
+              ],
             ),
-            const Icon(Icons.arrow_forward_ios,
-                size: 16, color: AppColors.textTertiary),
-          ],
+          ),
         ),
       ),
     );
